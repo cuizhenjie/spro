@@ -225,7 +225,7 @@ export default function AIListingPage() {
                 verified={step === "done"}
                 accentColor="pink"
               />
-              <DataBox label="预估售价" value={step === "done" ? "50" : step === "processing" ? "..." : "—"} unit="CR" accentColor="orange" />
+              <DataBox label="预估售价" value={step === "done" ? "50" : step === "processing" ? "..." : "—"} unit="金币" accentColor="orange" />
             </div>
             {/* Style tags */}
             <div>

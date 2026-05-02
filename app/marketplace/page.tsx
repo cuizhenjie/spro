@@ -416,7 +416,7 @@ export default function MarketplacePage() {
                     onClick={() => addToCart(tool)}
                     className="mt-auto border border-primary text-primary font-mono text-xs py-2 px-4 hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)] transition-all duration-300 glitch-hover w-full flex items-center justify-center gap-1 uppercase tracking-wider"
                   >
-                    {tool.price} CR <span className="material-symbols-outlined text-sm">shopping_cart_checkout</span>
+                    {tool.price} 金币 <span className="material-symbols-outlined text-sm">shopping_cart_checkout</span>
                   </button>
                 )}
                 </GlassCard>
@@ -432,7 +432,7 @@ export default function MarketplacePage() {
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   <Coins className="w-5 h-5 text-tertiary drop-shadow-[0_0_6px_rgba(191,208,67,0.6)]" />
-                  <span className="font-bold text-on-surface">BALANCE: {coins} CR</span>
+                  <span className="font-bold text-on-surface">余额：{coins} 金币</span>
                 </div>
                 <span className="text-sm text-primary font-mono hover:underline cursor-pointer">
                   {'// GET MORE COINS?'}
@@ -440,7 +440,7 @@ export default function MarketplacePage() {
               </div>
               <div className="flex items-center gap-2 text-sm text-on-surface-variant font-mono">
                 <Star className="w-4 h-4 text-tertiary" />
-                DAILY CHECK-IN → +20 CR
+                每日签到 → +20 金币
               </div>
             </GlassCard>
           </HUDBrackets>
@@ -484,7 +484,7 @@ export default function MarketplacePage() {
                       </Link>
                       <p className="font-mono text-xs text-on-surface-variant mt-1">CREATED BY {asset.author}</p>
                     </div>
-                    <span className="font-mono text-primary font-bold">{asset.price} CR</span>
+                    <span className="font-mono text-primary font-bold">{asset.price} 金币</span>
                   </div>
                   {/* CTA */}
                   <button
@@ -542,7 +542,7 @@ export default function MarketplacePage() {
                         </span>
                         <div>
                           <div className="font-bold text-on-surface text-sm">{tool.name}</div>
-                          <div className="text-xs text-on-surface-variant font-mono">{tool.price} CR</div>
+                          <div className="text-xs text-on-surface-variant font-mono">{tool.price} 金币</div>
                         </div>
                       </div>
                       <button
@@ -559,17 +559,17 @@ export default function MarketplacePage() {
                   <div className="flex justify-between mb-4">
                     <span className="text-on-surface-variant font-mono text-sm">TOTAL</span>
                     <span className="text-xl font-bold text-tertiary font-mono">
-                      {cart.reduce((s, t) => s + t.price, 0)} CR
+                      {cart.reduce((s, t) => s + t.price, 0)} 金币
                     </span>
                   </div>
                   <div className="flex justify-between mb-4 text-sm text-on-surface-variant font-mono">
                     <span>BALANCE</span>
-                    <span>{coins} CR</span>
+                    <span>{coins} 金币</span>
                   </div>
 
                   {cart.reduce((s, t) => s + t.price, 0) > coins ? (
                     <div className="text-center text-primary text-sm font-mono mb-4">
-                      {'// INSUFFICIENT FUNDS — EARN MORE CR'}
+                      {'// 余额不足 — 充值更多金币'}
                     </div>
                   ) : (
                     <button

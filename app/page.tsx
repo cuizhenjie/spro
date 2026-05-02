@@ -256,7 +256,7 @@ export default function Home() {
                         {product.rating} ★ · {product.sales} 已售
                       </p>
                       <p className="font-mono-data mb-4 text-sm font-bold text-primary">
-                        {product.price} CR
+                        {product.price} 金币
                       </p>
                       <NextLink
                         href={`/product/${product.id}`}
