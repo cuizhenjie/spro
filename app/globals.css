@@ -210,6 +210,49 @@ body {
   filter: drop-shadow(0 0 6px rgba(255, 171, 243, 0.5));
 }
 
+/* ── Scroll & Split Reveal Animations ── */
+[data-scroll-animate] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+[data-scroll-animate][data-scroll-visible='true'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.split-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.split-word.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Button Pulse Glow ── */
+.cyber-btn-orange {
+  position: relative;
+  overflow: hidden;
+}
+.cyber-btn-orange::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #ff5500, #ff8c00, #ff5500);
+  opacity: 0;
+  z-index: -1;
+  filter: blur(8px);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0; transform: scale(0.95); }
+  50% { opacity: 0.5; transform: scale(1.05); }
+}
+
 html {
   scroll-behavior: smooth;
   font-feature-settings:
