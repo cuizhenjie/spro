@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const STEPFUN_API = "https://api.stepfun.com/v1/images/generations";
 const STEPFUN_KEY = process.env.STEPFUN_API_KEY || "";
 
-const MAKEUP_PROMPT = `Professional makeup analysis report infographic. Clean, minimalist design with cream/off-white background, paper texture. Layout shows the person's portrait photo with professional makeup analysis overlay. Shows face with detailed makeup breakdown: foundation type, eyebrow shape, eyeshadow colors, blush placement, lip color. Before/after makeup comparison side by side. Clean Chinese typography labels. High-end beauty magazine editorial quality, professional makeup artist report aesthetic. Portrait orientation (4:5), high resolution.`;
+const MAKEUP_PROMPT = `A Korean female fashion model with professional makeup. Same person as in the reference photo, same face and features. Beautiful editorial makeup with defined eyebrows, subtle eyeshadow, rosy blush, natural lip color. Clean white background, professional beauty photography, fashion magazine editorial style, portrait orientation.`;
 
 async function generateImage(prompt: string, apiKey: string): Promise<string | null> {
   try {
@@ -36,9 +36,9 @@ async function generateImage(prompt: string, apiKey: string): Promise<string | n
 
 export async function POST(req: NextRequest) {
   try {
-    const { image } = await req.json();
-    if (!image) {
-      return NextResponse.json({ error: "image required" }, { status: 400 });
+    const { photoUrl } = await req.json();
+    if (!photoUrl) {
+      return NextResponse.json({ error: "photoUrl required" }, { status: 400 });
     }
 
     // Mock response while key is being configured

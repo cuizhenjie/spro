@@ -42,9 +42,9 @@ async function generateImage(prompt: string, apiKey: string): Promise<string | n
 
 export async function POST(req: NextRequest) {
   try {
-    const { image } = await req.json();
-    if (!image) {
-      return NextResponse.json({ error: "image required" }, { status: 400 });
+    const { photoUrl } = await req.json();
+    if (!photoUrl) {
+      return NextResponse.json({ error: "photoUrl required" }, { status: 400 });
     }
 
     // For now return mock URLs while key is being configured
