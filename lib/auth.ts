@@ -60,3 +60,10 @@ export function logout(): void {
 export function isLoggedIn(): boolean {
   return getAuth().loggedIn;
 }
+
+export function updateUserLevel(level: string): void {
+  const user = getAuth();
+  user.level = level;
+  localStorage.setItem(AUTH_KEY, JSON.stringify(user));
+  setAuthCookie(user);
+}
