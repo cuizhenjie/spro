@@ -6,7 +6,7 @@ import { MARKET_TOOLS, CATEGORIES, STYLE_QUADRANTS, MOCK_ANALYSIS_RESULTS } from
 import { PRODUCTS as PRODUCT_LIST } from '@/lib/products-data';
 import { MarketTool, StyleQuadrant } from '@/types/marketplace';
 import StyleQuiz from '@/components/StyleQuiz';
-import { Sparkles, ShoppingCart, Coins, Check, Star, Palette } from 'lucide-react';
+import { Sparkles, ShoppingCart, Coins, Check, Star, Palette, Trash2, Minus, Plus, X, Terminal } from 'lucide-react';
 import { GlassCard } from '@/components/CyberUI/GlassCard';
 import { HUDBrackets } from '@/components/CyberUI/HUDBrackets';
 
@@ -520,77 +520,137 @@ export default function MarketplacePage() {
       {/* Checkout Modal */}
       {showCheckout && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <HUDBrackets>
-            <GlassCard className="border-t border-l border-primary/30 w-full max-w-md p-6">
-              <h2 className="text-xl font-bold mb-6 flex items-center gap-2 text-on-surface">
-              <ShoppingCart className="w-5 h-5 text-primary" />
-              CART // 购物车
-            </h2>
+          <div className="w-full max-w-2xl bg-background/80 backdrop-blur-xl border border-primary/50 shadow-[inset_0_0_12px_rgba(255,171,243,0.1),0_0_12px_rgba(255,171,243,0.3),0_0_30px_rgba(0,0,0,0.8)] rounded-xl overflow-hidden flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-5 border-b border-primary/30 bg-surface-container/50">
+              <div className="flex items-center gap-3">
+                <ShoppingCart className="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(255,171,243,0.6)]" />
+                <h2 className="font-display font-bold text-xl text-on-surface tracking-wide uppercase">
+                  神经购物车 <span className="text-primary drop-shadow-[0_0_8px_rgba(255,171,243,0.6)] ml-2">[{String(cart.length).padStart(2, '0')} 物品]</span>
+                </h2>
+              </div>
+              <button
+                onClick={() => setShowCheckout(false)}
+                className="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container-high"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
+            {/* Content */}
             {cart.length === 0 ? (
-              <div className="text-center py-8 text-on-surface-variant font-mono text-sm">
-                {'// CART EMPTY — BROWSE TOOLS FIRST'}
+              <div className="p-12 text-center text-on-surface-variant font-mono text-sm">
+                {'// CART EMPTY — 浏览市场添加工具'}
+                <div className="mt-6">
+                  <button
+                    onClick={() => setShowCheckout(false)}
+                    className="px-6 py-3 border border-outline-variant text-on-surface font-label-caps hover:border-primary hover:text-primary transition-colors"
+                  >
+                    继续浏览市场
+                  </button>
+                </div>
               </div>
             ) : (
               <>
-                <div className="space-y-4 mb-6">
+                <div className="p-6 overflow-y-auto max-h-[420px] space-y-3">
                   {cart.map((tool) => (
-                    <div key={tool.id} className="flex items-center justify-between cyber-glass border-t border-l border-white/10 p-3">
-                      <div className="flex items-center gap-3">
-                        <span className="material-symbols-outlined text-2xl" style={{ color: tool.color, filter: `drop-shadow(0 0 6px ${tool.color}80)` }}>
+                    <div
+                      key={tool.id}
+                      className="flex items-center gap-4 p-4 rounded-lg bg-surface-container border border-outline-variant hover:border-primary/40 transition-colors"
+                    >
+                      {/* Icon */}
+                      <div className="w-16 h-16 rounded bg-surface-container-high flex items-center justify-center border border-secondary/20 shrink-0">
+                        <span
+                          className="material-symbols-outlined text-3xl"
+                          style={{ color: tool.color, textShadow: `0 0 8px ${tool.color}` }}
+                        >
                           {tool.icon}
                         </span>
-                        <div>
-                          <div className="font-bold text-on-surface text-sm">{tool.name}</div>
-                          <div className="text-xs text-on-surface-variant font-mono">{tool.price} 金币</div>
-                        </div>
                       </div>
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-display font-semibold text-on-surface truncate">{tool.name}</h3>
+                        <p className="font-mono text-sm text-on-surface-variant mt-1">{tool.price} 金币</p>
+                      </div>
+                      {/* Quantity */}
+                      <div className="flex items-center gap-1 bg-surface-container-highest rounded border border-outline-variant p-1">
+                        <button
+                          onClick={() => removeFromCart(tool.id)}
+                          className="text-on-surface-variant hover:text-secondary w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container transition-colors"
+                        >
+                          <Minus className="w-3 h-3" />
+                        </button>
+                        <span className="font-mono text-sm w-4 text-center">1</span>
+                        <button className="text-on-surface-variant hover:text-secondary w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container transition-colors">
+                          <Plus className="w-3 h-3" />
+                        </button>
+                      </div>
+                      {/* Delete */}
                       <button
                         onClick={() => removeFromCart(tool.id)}
-                        className="text-on-surface-variant hover:text-primary transition-colors font-mono text-xs"
+                        className="text-on-surface-variant hover:text-error ml-1 p-2 rounded hover:bg-error/10 transition-colors"
                       >
-                        DEL
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   ))}
                 </div>
 
-                <div className="pt-4 border-t border-primary/20">
-                  <div className="flex justify-between mb-4">
-                    <span className="text-on-surface-variant font-mono text-sm">TOTAL</span>
-                    <span className="text-xl font-bold text-tertiary font-mono">
-                      {cart.reduce((s, t) => s + t.price, 0)} 金币
-                    </span>
-                  </div>
-                  <div className="flex justify-between mb-4 text-sm text-on-surface-variant font-mono">
-                    <span>BALANCE</span>
-                    <span>{coins} 金币</span>
+                {/* Summary & Footer */}
+                <div className="border-t border-primary/30 bg-surface-container p-6">
+                  <div className="space-y-3 mb-6 font-mono text-sm">
+                    <div className="flex justify-between text-on-surface-variant">
+                      <span>小计</span>
+                      <span>{cart.reduce((s, t) => s + t.price, 0)} 金币</span>
+                    </div>
+                    <div className="flex justify-between text-secondary drop-shadow-[0_0_6px_rgba(236,255,227,0.4)]">
+                      <span>处理费 (黑客促销已应用)</span>
+                      <span>0 金币</span>
+                    </div>
+                    <div className="h-px w-full bg-outline-variant my-2" />
+                    <div className="flex justify-between items-center text-on-surface">
+                      <span className="font-display font-bold text-base">购买后账户余额</span>
+                      <div className="text-right">
+                        <span className="font-display font-bold text-lg text-tertiary">
+                          {Math.max(0, coins - cart.reduce((s, t) => s + t.price, 0))} 金币
+                        </span>
+                        <span className="block text-xs text-on-surface-variant">(剩余自 {coins} 金币)</span>
+                      </div>
+                    </div>
                   </div>
 
                   {cart.reduce((s, t) => s + t.price, 0) > coins ? (
-                    <div className="text-center text-primary text-sm font-mono mb-4">
-                      {'// 余额不足 — 充值更多金币'}
+                    <div className="w-full py-4 text-center text-error font-mono text-sm border border-error/30 bg-error/5">
+                      {'// 余额不足 — 请先充值'}
                     </div>
                   ) : (
                     <button
                       onClick={checkout}
-                      className="w-full py-3 bg-secondary text-background font-bold font-mono tracking-wider hover:shadow-[0_0_20px_rgba(236,255,227,0.6)] transition-all duration-300"
+                      className="w-full relative overflow-hidden bg-surface-container border border-primary text-primary font-display font-bold uppercase tracking-wider py-4 rounded-lg hover:shadow-[0_0_16px_rgba(255,171,243,0.4)] transition-all duration-300 group"
                     >
-                      CONFIRM PURCHASE
+                      <div className="absolute inset-0 opacity-50" style={{
+                        background: 'linear-gradient(to bottom, rgba(255,171,243,0) 0%, rgba(255,171,243,0.08) 50%, rgba(255,171,243,0) 100%)',
+                        backgroundSize: '100% 4px',
+                      }} />
+                      <span className="relative z-10 drop-shadow-[0_0_8px_rgba(255,171,243,0.6)] flex items-center justify-center gap-2">
+                        <Terminal className="w-5 h-5" />
+                        初始化神经结账
+                      </span>
                     </button>
                   )}
+
+                  <div className="mt-4 text-center">
+                    <button
+                      onClick={() => setShowCheckout(false)}
+                      className="font-mono text-sm text-on-surface-variant hover:text-secondary transition-colors underline decoration-outline-variant hover:decoration-secondary underline-offset-4"
+                    >
+                      继续浏览市场
+                    </button>
+                  </div>
                 </div>
               </>
             )}
-
-            <button
-              onClick={() => setShowCheckout(false)}
-              className="mt-4 w-full py-2 text-on-surface-variant hover:text-on-surface font-mono text-sm transition-colors"
-            >
-              {'// CLOSE'}
-            </button>
-            </GlassCard>
-          </HUDBrackets>
+          </div>
         </div>
       )}
 
