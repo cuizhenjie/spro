@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getAuth, type AuthUser } from '@/lib/auth';
-import { LogIn, Store, BadgeDollarSign, Sparkles } from 'lucide-react';
+import { LogIn, Store, BadgeDollarSign, Sparkles, Coins } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: '市场', href: '/marketplace', icon: Store },
@@ -51,6 +51,14 @@ export default function TopNav() {
       </div>
 
       <div className="flex items-center gap-4 px-6 py-4">
+        {/* Wallet Balance — visible md+ */}
+        {loggedIn && (
+          <div className="hidden md:flex items-center gap-1.5 text-primary font-mono text-sm px-3 py-1.5 border border-primary/30 cyber-glass">
+            <Coins className="w-4 h-4" />
+            <span>{user?.coins ?? 0} 金币</span>
+          </div>
+        )}
+
         {loggedIn ? (
           <Link
             href="/profile"

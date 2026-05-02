@@ -306,36 +306,8 @@ export default function MarketplacePage() {
       <div className="fixed top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-primary blur-[150px] opacity-10 pointer-events-none z-0" />
       <div className="fixed bottom-[-20%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-secondary blur-[150px] opacity-10 pointer-events-none z-0" />
 
-      {/* TopAppBar */}
-      <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-background/80 backdrop-blur-md border-b border-primary/30 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-        <div className="flex items-center gap-4">
-          <span className="text-2xl font-black italic text-primary drop-shadow-[0_0_8px_rgba(255,171,243,0.8)] font-display tracking-tighter">
-            赛博衣橱
-          </span>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => setShowCheckout(true)}
-            className="relative text-primary hover:bg-white/5 p-2 transition-all"
-          >
-            <ShoppingCart className="w-5 h-5" />
-            {cart.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-background text-xs flex items-center justify-center font-bold">
-                {cart.length}
-              </span>
-            )}
-          </button>
-
-          <div className="flex items-center gap-1 text-primary font-mono text-sm px-3 py-1 border border-primary/30 cyber-glass">
-            <Coins className="w-4 h-4" />
-            <span>{coins} CR</span>
-          </div>
-        </div>
-      </nav>
-
       {/* Main Content */}
-      <div className="relative z-10 pb-[120px] px-4 md:px-6 max-w-7xl mx-auto flex flex-col gap-10">
+      <div className="relative z-10 pt-8 pb-[120px] px-4 md:px-6 max-w-7xl mx-auto flex flex-col gap-10">
 
         {/* Hero Section */}
         <header className="flex flex-col items-start gap-4 border-l-4 border-primary pl-6 py-2 relative">

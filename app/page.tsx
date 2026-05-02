@@ -12,7 +12,7 @@ import {
 
   const MOBILE_NAV: { label: string; icon: LucideIcon; href: string; active?: boolean }[] = [
   { label: '首页', icon: LayoutGrid, href: '/' },
-  { label: '分析', icon: BarChart3, href: '/ai-tools' },
+  { label: '分析', icon: BarChart3, href: '/marketplace' },
   { label: '商店', icon: Store, href: '/marketplace', active: true },
   { label: '我的', icon: User, href: '/profile' },
 ];
@@ -191,7 +191,7 @@ export default function Home() {
                   Chromatic mapping for optimal neon reflection.
                 </p>
                 <NextLink
-                  href="/ai-tools"
+                  href="/marketplace"
                   className="flex items-center text-sm font-label-caps text-primary-fixed transition-colors hover:text-on-surface"
                 >
                   提取 <ArrowRight className="ml-1 h-4 w-4" />
