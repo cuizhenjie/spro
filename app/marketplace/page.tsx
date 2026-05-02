@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { MARKET_TOOLS, CATEGORIES, STYLE_QUADRANTS, MOCK_ANALYSIS_RESULTS } from '@/lib/marketplace-data';
 import { PRODUCTS as PRODUCT_LIST } from '@/lib/products-data';
 import { MarketTool, StyleQuadrant } from '@/types/marketplace';
@@ -10,6 +11,7 @@ import { GlassCard } from '@/components/CyberUI/GlassCard';
 import { HUDBrackets } from '@/components/CyberUI/HUDBrackets';
 
 export default function MarketplacePage() {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState('all');
   const [cart, setCart] = useState<MarketTool[]>([]);
   const [coins, setCoins] = useState(200);
@@ -404,10 +406,10 @@ export default function MarketplacePage() {
 
                 {ownedTools.includes(tool.id) ? (
                   <button
-                    onClick={() => startAnalysis(tool)}
+                    onClick={() => router.push('/scan?target=/ai-listing')}
                     className="mt-auto border border-secondary text-secondary font-mono text-xs py-2 px-4 hover:bg-secondary/10 hover:shadow-[0_0_15px_rgba(236,255,227,0.5)] transition-all duration-300 glitch-hover w-full flex items-center justify-center gap-1 uppercase tracking-wider"
                   >
-                    LAUNCH <span className="material-symbols-outlined text-sm">barcode_scanner</span>
+                    开启扫描 <span className="material-symbols-outlined text-sm">barcode_scanner</span>
                   </button>
                 ) : (
                   <button

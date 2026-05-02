@@ -18,7 +18,7 @@ export default function TopNav() {
 
   useEffect(() => {
     setUser(getAuth());
-  }, []);
+  }, [pathname]);
 
   const loggedIn = user?.loggedIn ?? false;
 

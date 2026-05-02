@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { Coins, Zap, Check, X, Star, Crown, Sparkles, Shield, Trash2, Bolt, Diamond, LayoutGrid, BarChart3, Store, User } from 'lucide-react';
 import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
@@ -83,8 +83,6 @@ const MOBILE_NAV: { label: string; icon: React.ElementType; href: string; active
 ];
 
 export default function PricingPage() {
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
-
   return (
     <main className="min-h-screen bg-background text-on-surface relative overflow-x-hidden">
       {/* Scanline Overlay */}
@@ -116,30 +114,6 @@ export default function PricingPage() {
             SYS.AUTH: 需要授权
           </div>
         </header>
-
-        {/* Billing Toggle */}
-        <section className="flex gap-2">
-          <button
-            onClick={() => setBillingCycle('monthly')}
-            className={`flex items-center gap-2 px-4 py-2 whitespace-nowrap transition-all font-mono text-xs tracking-wider uppercase ${
-              billingCycle === 'monthly'
-                ? 'bg-secondary text-background font-bold shadow-[0_0_10px_rgba(236,255,227,0.4)]'
-                : 'cyber-glass border border-white/10 text-on-surface-variant hover:bg-white/5'
-            }`}
-          >
-            月付
-          </button>
-          <button
-            onClick={() => setBillingCycle('yearly')}
-            className={`flex items-center gap-2 px-4 py-2 whitespace-nowrap transition-all font-mono text-xs tracking-wider uppercase ${
-              billingCycle === 'yearly'
-                ? 'bg-secondary text-background font-bold shadow-[0_0_10px_rgba(236,255,227,0.4)]'
-                : 'cyber-glass border border-white/10 text-on-surface-variant hover:bg-white/5'
-            }`}
-          >
-            年付 · 省20%
-          </button>
-        </section>
 
         {/* Pricing Tiers */}
         <section className="flex flex-col gap-4">

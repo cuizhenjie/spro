@@ -339,17 +339,11 @@ export default function ProfilePage() {
         </div>
       </section>
 
-      {/* Action and Logout Section */}
-      <section className="flex flex-col md:flex-row gap-4 mt-8">
-        <button className="flex-1 cyber-button text-primary font-label-caps text-label-caps py-3 uppercase tracking-widest flex items-center justify-center gap-2 bg-transparent">
-          <span className="material-symbols-outlined text-sm">
-            auto_awesome
-          </span>
-          生成外观
-        </button>
+      {/* Logout Section */}
+      <section className="flex justify-center mt-8">
         <button
           onClick={handleLogout}
-          className="flex-1 border border-error text-error hover:bg-error/10 hover:shadow-[0_0_15px_rgba(255,68,68,0.5)] transition-all font-label-caps text-label-caps py-3 uppercase tracking-widest flex items-center justify-center gap-2 bg-transparent"
+          className="border border-error text-error hover:bg-error/10 hover:shadow-[0_0_15px_rgba(255,68,68,0.5)] transition-all font-label-caps text-label-caps py-3 px-12 uppercase tracking-widest flex items-center justify-center gap-2 bg-transparent"
         >
           <span className="material-symbols-outlined text-sm">logout</span>
           断开连接
