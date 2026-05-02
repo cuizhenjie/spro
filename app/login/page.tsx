@@ -89,7 +89,7 @@ export default function LoginPage() {
                 </div>
               </div>
               <h1 className="font-h2 text-h2 text-primary-container drop-shadow-[0_0_10px_rgba(255,0,255,0.6)] mb-unit glitch-text cursor-default">
-                赛博穿搭
+                赛博衣橱
               </h1>
               <p className="font-label-caps text-label-caps text-on-surface-variant">
                 {mode === 'login' ? '需要操作员身份验证' : '注册新操作员身份'}

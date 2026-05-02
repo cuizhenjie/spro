@@ -44,7 +44,7 @@ export default function Hero() {
 
       <div className="container relative z-10 py-16 sm:py-20 md:py-32 px-4 md:px-0">
         <p className="hero-eyebrow text-xs sm:text-sm font-medium text-on-surface-variant uppercase tracking-widest mb-3 sm:mb-4 md:mb-6 font-mono">
-          赛博穿搭 · AI时尚百宝箱
+          赛博衣橱 · AI时尚百宝箱
         </p>
 
         <h1
@@ -79,7 +79,7 @@ export default function Hero() {
         <div className="flex flex-wrap gap-3">
           <div className="hero-badge flex items-center gap-2 px-4 py-2 rounded-full border border-outline bg-surface-container backdrop-blur-sm">
             <span className="w-2 h-2 rounded-full bg-secondary" style={{ boxShadow: '0 0 8px #ecffe3' }} />
-            <span className="text-xs font-mono text-on-surface-variant">赛博穿搭</span>
+            <span className="text-xs font-mono text-on-surface-variant">赛博衣橱</span>
             <span className="text-on-surface">·</span>
             <span className="text-sm text-on-surface">AI时尚百宝箱</span>
           </div>

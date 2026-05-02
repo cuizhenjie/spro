@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
           <div className="md:col-span-1">
-            <span className="font-bold text-xl text-on-surface block mb-2">赛博穿搭</span>
+            <span className="font-bold text-xl text-on-surface block mb-2">赛博衣橱</span>
             <span className="text-sm text-on-surface-variant block mb-6">AI时尚百宝箱</span>
             <span className="text-xs font-mono text-on-surface-variant/60">© 2026</span>
           </div>

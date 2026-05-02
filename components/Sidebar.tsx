@@ -64,7 +64,7 @@ export default function Sidebar() {
             </span>
             <span>
               <span className="block font-display text-xl font-bold tracking-[0.08em] text-primary drop-shadow-[0_0_12px_rgba(255,0,255,0.45)]">
-                赛博穿搭
+                赛博衣橱
               </span>
               <span className="block font-mono-data text-[10px] uppercase tracking-[0.2em] text-on-surface-variant">
                 AI Fashion

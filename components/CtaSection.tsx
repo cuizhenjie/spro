@@ -4,7 +4,7 @@ export default function CtaSection() {
       <div className="cta-content max-w-3xl mx-auto text-center">
         <p className="text-xs font-mono text-primary uppercase tracking-widest mb-4">Ready to Ship</p>
         <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold text-on-surface mb-6 leading-tight font-display">
-          赛博穿搭<br />AI时尚百宝箱
+          赛博衣橱<br />AI时尚百宝箱
         </h2>
         <p className="text-lg text-on-surface-variant mb-10 max-w-lg mx-auto leading-relaxed">
           买AI穿搭工具 / 卖创意技能，按次付费，2分钟体验完整链路。

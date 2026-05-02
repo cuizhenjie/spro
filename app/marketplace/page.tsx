@@ -307,10 +307,9 @@ export default function MarketplacePage() {
       {/* TopAppBar */}
       <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-background/80 backdrop-blur-md border-b border-primary/30 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
         <div className="flex items-center gap-4">
-          <span className="text-2xl font-black italic text-primary drop-shadow-[0_0_8px_rgba(255,171,243,0.8)] font-display tracking-tighter uppercase">
-            NEON_MARKET
+          <span className="text-2xl font-black italic text-primary drop-shadow-[0_0_8px_rgba(255,171,243,0.8)] font-display tracking-tighter">
+            赛博衣橱
           </span>
-          <span className="text-on-surface/50 font-mono text-xs hidden md:inline">赛博衣橱</span>
         </div>
 
         <div className="flex items-center gap-4">

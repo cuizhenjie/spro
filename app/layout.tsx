@@ -4,7 +4,7 @@ import AnimationProvider from "@/components/AnimationProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "赛博穿搭 - AI时尚百宝箱",
+  title: "赛博衣橱 - AI时尚百宝箱",
   description: "穿搭AI百宝箱，买卖AI穿搭工具，按次付费，2分钟体验完整链路。",
 };
 
