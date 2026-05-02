@@ -15,7 +15,9 @@ export default function MarketplacePage() {
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState('all');
   const [cart, setCart] = useState<MarketTool[]>([]);
-  const [coins, setCoins] = useState(200);
+  const [coins, setCoins] = useState(() => {
+    try { return getAuth()?.coins ?? 520; } catch { return 520; }
+  });
   const [showCheckout, setShowCheckout] = useState(false);
   const [ownedTools, setOwnedTools] = useState<string[]>([]);
   const [activeTool, setActiveTool] = useState<MarketTool | null>(null);

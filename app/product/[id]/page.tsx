@@ -6,6 +6,7 @@ import { GlassCard } from "@/components/CyberUI/GlassCard";
 import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
 import { PRODUCTS } from "@/lib/products-data";
 import { MARKET_TOOLS, CATEGORIES } from "@/lib/marketplace-data";
+import { getAuth } from "@/lib/auth";
 import { Coins, ShoppingCart, Star, TrendingUp, CheckCircle, ArrowLeft, Zap, Shield } from "lucide-react";
 import type { Product } from "@/lib/products-data";
 import type { MarketTool } from "@/types/marketplace";
@@ -232,7 +233,7 @@ export default function ProductPage() {
               {/* Coin balance */}
               <div className="flex items-center gap-2 font-mono text-xs text-on-surface-variant mt-4 pt-4 border-t border-outline-variant/30">
                 <Coins className="w-4 h-4 text-tertiary" />
-                您的余额：520 金币
+                您的余额：{(() => { try { return getAuth()?.coins ?? 520; } catch { return 520; } })()} 金币
                 <button
                   onClick={() => router.push("/pricing")}
                   className="text-secondary hover:underline cursor-pointer ml-2"
