@@ -211,7 +211,7 @@ export default function SellerDashboardPage() {
                   type="text"
                   value={form.name}
                   onChange={(e) => updateField("name", e.target.value)}
-                  placeholder="例：NEO_TOKYO_STYLE"
+                  placeholder="例：千禧辣妹风数据包 / Y2K_STYLE_PACK"
                   className="w-full bg-background/80 border border-primary/20 px-4 py-3 text-on-surface font-body placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none transition-colors"
                 />
               </div>
@@ -224,7 +224,7 @@ export default function SellerDashboardPage() {
                 <textarea
                   value={form.description}
                   onChange={(e) => updateField("description", e.target.value)}
-                  placeholder="描述工具功能和场景..."
+                  placeholder="描述您的工具能为用户带来什么价值。例如：包含200+精选单品图+穿搭模板，适合潮流店铺快速上架..."
                   rows={3}
                   className="w-full bg-background/80 border border-primary/20 px-4 py-3 text-on-surface font-body placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none transition-colors resize-none"
                 />
