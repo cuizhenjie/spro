@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useRef } from "react";
+import { GlassCard } from "@/components/CyberUI/GlassCard";
 import { MARKET_TOOLS, CATEGORIES } from "@/lib/marketplace-data";
 import type { MarketTool } from "@/types/marketplace";
 
@@ -408,7 +409,7 @@ function StatWidget({
   widgetId,
 }: StatWidgetProps) {
   return (
-    <div className="bg-surface-container/50 backdrop-blur-md border border-primary/30 p-6 relative overflow-hidden group hover:bg-primary/5 transition-all">
+    <GlassCard className="bg-surface-container/50 backdrop-blur-md border border-primary/30 p-6 relative overflow-hidden group hover:bg-primary/5 transition-all">
       <div className="absolute top-0 right-0 p-2 text-primary/30 font-mono-data text-[10px]">
         WIDGET_{widgetId}
       </div>
@@ -430,7 +431,7 @@ function StatWidget({
         )}
         {delta}
       </div>
-    </div>
+    </GlassCard>
   );
 }
 
