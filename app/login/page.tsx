@@ -60,7 +60,7 @@ export default function LoginPage() {
               StyleBoxAI
             </h1>
             <p className="font-label-caps text-label-caps text-on-surface-variant">
-              {mode === 'login' ? '需要操作员身份验证' : '注册新操作员身份'}
+              {mode === 'login' ? '需要赛博er身份验证' : '注册新赛博er身份'}
             </p>
           </div>
 
@@ -105,7 +105,7 @@ export default function LoginPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
+                  placeholder="••••••••••"
                   className="w-full bg-transparent border-0 border-b border-outline px-0 py-sm text-on-background font-mono-data text-mono-data tracking-[0.2em] placeholder:text-surface-variant focus:ring-0 focus:border-secondary-container transition-colors outline-none rounded-none peer"
                   required
                 />
@@ -125,7 +125,7 @@ export default function LoginPage() {
                 ) : (
                   <LogIn className="w-4 h-4 group-hover:animate-pulse" />
                 )}
-                {mode === 'login' ? '初始化登录' : '创建操作员身份'}
+                {mode === 'login' ? '初始化登录' : '创建赛博er身份'}
               </button>
             </div>
           </form>
@@ -137,7 +137,7 @@ export default function LoginPage() {
               className="font-mono-data text-mono-data text-on-surface-variant hover:text-primary-container transition-colors flex items-center gap-xs group"
             >
               <UserPlus className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              {mode === 'login' ? '注册新操作员' : '返回登录'}
+              {mode === 'login' ? '注册新赛博er' : '返回登录'}
             </button>
           </div>
         </div>
