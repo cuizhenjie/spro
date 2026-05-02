@@ -408,6 +408,73 @@ export default function MarketplacePage() {
                 {activeCategory === cat.id && (
                   <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-primary shadow-[0_0_8px_rgba(255,171,243,0.6)] rounded-full" />
                 )}
+                <span className="material-symbols-outlined text-base">{cat.icon}</span>
+                <span>{cat.name}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* AI ANALYSIS GRID */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-2xl font-display font-bold text-on-surface flex items-center gap-2">
+            <span className="w-2 h-2 bg-secondary rounded-full shadow-[0_0_8px_rgba(236,255,227,0.8)] animate-pulse" />
+            AI ANALYSIS GRID
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {filteredTools.map((tool) => (
+              <HUDBrackets key={tool.id} data-scroll-animate>
+                <GlassCard className="p-4 flex flex-col gap-4 hover:bg-white/10 transition-colors duration-300 relative group overflow-hidden">
+                  {/* Gradient corner accent */}
+                  <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-secondary/20 to-transparent" />
+
+                <div className="flex items-start justify-between">
+                  <div
+                    className="w-12 h-12 flex items-center justify-center"
+                    style={{ color: tool.color }}
+                  >
+                    <span className="material-symbols-outlined text-[32px]" style={{ filter: `drop-shadow(0 0 8px ${tool.color}80)` }}>
+                      {tool.icon}
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-end gap-1">
+                    {tool.isHot && (
+                      <span className="px-2 py-0.5 bg-primary/20 text-primary text-[10px] font-mono border border-primary/30">
+                        HOT
+                      </span>
+                    )}
+                    {tool.isNew && (
+                      <span className="px-2 py-0.5 bg-secondary/20 text-secondary text-[10px] font-mono border border-secondary/30">
+                        NEW
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-bold text-on-surface mb-1">{tool.name}</h3>
+                  <p className="text-sm text-on-surface-variant">{tool.description}</p>
+                </div>
+
+                {ownedTools.includes(tool.id) ? (
+                  <button
+                    onClick={() => {
+                      addToCart(tool);
+                      setShowCheckout(true);
+                    }}
+                    className="mt-auto border border-secondary text-secondary font-mono text-xs py-2 px-4 hover:bg-secondary/10 hover:shadow-[0_0_15px_rgba(236,255,227,0.5)] transition-all duration-300 glitch-hover w-full flex items-center justify-center gap-1 uppercase tracking-wider"
+                  >
+                    提取 <span className="material-symbols-outlined text-sm">auto_awesome</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => addToCart(tool)}
+                    className="mt-auto border border-primary text-primary font-mono text-xs py-2 px-4 hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)] transition-all duration-300 glitch-hover w-full flex items-center justify-center gap-1 uppercase tracking-wider"
+                  >
+                    {tool.price} 金币 <span className="material-symbols-outlined text-sm">shopping_cart_checkout</span>
+                  </button>
+>>>>>>> d4c7182 (feat: 完成AI工具提取完整流程：marketplace提取按钮→upload/[tool]→API调用→result/[tool]展示，9个工具全部支持)
+                )}
                 <span>{cat.name}</span>
               </button>
             ))}

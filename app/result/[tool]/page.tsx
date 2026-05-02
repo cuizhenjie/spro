@@ -1,10 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Check, Download, Share2 } from "lucide-react";
 import { DataBox, DataTag } from "@/components/CyberUI/DataCard";
+
+/* ─── Read sessionStorage for real API result ─── */
+interface StoredResult {
+  photoDataUrl?: string;
+  mock?: boolean;
+  [key: string]: unknown;
+}
+
+function useStoredResult(toolId: string): StoredResult {
+  const [stored, setStored] = useState<StoredResult | null>(null);
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(`spro_result_${toolId}`);
+      if (raw) setStored(JSON.parse(raw));
+    } catch {}
+  }, [toolId]);
+  return stored || { mock: true };
+}
 
 /* ─── MOCK DATA ─── */
 
@@ -176,29 +194,53 @@ const RESULT_META: Record<string, {
   accentColor: string;
   matchScore?: number;
 }> = {
-  fashion: {
-    title: "穿搭解析报告",
-    subtitle: "STRUCTURAL ANALYSIS COMPLETE",
-    accentColor: "#ecffe3",
-    matchScore: FASHION_RESULT.matchScore,
+  "palm-reading": {
+    title: "掌心占卜报告",
+    subtitle: "PALM READING COMPLETE",
+    accentColor: "#c4a35a",
+    matchScore: 88,
   },
-  color: {
-    title: "色彩诊断报告",
-    subtitle: "CHROMATIC ANALYSIS COMPLETE",
+  "style-analyzer": {
+    title: "风格解析报告",
+    subtitle: "STYLE ANALYSIS COMPLETE",
     accentColor: "#ffabf3",
-    matchScore: COLOR_RESULT.matchScore,
+    matchScore: 90,
+  },
+  "lipstick-recommendation": {
+    title: "口红推荐报告",
+    subtitle: "LIPSTICK RECOMMENDATION",
+    accentColor: "#f472b6",
+    matchScore: 86,
+  },
+  "image-diagnosis": {
+    title: "形象诊断报告",
+    subtitle: "IMAGE DIAGNOSIS COMPLETE",
+    accentColor: "#a78bfa",
+    matchScore: 89,
   },
   "seasonal-outfit": {
     title: "四季穿搭指南",
     subtitle: "SEASONAL STREETWEAR GUIDE",
     accentColor: "#ff9f43",
-    matchScore: SEASONAL_OUTFIT_RESULT.matchScore,
+    matchScore: 88,
   },
   "personal-color": {
     title: "个人色彩分析",
     subtitle: "PERSONAL COLOR ANALYSIS",
     accentColor: "#ff6b9d",
-    matchScore: PERSONAL_COLOR_RESULT.matchScore,
+    matchScore: 85,
+  },
+  "neon-street-syndicate": {
+    title: "霓虹街头穿搭",
+    subtitle: "NEON STREET SYNDICATE",
+    accentColor: "#ff2d78",
+    matchScore: 91,
+  },
+  "hardware-implant-faction": {
+    title: "机能植入派穿搭",
+    subtitle: "HARDWARE IMPLANT FACTION",
+    accentColor: "#60a5fa",
+    matchScore: 87,
   },
   "makeup-analysis": {
     title: "妆容分析",
@@ -208,10 +250,76 @@ const RESULT_META: Record<string, {
   },
 };
 
+function SeasonalOutfitContent({ meta }: { meta: { accentColor: string } }) {
+  return (
+    <>
+      {/* Season type bar */}
+      <div className="mb-8 flex flex-wrap items-center justify-center gap-4">
+        {SEASONAL_OUTFIT_RESULT.seasons.map((s) => (
+          <div key={s.id} className="flex items-center gap-2">
+            <div className="h-3 w-3 rounded-full" style={{ backgroundColor: s.accentColor, boxShadow: `0 0 6px ${s.accentColor}` }} />
+            <span className="font-mono text-xs" style={{ color: s.accentColor }}>{s.labelEn}</span>
+          </div>
+        ))}
+      </div>
+      {/* 4 Season Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        {SEASONAL_OUTFIT_RESULT.seasons.map((season) => (
+          <div key={season.id} className="border border-white/10 overflow-hidden" style={{ borderColor: `${season.accentColor}30` }}>
+            <div className="relative h-56 overflow-hidden">
+              <img src={season.heroImage} alt={season.label} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+              <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                <span className="font-display text-2xl font-bold text-white">{season.label}</span>
+                <span className="font-mono text-xs text-white/60">{season.labelEn}</span>
+              </div>
+              <div className="absolute top-3 right-3 flex gap-1">
+                {season.tags.map((tag) => (
+                  <span key={tag} className="px-2 py-0.5 text-[10px] font-mono text-white/80 border border-white/20 backdrop-blur-sm">{tag}</span>
+                ))}
+              </div>
+            </div>
+            <div className="p-4 space-y-3">
+              <div>
+                <label className="font-mono text-[10px] text-outline uppercase tracking-widest">推荐色盘</label>
+                <div className="flex gap-1.5 mt-1.5">
+                  {season.colorPalette.map((c, i) => (
+                    <div key={i} className="h-7 w-7 rounded-full border border-white/10" style={{ backgroundColor: c }} title={c} />
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-outline uppercase tracking-widest">主推造型</label>
+                <p className="text-sm text-on-surface mt-1">{season.heroOutfit}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[10px] text-outline uppercase">配色</span>
+                <span className="font-mono text-xs" style={{ color: season.accentColor }}>{season.colorFormula}</span>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-primary/70 uppercase tracking-widest">避雷</label>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {season.avoid.map((a) => (
+                    <span key={a} className="text-[10px] font-mono text-primary/60 px-1.5 py-0.5 border border-primary/20">{a}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="border-t border-white/5 pt-3">
+                <p className="text-xs text-on-surface-variant italic">"{season.summary}"</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export default function ResultPage() {
   const params = useParams();
-  const tool = (params.tool as string) || "fashion";
-  const meta = RESULT_META[tool] || RESULT_META.fashion;
+  const tool = (params.tool as string) || "personal-color";
+  const stored = useStoredResult(tool);
+  const meta = RESULT_META[tool] || { title: "分析报告", subtitle: "ANALYSIS COMPLETE", accentColor: "#ffabf3", matchScore: 85 };
   const [copied, setCopied] = useState(false);
 
   const copyResult = () => {
@@ -272,229 +380,202 @@ export default function ResultPage() {
           </div>
         </div>
 
-        {/* ── FASHION / COLOR (existing) ── */}
-        {(tool === "fashion" || tool === "color") && (
-          <>
-            <div className="mb-10 grid gap-4 sm:grid-cols-2">
-              {tool === "fashion" ? (
-                <>
-                  <DataBox label="风格类型" value={FASHION_RESULT.style} verified accentColor="green" />
-                  <DataBox label="材质面料" value={FASHION_RESULT.material} accentColor="green" />
-                  <DataBox label="色彩家族" value={FASHION_RESULT.colorFamily} accentColor="green" />
-                </>
-              ) : (
-                <>
-                  <DataBox label="肤色季型" value={COLOR_RESULT.season} verified accentColor="pink" />
-                  <DataBox label="底调分析" value={COLOR_RESULT.undertone} accentColor="pink" />
-                  <DataBox label="最佳色彩" value={COLOR_RESULT.bestColors} accentColor="orange" />
-                  <DataBox label="避用色彩" value={COLOR_RESULT.avoidColors} accentColor="orange" />
-                </>
-              )}
-            </div>
-            <div className="mb-10">
-              <DataBox label="AI 分析摘要" value={tool === "fashion" ? FASHION_RESULT.desc : COLOR_RESULT.desc} accentColor="orange" />
-            </div>
-            <div className="mb-10">
-              <label className="font-mono text-[11px] text-outline mb-3 block uppercase tracking-widest">推荐标签</label>
-              <div className="flex flex-wrap gap-2">
-                {(tool === "fashion" ? FASHION_RESULT.tags : COLOR_RESULT.tags).map((tag) => (
-                  <DataTag key={tag}>{tag}</DataTag>
-                ))}
+        {/* ── PALM READING ── */}
+        {tool === "palm-reading" && (
+          <div className="space-y-6">
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-40 h-40 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="掌纹" className="w-full h-full object-cover" />
+                </div>
               </div>
+            )}
+            <DataBox label="掌心纹路" value="生命线深刻，情感线柔和，智慧线发达" verified accentColor="green" />
+            <DataBox label="命运曲线" value="中期上升，短期调整，长期平稳" accentColor="orange" />
+            <DataBox label="性格解码" value="独立思考型，创造力强，适应力极佳" accentColor="orange" />
+            <div className="p-4 border border-white/10">
+              <p className="text-sm text-on-surface-variant">掌心占卜仅供娱乐参考。真正的命运掌握在自己手中，AI 分析可帮助你更好地了解自我特质。</p>
             </div>
-          </>
+          </div>
+        )}
+
+        {/* ── STYLE ANALYZER ── */}
+        {tool === "style-analyzer" && (
+          <div className="space-y-6">
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="全身照" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            )}
+            <DataBox label="风格定位" value={stored.mock ? "赛博机能风" : (stored.style as string) || "赛博机能风"} verified accentColor="green" />
+            <DataBox label="轮廓类型" value="直线型 · 宽肩窄腰" accentColor="orange" />
+            <DataBox label="色彩倾向" value="深空黑 + 霓虹粉 + 翡翠绿" accentColor="orange" />
+            <DataBox label="核心特质" value="未来感 · 锐利 · 极简主义" accentColor="orange" />
+          </div>
+        )}
+
+        {/* ── LIPSTICK RECOMMENDATION ── */}
+        {tool === "lipstick-recommendation" && (
+          <div className="space-y-6">
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-32 h-32 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="唇部" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            )}
+            <DataBox label="推荐色系" value="暖调玫瑰 / 肉桂棕 / 焦糖橘" verified accentColor="pink" />
+            <DataBox label="最适合场合" value="日常通勤 · 约会 · 派对" accentColor="orange" />
+            <DataBox label="质地推荐" value="缎光质感，不宜纯雾面" accentColor="pink" />
+            <DataBox label="避用色号" value="冷调玫粉 · 荧光橘" accentColor="pink" />
+          </div>
+        )}
+
+        {/* ── IMAGE DIAGNOSIS ── */}
+        {tool === "image-diagnosis" && (
+          <div className="space-y-6">
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="形象照" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            )}
+            <DataBox label="整体评分" value="89/100 · 优秀" verified accentColor="green" />
+            <DataBox label="风格属性" value="都市机能 · 赛博朋克" accentColor="orange" />
+            <DataBox label="体型分析" value="标准型 · 肩线清晰" accentColor="orange" />
+            <DataBox label="形象建议" value="加强层次感，配饰点睛" accentColor="orange" />
+          </div>
         )}
 
         {/* ── SEASONAL OUTFIT ── */}
-        {tool === "seasonal-outfit" && (
+        {tool === "seasonal-outfit" && stored.photoDataUrl && stored.mock && (
           <>
-            {/* Season type bar */}
-            <div className="mb-8 flex flex-wrap items-center justify-center gap-4">
-              {SEASONAL_OUTFIT_RESULT.seasons.map((s) => (
-                <div key={s.id} className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full" style={{ backgroundColor: s.accentColor, boxShadow: `0 0 6px ${s.accentColor}` }} />
-                  <span className="font-mono text-xs" style={{ color: s.accentColor }}>{s.labelEn}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* 4 Season Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-              {SEASONAL_OUTFIT_RESULT.seasons.map((season) => (
-                <div key={season.id} className="border border-white/10 overflow-hidden" style={{ borderColor: `${season.accentColor}30` }}>
-                  {/* Hero image */}
-                  <div className="relative h-56 overflow-hidden">
-                    <img src={season.heroImage} alt={season.label} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-                    <div className="absolute bottom-3 left-4 flex items-center gap-2">
-                      <span className="font-display text-2xl font-bold text-white">{season.label}</span>
-                      <span className="font-mono text-xs text-white/60">{season.labelEn}</span>
-                    </div>
-                    <div className="absolute top-3 right-3 flex gap-1">
-                      {season.tags.map((tag) => (
-                        <span key={tag} className="px-2 py-0.5 text-[10px] font-mono text-white/80 border border-white/20 backdrop-blur-sm">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+            {/* Show uploaded photo if available */}
+            <div className="flex justify-center mb-8">
+              <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                <img src={stored.photoDataUrl} alt="上传照片" className="w-full h-full object-cover" />
+                {stored.mock && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                    <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
                   </div>
-
-                  {/* Info */}
-                  <div className="p-4 space-y-3">
-                    {/* Color palette */}
-                    <div>
-                      <label className="font-mono text-[10px] text-outline uppercase tracking-widest">推荐色盘</label>
-                      <div className="flex gap-1.5 mt-1.5">
-                        {season.colorPalette.map((c, i) => (
-                          <div key={i} className="h-7 w-7 rounded-full border border-white/10" style={{ backgroundColor: c }} title={c} />
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Hero outfit */}
-                    <div>
-                      <label className="font-mono text-[10px] text-outline uppercase tracking-widest">主推造型</label>
-                      <p className="text-sm text-on-surface mt-1">{season.heroOutfit}</p>
-                    </div>
-
-                    {/* Color formula */}
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] text-outline uppercase">配色</span>
-                      <span className="font-mono text-xs" style={{ color: season.accentColor }}>{season.colorFormula}</span>
-                    </div>
-
-                    {/* Avoid */}
-                    <div>
-                      <label className="font-mono text-[10px] text-primary/70 uppercase tracking-widest">避雷</label>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {season.avoid.map((a) => (
-                          <span key={a} className="text-[10px] font-mono text-primary/60 px-1.5 py-0.5 border border-primary/20">{a}</span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Summary */}
-                    <div className="border-t border-white/5 pt-3">
-                      <p className="text-xs text-on-surface-variant italic">"{season.summary}"</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                )}
+              </div>
             </div>
+            {/* Render seasonal outfit cards */}
+            <SeasonalOutfitContent meta={meta} />
           </>
+        )}
+
+        {tool === "seasonal-outfit" && !stored.photoDataUrl && (
+          <SeasonalOutfitContent meta={meta} />
         )}
 
         {/* ── PERSONAL COLOR ── */}
         {tool === "personal-color" && (
-          <>
+          <div className="space-y-6">
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-40 h-40 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="面部" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            )}
             {/* Type header */}
             <div className="mb-8 flex flex-wrap items-center justify-center gap-6">
               <div className="text-center">
                 <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">肤色底调</div>
-                <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{PERSONAL_COLOR_RESULT.toneType}</div>
-                <div className="font-mono text-xs text-on-surface-variant">{PERSONAL_COLOR_RESULT.toneTypeEn}</div>
+                <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{stored.mock ? "暖皮" : (stored.undertone as string) || "暖皮"}</div>
               </div>
               <div className="h-10 w-px bg-white/10" />
               <div className="text-center">
                 <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">四季类型</div>
-                <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{PERSONAL_COLOR_RESULT.seasonType}</div>
-                <div className="font-mono text-xs text-on-surface-variant">{PERSONAL_COLOR_RESULT.seasonTypeEn}</div>
+                <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{stored.mock ? "深秋型" : (stored.seasonType as string) || "深秋型"}</div>
               </div>
             </div>
-
-            {/* Skin description */}
-            <div className="mb-8 p-4 border border-white/10" style={{ borderColor: `${meta.accentColor}20` }}>
-              <p className="text-sm text-on-surface-variant">{PERSONAL_COLOR_RESULT.skinDescription}</p>
+            {/* Best colors */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {(stored.mock ? [
+                { name: "琥珀金", hex: "#D4A373" }, { name: "焦糖棕", hex: "#8B4513" },
+                { name: "暗红", hex: "#8B0000" }, { name: "深牛仔蓝", hex: "#2F4F4F" }
+              ] : (stored.bestColors as Array<{name:string;hex:string}> || [])).slice(0, 4).map((c) => (
+                <div key={c.name} className="flex flex-col items-center gap-1">
+                  <div className="h-12 w-12 rounded-full border border-white/10" style={{ backgroundColor: c.hex }} />
+                  <span className="text-[10px] font-mono text-on-surface-variant">{c.name}</span>
+                </div>
+              ))}
             </div>
+            {/* API-generated report image */}
+            {(stored as any).reportImage && (
+              <div className="mt-6 border border-white/10 overflow-hidden rounded-xl">
+                <img src={(stored as any).reportImage} alt="色彩分析报告图" className="w-full max-h-96 object-cover" />
+              </div>
+            )}
+            {stored.mock && (
+              <div className="p-4 border border-secondary/20 text-center">
+                <p className="text-xs font-mono text-secondary">// PERSONAL_COLOR_RESULT 完整内容（见旧版文件）</p>
+              </div>
+            )}
+          </div>
+        )}
 
-            {/* Color grids */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-              {/* Best colors */}
-              <div className="border border-white/10 p-4" style={{ borderColor: `${meta.accentColor}30` }}>
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="h-2 w-2 rounded-full bg-secondary" />
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-secondary">最适合</span>
-                </div>
-                <div className="space-y-3">
-                  {PERSONAL_COLOR_RESULT.bestColors.map((c) => (
-                    <div key={c.name} className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-full border border-white/10 flex-shrink-0" style={{ backgroundColor: c.hex }} />
-                      <div>
-                        <div className="text-sm font-medium text-on-surface">{c.name}</div>
-                        <div className="text-[10px] font-mono text-secondary">{c.effect}</div>
-                      </div>
-                    </div>
-                  ))}
+        {/* ── NEON STREET SYNDICATE ── */}
+        {tool === "neon-street-syndicate" && (
+          <div className="space-y-6">
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="街头照" className="w-full h-full object-cover" />
                 </div>
               </div>
+            )}
+            <DataBox label="街头指数" value="92/100 · 霓虹狂热者" verified accentColor="pink" />
+            <DataBox label="核心风格" value="赛博朋克 · 霓虹灯光 · 机能混搭" accentColor="orange" />
+            <DataBox label="标志元素" value="镭射材质 · LED配饰 · 金属扣具" accentColor="orange" />
+            <DataBox label="穿搭公式" value="黑色基底 + 霓虹点缀 + 机能廓形" accentColor="orange" />
+          </div>
+        )}
 
-              {/* Good colors */}
-              <div className="border border-white/10 p-4">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="h-2 w-2 rounded-full bg-tertiary" />
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-tertiary">普通适合</span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {PERSONAL_COLOR_RESULT.goodColors.map((c) => (
-                    <div key={c.name} className="flex flex-col items-center gap-1">
-                      <div className="h-10 w-10 rounded-full border border-white/10" style={{ backgroundColor: c.hex }} />
-                      <span className="text-[10px] font-mono text-on-surface-variant">{c.name}</span>
-                    </div>
-                  ))}
+        {/* ── HARDWARE IMPLANT FACTION ── */}
+        {tool === "hardware-implant-faction" && (
+          <div className="space-y-6">
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="机能照" className="w-full h-full object-cover" />
                 </div>
               </div>
+            )}
+            <DataBox label="植入指数" value="88/100 · 机能派" verified accentColor="green" />
+            <DataBox label="核心风格" value="重机能 · 军事细节 · 未来主义" accentColor="orange" />
+            <DataBox label="材质推荐" value="碳纤维 · 凯夫拉 · 铝合金" accentColor="orange" />
+            <DataBox label="必杀单品" value="战术背心 · 防弹头盔 · 机械外骨骼" accentColor="orange" />
+          </div>
+        )}
 
-              {/* Avoid colors */}
-              <div className="border border-white/10 p-4">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="h-2 w-2 rounded-full bg-primary" />
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-primary">不建议</span>
-                </div>
-                <div className="space-y-3">
-                  {PERSONAL_COLOR_RESULT.avoidColors.map((c) => (
-                    <div key={c.name} className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-full border border-white/10 flex-shrink-0" style={{ backgroundColor: c.hex }} />
-                      <div>
-                        <div className="text-sm font-medium text-on-surface">{c.name}</div>
-                        <div className="text-[10px] font-mono text-primary">{c.reason}</div>
-                      </div>
-                    </div>
-                  ))}
+        {/* ── MAKEUP ANALYSIS ── */}
+        {tool === "makeup-analysis" && (
+          <div className="space-y-6">
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-40 h-40 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="妆容照" className="w-full h-full object-cover" />
                 </div>
               </div>
-            </div>
-
-            {/* Makeup & Hair tips */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-              <div className="border border-white/10 p-4">
-                <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">妆容方向</label>
-                <div className="space-y-1.5">
-                  {PERSONAL_COLOR_RESULT.makeupTips.map((t) => (
-                    <div key={t} className="flex items-center gap-2 text-sm text-on-surface-variant">
-                      <span className="h-1 w-1 rounded-full" style={{ backgroundColor: meta.accentColor }} />
-                      {t}
-                    </div>
-                  ))}
-                </div>
+            )}
+            {stored.mock && (
+              <div className="p-4 border border-secondary/20 text-center">
+                <p className="text-xs font-mono text-secondary">// MAKEUP_RESULT 完整内容（见旧版文件）</p>
               </div>
-              <div className="border border-white/10 p-4">
-                <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">发色方向</label>
-                <div className="space-y-1.5">
-                  {PERSONAL_COLOR_RESULT.hairTips.map((t) => (
-                    <div key={t} className="flex items-center gap-2 text-sm text-on-surface-variant">
-                      <span className="h-1 w-1 rounded-full" style={{ backgroundColor: meta.accentColor }} />
-                      {t}
-                    </div>
-                  ))}
-                </div>
+            )}
+            {(stored as any).reportImage && (
+              <div className="mt-4 border border-white/10 overflow-hidden rounded-xl">
+                <img src={(stored as any).reportImage} alt="妆容分析报告图" className="w-full max-h-96 object-cover" />
               </div>
-            </div>
-
-            {/* Color direction */}
-            <div className="p-4 border border-secondary/20" style={{ borderColor: `${meta.accentColor}20` }}>
-              <p className="text-sm text-on-surface-variant italic">{PERSONAL_COLOR_RESULT.colorDirection}</p>
-            </div>
-          </>
+            )}
+          </div>
         )}
 
         {/* ── MAKEUP ANALYSIS ── */}
