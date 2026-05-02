@@ -19,7 +19,7 @@ const NAV_ITEMS = [
   { label: '市场', href: '/marketplace', icon: Store },
   { label: '定价', href: '/pricing', icon: BadgeDollarSign },
   { label: '个人中心', href: '/profile', icon: User },
-  { label: '商家', href: '/seller', icon: UserCog },
+  { label: '创作者', href: '/seller', icon: UserCog },
   { label: '登录', href: '/login', icon: LogIn },
 ];
 

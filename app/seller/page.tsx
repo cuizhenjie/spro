@@ -149,7 +149,7 @@ export default function SellerDashboardPage() {
             CREATOR_TERMINAL
           </h1>
           <p className="font-mono-data text-mono-data text-on-surface-variant mt-2">
-            // 商家控制台 // AUTH: GRANTED
+            // 创作者控制台 // AUTH: GRANTED
           </p>
         </div>
       </div>
