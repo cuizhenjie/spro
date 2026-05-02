@@ -503,22 +503,11 @@ export default function MarketplacePage() {
         </section>
       </div>
 
-      {/* FAB - Publish AI Skill */}
-      <button
-        aria-label="发布 AI 技能"
-        className="fixed bottom-24 right-4 md:bottom-6 md:right-6 w-14 h-14 bg-secondary/20 border border-secondary cyber-glass flex items-center justify-center text-secondary hover:bg-secondary/40 hover:shadow-[0_0_20px_rgba(236,255,227,0.8)] transition-all duration-300 z-40 group"
-      >
-        <span className="material-symbols-outlined text-[32px] group-hover:rotate-90 transition-transform duration-300">add</span>
-        <div className="absolute right-[calc(100%+12px)] bg-background/90 border border-secondary/50 px-2 py-1 font-mono text-xs text-secondary whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-          发布 AI 技能
-        </div>
-      </button>
-
       {/* FAB - Cart Quick Access */}
       {cart.length > 0 && (
         <button
           onClick={() => setShowCheckout(true)}
-          className="fixed bottom-40 right-4 md:bottom-20 md:right-6 w-14 h-14 bg-primary/20 border border-primary cyber-glass flex items-center justify-center text-primary hover:bg-primary/40 hover:shadow-[0_0_20px_rgba(255,171,243,0.8)] transition-all duration-300 z-40 group"
+          className="fixed bottom-24 right-4 md:bottom-6 md:right-6 w-14 h-14 bg-primary/20 border border-primary cyber-glass flex items-center justify-center text-primary hover:bg-primary/40 hover:shadow-[0_0_20px_rgba(255,171,243,0.8)] transition-all duration-300 z-40 group"
         >
           <ShoppingCart className="w-6 h-6" />
           <span className="absolute -top-2 -right-2 w-6 h-6 bg-primary text-background text-xs flex items-center justify-center font-bold">

@@ -59,7 +59,7 @@ export default function ProductPage() {
     : (tool!.coverImage || "/assets/marketplace-cover.png");
 
   const displayName = isProduct ? product!.name : tool!.name;
-  const author = isProduct ? product!.author : "赛博衣橱官方";
+  const author = isProduct ? product!.author : "StyleBoxAI 官方";
   const description = isProduct ? product!.description : tool!.description;
   const features = isProduct ? product!.features : tool!.features;
   const price = item.price;

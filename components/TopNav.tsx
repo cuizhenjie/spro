@@ -26,7 +26,7 @@ export default function TopNav() {
     <header className="fixed top-0 z-50 flex w-full items-center justify-between border-b border-primary-container/30 bg-background/80 backdrop-blur-xl">
       <div className="flex items-center gap-10 px-6 py-4">
         <Link href="/" className="font-display text-xl font-black italic text-primary drop-shadow-[0_0_8px_rgba(255,171,243,0.8)]">
-          赛博衣橱
+          StyleBoxAI
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           {NAV_ITEMS.map((item) => {

@@ -4,7 +4,7 @@ import AnimationProvider from "@/components/AnimationProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "赛博衣橱 - AI时尚百宝箱",
+  title: "StyleBoxAI - AI时尚百宝箱",
   description: "穿搭AI百宝箱，买卖AI穿搭工具，按次付费，2分钟体验完整链路。",
 };
 
@@ -23,7 +23,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
           rel="stylesheet"
         />
       </head>

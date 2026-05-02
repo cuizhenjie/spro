@@ -59,14 +59,14 @@ export default function GallerySection() {
               </div>
               <h3 className="mb-3 text-xl font-semibold text-on-surface leading-snug">{item.title}</h3>
               <p className="text-sm leading-relaxed text-on-surface-variant">
-                赛博衣橱AI百宝箱，买卖AI工具，按次付费，轻松上手。
+                StyleBoxAI 百宝箱，买卖AI工具，按次付费，轻松上手。
               </p>
               <div className={`mt-8 h-px w-full bg-gradient-to-r ${item.rule} to-transparent`} />
             </div>
           ))}
 
           <div className="panel min-h-72 w-[82vw] max-w-80 shrink-0 snap-start flex flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-secondary-container/10 to-primary/10 border border-secondary-container/20 p-8 md:min-h-80 md:w-auto md:grow">
-            <span className="mb-4 block text-xs font-mono text-on-surface-variant">赛博衣橱</span>
+            <span className="mb-4 block text-xs font-mono text-on-surface-variant">StyleBoxAI</span>
             <h3 className="mb-6 text-center text-2xl font-bold leading-tight text-on-surface font-display">
               展示案例，<br />探索下一步。
             </h3>
