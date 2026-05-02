@@ -5,6 +5,7 @@ import Image from "next/image";
 import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
 import { TerminalLog } from "@/components/CyberUI/TerminalLog";
 import { NeuralViz } from "@/components/CyberUI/NeuralViz";
+import { DataBox, DataTag } from "@/components/CyberUI/DataCard";
 import { gsapScanLine } from "@/lib/animations";
 
 const MODES = [
@@ -212,76 +213,36 @@ export default function AIListingPage() {
             color="text-primary"
           />
 
-          {/* Auto-filling Form */}
+          {/* AI Data Cards (ai_5 DataCard system) */}
           <div className="flex-grow flex flex-col gap-md">
-            <div className="relative">
-              <label className="font-label-caps text-label-caps text-outline block mb-xs">
-                物品名称
-              </label>
-              <input
-                className="w-full bg-transparent border-b border-primary text-primary font-mono-data text-mono-data py-sm focus:outline-none shadow-[0_1px_10px_rgba(255,171,243,0.3)] shadow-primary/20 rounded-none px-xs"
-                readOnly
-                type="text"
-                value={
-                  step === "done"
-                    ? result.title
-                    : step === "processing"
-                      ? "分析中..."
-                      : ""
-                }
+            {/* Primary: 物品名称 */}
+            <DataBox label="物品名称" value={step === "done" ? result.title : step === "processing" ? "分析中..." : "—"} accentColor="orange" />
+            {/* Secondary: 资产类别 + 预估售价 */}
+            <div className="grid grid-cols-2 gap-md">
+              <DataBox
+                label="资产类别"
+                value={step === "done" ? "CYBER_ACCESSORY" : step === "processing" ? "..." : "—"}
+                verified={step === "done"}
+                accentColor="pink"
               />
+              <DataBox label="预估售价" value={step === "done" ? "50" : step === "processing" ? "..." : "—"} unit="CR" accentColor="orange" />
             </div>
-            <div className="flex gap-md">
-              <div className="relative w-1/2">
-                <label className="font-label-caps text-label-caps text-outline block mb-xs">
-                  资产类别
-                </label>
-                <input
-                  className="w-full bg-transparent border-b border-primary text-primary font-mono-data text-mono-data py-sm focus:outline-none shadow-[0_1px_10px_rgba(255,171,243,0.3)] shadow-primary/20 rounded-none px-xs"
-                  readOnly
-                  type="text"
-                  value={
-                    step === "done"
-                      ? "CYBER_ACCESSORY"
-                      : step === "processing"
-                        ? "..."
-                        : ""
-                  }
-                />
-              </div>
-              <div className="relative w-1/2">
-                <label className="font-label-caps text-label-caps text-outline block mb-xs">
-                  预估售价
-                </label>
-                <input
-                  className="w-full bg-transparent border-b border-primary text-primary font-mono-data text-mono-data py-sm focus:outline-none shadow-[0_1px_10px_rgba(255,171,243,0.3)] shadow-primary/20 rounded-none px-xs"
-                  readOnly
-                  type="text"
-                  value={
-                    step === "done"
-                      ? "50 CR"
-                      : step === "processing"
-                        ? "..."
-                        : ""
-                  }
-                />
-              </div>
-            </div>
-
-            {/* Chips */}
-            <div className="flex gap-sm flex-wrap mt-xs min-h-[32px]">
-              {step === "done" &&
-                result.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-primary/20 text-primary border border-primary/50 font-mono-data text-[12px] px-sm py-xs flex items-center gap-xs"
-                  >
-                    <span className="material-symbols-outlined text-[14px]">
-                      sell
-                    </span>
-                    [标签: {tag}]
-                  </span>
+            {/* Style tags */}
+            <div>
+              <label className="font-mono text-[11px] text-on-surface-variant block mb-xs uppercase tracking-widest">
+                风格标签
+              </label>
+              <div className="flex gap-sm flex-wrap">
+                {step === "done" && result.tags.map((tag) => (
+                  <DataTag key={tag}>{tag}</DataTag>
                 ))}
+                {step === "processing" && (
+                  <DataTag>...</DataTag>
+                )}
+                {step === "upload" && (
+                  <span className="font-mono text-[11px] text-on-surface-variant/40">—</span>
+                )}
+              </div>
             </div>
           </div>
 
