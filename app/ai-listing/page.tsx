@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
+import { TerminalLog } from "@/components/CyberUI/TerminalLog";
 
 const MODES = [
   {
@@ -75,12 +77,7 @@ export default function AIListingPage() {
       <div className="absolute inset-0 bg-background/80 backdrop-blur-md z-20"></div>
 
       {/* Modal Container */}
-      <div className="z-30 w-[90%] max-w-4xl cyber-glass border border-primary/50 shadow-[0_0_30px_rgba(255,171,243,0.2)] rounded relative flex flex-col md:flex-row overflow-hidden">
-        {/* System HUD Brackets */}
-        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary m-xs"></div>
-        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-primary m-xs"></div>
-        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-primary m-xs"></div>
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary m-xs"></div>
+      <HUDBrackets className="z-30 w-[90%] max-w-4xl cyber-glass border border-primary/50 shadow-[0_0_30px_rgba(255,171,243,0.2)] rounded flex flex-col md:flex-row overflow-hidden">
 
         {/* Left Column: Image Scanning */}
         <div className="w-full md:w-1/2 relative bg-surface-container-lowest flex items-center justify-center border-b md:border-b-0 md:border-r border-primary/30 overflow-hidden min-h-[300px]">
@@ -189,34 +186,16 @@ export default function AIListingPage() {
           </div>
 
           {/* Terminal Logs */}
-          <div className="bg-surface-container-highest p-sm border border-outline-variant font-mono-data text-mono-data h-32 overflow-hidden flex flex-col justify-end mb-lg relative">
-            <div className="text-primary opacity-50">
-              &gt; 正在初始化神经扫描...
-            </div>
-            {step !== "upload" && (
-              <div className="text-primary opacity-70">
-                &gt; 正在扫描材质属性...
-              </div>
-            )}
-            {step !== "upload" && (
-              <div className="text-primary opacity-90">
-                &gt; 正在提取风格特征...
-              </div>
-            )}
-            {(step === "processing" || step === "done") && (
-              <div className="text-primary font-bold">
-                &gt; 正在生成元数据参数_
-              </div>
-            )}
-            {step === "done" && (
-              <div className="text-secondary font-bold mt-2">
-                &gt; 分析完成。等待审核。
-              </div>
-            )}
-            <div
-              className={`absolute top-sm right-sm w-2 h-2 ${step === "done" ? "bg-secondary shadow-[0_0_5px_#ecffe3]" : "bg-primary shadow-[0_0_5px_#ffabf3]"} rounded-full animate-pulse`}
-            ></div>
-          </div>
+          <TerminalLog
+            entries={[
+              { text: '> 正在初始化神经扫描...', opacity: 'opacity-50' },
+              { text: '> 正在扫描材质属性...', opacity: step !== 'upload' ? 'opacity-70' : 'opacity-0' },
+              { text: '> 正在提取风格特征...', opacity: step !== 'upload' ? 'opacity-90' : 'opacity-0' },
+              { text: '> 正在生成元数据参数_', bold: step === 'processing' || step === 'done' },
+              ...(step === 'done' ? [{ text: '> 分析完成。等待审核。', bold: true as const }] : []),
+            ]}
+            color="text-primary"
+          />
 
           {/* Auto-filling Form */}
           <div className="flex-grow flex flex-col gap-md">
@@ -316,7 +295,7 @@ export default function AIListingPage() {
             ></div>
           </button>
         </div>
-      </div>
+      </HUDBrackets>
     </main>
   );
 }
