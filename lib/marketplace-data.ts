@@ -60,6 +60,36 @@ export const MARKET_TOOLS: MarketTool[] = [
     color: '#bfd043',
     coverImage: '/assets/marketplace-cover.png',
   },
+  {
+    id: 'seasonal-outfit',
+    name: '四季穿搭指南',
+    nameEn: 'Seasonal Outfit Guide',
+    description: '上传正面或全身人物照片，AI生成一套高完成度的小红书风格四季韩系潮牌穿搭指南系列海报。保留人物真实辨识度，基于同一人分别模拟春夏秋冬四种色彩穿搭逻辑下的造型方案。',
+    icon: 'calendar_month',
+    price: 69,
+    originalPrice: 199,
+    category: 'outfit',
+    features: ['韩系潮牌首尔街拍风格lookbook', '保留本人真实五官、脸型、身材比例', '四季色彩逻辑独立造型方案（春夏秋冬）', 'Hero主推造型+5-6套延展lookbook', '推荐色/慎用色/配色公式/单品建议', '顾问式总结+避雷提醒，可直接分享'],
+    isHot: true,
+    isNew: true,
+    color: '#ff9f43',
+    coverImage: '/assets/marketplace-cover.png',
+  },
+  {
+    id: 'personal-color',
+    name: '个人色彩分析',
+    nameEn: 'Personal Color Analysis',
+    description: '上传真人正面照片，AI制作高质感个人色彩分析报告资讯图表。清新高级手绘手帐风，精准分析肤色冷暖、四季类型、最适合颜色，并排对比展示不同颜色的上身效果。',
+    icon: 'palette',
+    price: 39,
+    originalPrice: 129,
+    category: 'color',
+    features: ['精准分析肤色冷暖调（冷皮/暖皮/中性调）', '四季色彩类型细分（16型全覆盖）', '最适合/普通/不建议颜色对比展示', '专属色盘专业调色盘风格', '显白提气色/显老显脏颜色双提示', '妆容/发色/穿搭配色方向，手帐风海报可直接分享'],
+    isHot: true,
+    isNew: true,
+    color: '#ff6b9d',
+    coverImage: '/assets/marketplace-cover.png',
+  },
 ];
 
 export const CATEGORIES = [
@@ -67,6 +97,8 @@ export const CATEGORIES = [
   { id: 'fortune', name: '玄学解读', icon: 'auto_awesome' },
   { id: 'style', name: '风格测试', icon: 'checkroom' },
   { id: 'lipstick', name: '口红推荐', icon: 'palette' },
+  { id: 'outfit', name: '穿搭指南', icon: 'calendar_month' },
+  { id: 'color', name: '色彩分析', icon: 'palette' },
   { id: 'image-diagnosis', name: '形象诊断', icon: 'face' },
 ] as const;
 

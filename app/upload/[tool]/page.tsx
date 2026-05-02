@@ -5,13 +5,21 @@ import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-const TOOL_META = {
+const TOOL_META: Record<string, {
+  title: string;
+  subtitle: string;
+  placeholder: string;
+  bgImage: string;
+  accentColor: string;
+  steps?: string[];
+}> = {
   fashion: {
     title: "赛博穿搭解析",
     subtitle: "STRUCTURAL ANALYSIS // SYNTHETIC FABRICS",
     placeholder: "将服饰图片拖入神经扫描区",
     bgImage: "https://images.unsplash.com/photo-1515688594390-b649af70d282?auto=format&fit=crop&q=80&w=800",
     accentColor: "#ecffe3",
+    steps: ["初始化视觉网络", "提取色彩特征", "生成穿搭方案", "打包数据资产"],
   },
   color: {
     title: "AI色彩诊断",
@@ -19,6 +27,23 @@ const TOOL_META = {
     placeholder: "上传正脸照片，获取色彩分析",
     bgImage: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800",
     accentColor: "#ffabf3",
+    steps: ["初始化视觉网络", "提取色彩特征", "生成穿搭方案", "打包数据资产"],
+  },
+  "seasonal-outfit": {
+    title: "四季穿搭指南",
+    subtitle: "SEASONAL STREETWEAR // FOUR SEASONS",
+    placeholder: "上传正面或全身人物照片，获取四季穿搭指南",
+    bgImage: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&q=80&w=800",
+    accentColor: "#ff9f43",
+    steps: ["初始化视觉网络", "提取面部色彩特征", "分析体型比例", "生成春季穿搭", "生成夏季穿搭", "生成秋季穿搭", "生成冬季穿搭", "打包四季穿搭报告"],
+  },
+  "personal-color": {
+    title: "个人色彩分析",
+    subtitle: "PERSONAL COLOR ANALYSIS // OPTIMAL PALETTE",
+    placeholder: "上传真人正面照片，获取专属色彩报告",
+    bgImage: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=800",
+    accentColor: "#ff6b9d",
+    steps: ["初始化色彩网络", "分析肤色冷暖调", "判断四季类型", "生成色盘分析", "打包个人报告"],
   },
 };
 
@@ -120,10 +145,10 @@ export default function UploadPage() {
             </div>
             <div className="mb-4 font-mono text-[13px]" style={{ color: meta.accentColor }}>正在启动神经分析引擎...</div>
             <div className="space-y-2 w-full">
-              {["初始化视觉网络", "提取色彩特征", "生成穿搭方案", "打包数据资产"].map((item, i) => (
+              {(meta.steps || ["初始化视觉网络", "提取色彩特征", "生成穿搭方案", "打包数据资产"]).map((item, i) => (
                 <div key={i} className="flex items-center gap-3 font-mono text-[12px] text-outline">
                   <span style={{ color: meta.accentColor }}>{">"}</span>
-                  <span className={i === 3 ? "animate-pulse" : ""}>{item}{i === 3 ? "_" : ""}</span>
+                  <span className={i === ((meta.steps?.length || 4) - 1) ? "animate-pulse" : ""}>{item}{i === ((meta.steps?.length || 4) - 1) ? "_" : ""}</span>
                 </div>
               ))}
             </div>
