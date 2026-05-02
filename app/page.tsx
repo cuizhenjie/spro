@@ -2,65 +2,66 @@ import NextLink from 'next/link';
 import {
   ArrowRight,
   BarChart3,
-  ChevronRight,
+  Eye,
   LayoutGrid,
+  Palette,
   ScanLine,
+  Shirt,
+  Sparkles,
   Store,
   User,
   type LucideIcon,
 } from 'lucide-react';
 import { PRODUCTS } from '@/lib/products-data';
 
-  const MOBILE_NAV: { label: string; icon: LucideIcon; href: string; active?: boolean }[] = [
+const MOBILE_NAV: { label: string; icon: LucideIcon; href: string; active?: boolean }[] = [
   { label: '首页', icon: LayoutGrid, href: '/' },
   { label: '分析', icon: BarChart3, href: '/marketplace' },
   { label: '商店', icon: Store, href: '/marketplace', active: true },
   { label: '我的', icon: User, href: '/profile' },
 ];
 
-const INFLUENCERS = [
+const AI_TOOLS = [
   {
-    id: 'V_SILVER',
-    name: 'Neon Nomad',
-    tagline: 'Street Samurai Aesthetics',
-    accent: 'primary' as const,
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBu-3hmhegonpmzEXlWovs7vSvYVyonYaqfB_gpCgi3tBPYSd6RtuJjYLEqrX8gJDSgbqvCxWpCLI_s7E6dT8siPSQWtp4vj2Gjr2tMtrlqUVd2c-Cq-gkf_4TAHCsh_RTVw56DCbV1PiklGYfi04qE6kFTFj35nC2ZRqRXd_uEUcuSJgrSXYRszTql5IQShsDVXc6WWKBmNTXV9_g6VPBWsG2Sy0xC4MCZGLmROfX_rz5wP_B8cMZWrRIrN8hUws33SK-QRxzgGVY',
+    title: '风格分析',
+    description: 'AI智能识别您的穿搭风格类型，生成专属风格档案',
+    icon: Sparkles,
+    href: '/marketplace',
   },
   {
-    id: 'GHOST_IN_SHELL',
-    name: 'Techwear Ops',
-    tagline: 'Heavy Combat Casual',
-    accent: 'secondary' as const,
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAO3sxalHvM2F9FWPhaI7Llc_pqo89unAVd1Miz00_jXYzIM_VYOrIoyDdnGPlrZg301rN0WHFBgp707FjQvTlnHiiRvJvx1eTA1jAsHFSuS3YKdS313S1ywkzKmn_iN1F-zF9nk2qCYg7y_NgMwfIzYZm9C1jEyUyukm9ti24NuBZvZf4HTm_C1vPjErd7eyuXgarevjWGUo5WeUaSdfhG_0zBd-UixKyowLHJiH5NiikOVhfSUIu0qpZ5JYm4K6wsjVoBrusfs5E',
+    title: '面部美学评分',
+    description: '面部特征深度分析，多维度美学综合评分',
+    icon: Eye,
+    href: '/ai-listing',
   },
   {
-    id: 'EXEC_NULL',
-    name: 'Corpo Chic',
-    tagline: 'Boardroom Ready Synthetics',
-    accent: 'primary' as const,
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC1s2FDSsenFYo6byRQdg6jE9lNjf5uauED2AC0HAnX8GKwZ8EEahTTNfWxm-0DBEKMf9kYweUVhhOvMf6-PiZa00Zc5MWa6XHmxBXfBiMeJU-xWIcOJlSiO_2FrPXJcEkh4qySpUcies4nMkslMhayxcBxOl3uA2cP6CBHnPOU666RGoEugkyS6_fv9Xwinz0aEqlYtiVE1oAjfhnBrCYr9HLiaLEn5Y99Jhf8jvomNr0WSGraHRKOzC09_c8BbWw_FfibK8EUoWM',
+    title: '穿搭推荐',
+    description: '基于身材特征与风格偏好，生成专属穿搭方案',
+    icon: Shirt,
+    href: '/upload/fashion',
+  },
+  {
+    title: '色彩诊断',
+    description: '智能分析肤色冷暖，精准推荐最适合的色彩方案',
+    icon: Palette,
+    href: '/upload/color',
   },
 ];
 
 const TRENDS = [
   {
     label: '趋势_01',
-    labelColor: 'text-primary-container',
+    labelColor: 'text-primary',
     title: '霓虹街头辛迪加',
-    productId: 'neon-street-syndicate',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBaHkj7vtHkKKq7e-2A57tDfRtdGrxDXjU6xR7Zgy9iNyXVjsZOF5Sbh0B7eqE9RqcRy5fpggf46PAh53bW2_U8p3Z2W_zBIuEFBUvJup2WzmNgrcs5H7jypXO0sVhvByaqtBdievPHJW0EVHjGU60GnXIY4QbHGPE7bd-r8mkKmUpIIJH_7Gi-oiqCvoV_mFOUc2zAyHJqo9lu_MS2DpjRNCHEpzxelWzcuNSf2NN1Asdg8zlvtIzKA54FY899vhO-KTS7hi1xeFQ',
+    productId: 'prod_neo_tokyo_trench',
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80',
   },
   {
     label: '趋势_02',
-    labelColor: 'text-secondary-container',
-    title: '硬件植入派',
-    productId: 'hardware-implant-faction',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuD4uqAgk5hEj-MCNCZLTKQ38AwrGdMUYXfnqpoXlt3UrO5YFnCPa4IgYv7AaG_RnyIL0JYssmeoE0nGhG3sZk6XagwJX-td3uu-wCGIwq8MbPlhStaSBog8Ks7TSflmoF6nJSg8vq_8yZRltnd8NFe2FXqsF6FPXec9KNbOz4_ZfOKdgWM-yS1RKhSUYvdfaHl9yV-Fy-ip5fLC59FV6UXo3DlOd09B7eirM77m1C43fH48FtUBGaPFixCWph7nChcBOrDng9iW2KI',
+    labelColor: 'text-secondary',
+    title: '废土机能美学',
+    productId: 'prod_wasteland_visor',
+    image: 'https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=800&q=80',
   },
 ];
 
@@ -71,16 +72,16 @@ export default function Home() {
       <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(to_bottom,transparent,transparent_50%,rgba(0,0,0,0.1)_50%,rgba(0,0,0,0.1))] bg-[length:100%_4px] opacity-30" />
 
       {/* HUD corner brackets */}
-      <div className="pointer-events-none fixed left-4 top-24 z-40 h-16 w-16 border-t-2 border-l-2 border-primary-container/30" />
-      <div className="pointer-events-none fixed right-4 top-24 z-40 h-16 w-16 border-t-2 border-r-2 border-primary-container/30" />
+      <div className="pointer-events-none fixed left-4 top-24 z-40 h-16 w-16 border-t-2 border-l-2 border-primary/30" />
+      <div className="pointer-events-none fixed right-4 top-24 z-40 h-16 w-16 border-t-2 border-r-2 border-primary/30" />
 
       {/* ── Main content ── */}
       <main className="mx-auto max-w-container-max space-y-xl p-6 md:p-10">
-        {/* Split header: large hero + 2 small cards */}
+        {/* ── Hero section ── */}
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Large feature card */}
           <NextLink href="/ai-listing" className="lg:col-span-8 lg:h-[500px]">
-            <div className="cyber-glass group relative overflow-hidden rounded-xl border border-outline-variant h-full transition-colors hover:border-primary-container/50">
+            <div className="cyber-glass group relative overflow-hidden rounded-xl border border-outline-variant h-full transition-colors hover:border-primary/50">
               <div
                 className="absolute inset-0 bg-cover bg-center opacity-50 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
                 style={{
@@ -90,23 +91,23 @@ export default function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
               <div className="absolute inset-0 z-10 flex flex-col justify-end p-8">
-                <div className="mb-4 inline-flex w-max items-center space-x-2 rounded-sm border border-secondary-container bg-secondary-container/20 px-3 py-1 text-secondary-fixed backdrop-blur-sm">
+                <div className="mb-4 inline-flex w-max items-center space-x-2 rounded-sm border border-secondary bg-secondary/20 px-3 py-1 text-secondary backdrop-blur-sm">
                   <ScanLine className="h-4 w-4" />
                   <span className="font-mono-data text-mono-data uppercase">系统运行中</span>
                 </div>
-                <h1 className="font-h1 text-h1 mb-2 tracking-widest text-on-background drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                <h1 className="font-h1 text-h1 mb-2 tracking-widest text-on-surface drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
                   AI 面部美学分析
                 </h1>
                 <p className="font-body-lg text-body-lg mb-6 max-w-xl text-on-surface-variant">
                   通过面部特征智能分析，为您匹配最适合的穿搭风格与色彩方案
                 </p>
-                <span className="flex w-max items-center space-x-2 rounded-none border border-primary-container px-8 py-4 font-label-caps text-label-caps text-primary-container transition-all hover:bg-primary-container/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)]">
+                <span className="flex w-max items-center space-x-2 border border-secondary px-8 py-4 font-label-caps text-label-caps text-secondary transition-all hover:bg-secondary/10 hover:shadow-[0_0_15px_rgba(236,255,227,0.5)]">
                   <span>开启扫描</span>
                   <ArrowRight className="transition-transform group-hover:translate-x-1" />
                 </span>
               </div>
               {/* Animated scan line */}
-              <div className="absolute left-0 top-0 h-1 w-full animate-pulse bg-secondary-container opacity-50 shadow-[0_0_10px_#13ff43]" />
+              <div className="absolute left-0 top-0 h-1 w-full animate-pulse bg-secondary opacity-50 shadow-[0_0_10px_#13ff43]" />
             </div>
           </NextLink>
 
@@ -114,7 +115,7 @@ export default function Home() {
           <div className="flex flex-col gap-6 lg:col-span-4">
             {/* Card: 赛博穿搭解析 */}
             <NextLink href="/upload/fashion" className="flex-1">
-              <div className="cyber-glass group relative flex min-h-[238px] flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-secondary-container/50 h-full">
+              <div className="cyber-glass group relative flex min-h-[238px] flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-secondary/50 h-full">
                 <div
                   className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
                   style={{
@@ -124,13 +125,13 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
                 <div className="relative z-10">
-                  <h3 className="font-h2 mb-2 text-2xl text-secondary-fixed drop-shadow-[0_0_8px_rgba(236,255,227,0.5)]">
+                  <h3 className="font-h2 mb-2 text-2xl text-secondary drop-shadow-[0_0_8px_rgba(236,255,227,0.5)]">
                     赛博穿搭解析
                   </h3>
                   <p className="font-body-md mb-4 text-sm text-on-surface-variant">
                     基于身材特征与风格偏好，生成专属赛博朋克穿搭方案
                   </p>
-                  <span className="flex items-center text-sm font-label-caps text-secondary-fixed transition-colors hover:text-on-surface">
+                  <span className="flex items-center text-sm font-label-caps text-secondary transition-colors hover:text-on-surface">
                     开始 <ArrowRight className="ml-1 h-4 w-4" />
                   </span>
                 </div>
@@ -139,7 +140,7 @@ export default function Home() {
 
             {/* Card: AI色彩诊断 */}
             <NextLink href="/upload/color" className="flex-1">
-              <div className="cyber-glass group relative flex min-h-[238px] flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-primary-container/50 h-full">
+              <div className="cyber-glass group relative flex min-h-[238px] flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-primary/50 h-full">
                 <div
                   className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
                   style={{
@@ -149,13 +150,13 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
                 <div className="relative z-10">
-                  <h3 className="font-h2 mb-2 text-2xl text-primary-fixed drop-shadow-[0_0_8px_rgba(255,171,243,0.5)]">
+                  <h3 className="font-h2 mb-2 text-2xl text-primary drop-shadow-[0_0_8px_rgba(255,171,243,0.5)]">
                     AI色彩诊断
                   </h3>
                   <p className="font-body-md mb-4 text-sm text-on-surface-variant">
                     智能分析肤色冷暖，精准推荐最适合您的色彩搭配方案
                   </p>
-                  <span className="flex items-center text-sm font-label-caps text-primary-fixed transition-colors hover:text-on-surface">
+                  <span className="flex items-center text-sm font-label-caps text-primary transition-colors hover:text-on-surface">
                     提取 <ArrowRight className="ml-1 h-4 w-4" />
                   </span>
                 </div>
@@ -164,118 +165,105 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Influencer column + Marketplace grid */}
-        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">
-          {/* Influencer Column */}
-          <section className="flex flex-col space-y-6 lg:col-span-4">
-            <h2 className="font-h2 text-h2 flex items-center text-primary-fixed">
-              <span className="mr-4 h-8 w-2 bg-secondary-container shadow-[0_0_10px_#13ff43]" />
-              穿搭博主 // NETRUNNERS
-            </h2>
-            {INFLUENCERS.map((inf) => (
-              <div
-                key={inf.id}
-                className="cyber-glass flex cursor-pointer items-center space-x-4 rounded-lg border border-transparent p-4 transition-colors hover:border-surface-variant hover:bg-surface-container-high"
-              >
-                <img
-                  alt={inf.name}
-                  className={`h-16 w-16 object-cover ${
-                    inf.accent === 'primary'
-                      ? 'border-primary-container'
-                      : 'border-secondary-container'
-                  } border`}
-                  src={inf.image}
-                />
-                <div className="flex-1">
-                  <div
-                    className={`font-mono-data mb-1 text-xs ${
-                      inf.accent === 'primary'
-                        ? 'text-primary-container'
-                        : 'text-secondary-container'
-                    }`}
-                  >
-                    ID: {inf.id}
-                  </div>
-                  <h4 className="font-h3 text-lg text-on-surface">{inf.name}</h4>
-                  <p className="font-body-md text-xs text-on-surface-variant">
-                    {inf.tagline}
-                  </p>
-                </div>
-                <ChevronRight className="h-5 w-5 text-outline-variant" />
-              </div>
-            ))}
-          </section>
-
-          {/* Supplier Marketplace */}
-          <section className="flex flex-col space-y-6 lg:col-span-8">
-            <div className="flex items-end justify-between">
-              <h2 className="font-h2 text-h2 flex items-center text-primary-fixed">
-                <span className="mr-4 h-8 w-2 bg-primary-container shadow-glow-pink" />
-                供货商直供 // ACQUIRE
-              </h2>
-              <NextLink
-                href="/marketplace"
-                className="flex items-center font-label-caps text-label-caps text-primary-container transition-colors hover:text-primary-fixed"
-              >
-                查看全部 <ArrowRight className="ml-1 h-4 w-4" />
-              </NextLink>
-            </div>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-              {PRODUCTS.slice(0, 6).map((product) => {
-                const rarityColor: Record<string,string> = {
-                  COMMON: "#9CA3AF", RARE: "#60A5FA", EPIC: "#A78BFA", LEGENDARY: "#F59E0B",
-                };
-                return (
-                  <div
-                    key={product.id}
-                    className="cyber-glass group flex flex-col border border-surface-container-high transition-colors hover:border-primary-container/40"
-                  >
-                    <NextLink href={`/product/${product.id}`}>
-                      <div className="relative h-48 overflow-hidden bg-surface-container-lowest p-2">
-                        <img
-                          alt={product.name}
-                          className="h-full w-full object-cover opacity-80 mix-blend-lighten transition-opacity group-hover:opacity-100"
-                          src={product.image}
-                        />
-                        <div
-                          className="absolute left-2 top-2 border bg-background/80 px-2 py-1 font-mono-data text-[10px]"
-                          style={{ color: rarityColor[product.rarity], borderColor: `${rarityColor[product.rarity]}60`, backgroundColor: `${rarityColor[product.rarity]}20` }}
-                        >
-                          {product.rarity}
-                        </div>
-                      </div>
-                    </NextLink>
-                    <div className="flex flex-1 flex-col p-4">
-                      <NextLink href={`/product/${product.id}`}>
-                        <h4 className="font-h3 mb-1 text-sm text-on-surface hover:text-primary transition-colors">{product.nameZh}</h4>
-                      </NextLink>
-                      <p className="font-mono-data mb-1 text-xs text-primary-container">
-                        BY {(product as any).authorLabel ?? product.author}
-                      </p>
-                      <p className="font-mono-data mb-4 text-xs text-on-surface-variant">
-                        {product.rating} ★ · {product.sales} 已售
-                      </p>
-                      <p className="font-mono-data mb-4 text-sm font-bold text-primary">
-                        {product.price} 金币
-                      </p>
-                      <NextLink
-                        href={`/product/${product.id}`}
-                        className="mt-auto w-full border border-outline-variant py-2 text-center font-label-caps text-[10px] text-on-surface transition-all hover:border-primary-container hover:text-primary-container hover:shadow-cyber-glass"
-                      >
-                        查看详情
-                      </NextLink>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        </div>
-
-        {/* Style Trends */}
+        {/* ── AI 分析工具 // SCAN ── */}
         <section className="mt-12">
-          <h2 className="font-h2 text-h2 mb-6 flex items-center text-primary-fixed">
-            <span className="mr-4 h-8 w-2 bg-surface-variant" />
+          <h2 className="font-h2 text-h2 mb-6 flex items-center text-primary">
+            <span className="mr-4 h-8 w-2 bg-secondary shadow-[0_0_10px_#13ff43]" />
+            AI 分析工具 // SCAN
+          </h2>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {AI_TOOLS.map((tool) => {
+              const Icon = tool.icon;
+              return (
+                <NextLink key={tool.title} href={tool.href} className="group">
+                  <div className="cyber-glass flex h-full flex-col border border-outline-variant p-6 transition-all hover:border-secondary/50 hover:shadow-[0_0_20px_rgba(236,255,227,0.1)]">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center border border-secondary/30 bg-secondary/10">
+                      <Icon className="h-6 w-6 text-secondary" />
+                    </div>
+                    <h3 className="font-h3 mb-2 text-lg text-on-surface">{tool.title}</h3>
+                    <p className="font-body-md mb-6 flex-1 text-sm text-on-surface-variant">
+                      {tool.description}
+                    </p>
+                    <span className="flex w-full items-center justify-center border border-secondary py-3 font-label-caps text-label-caps text-secondary transition-all group-hover:bg-secondary/10 group-hover:shadow-[0_0_15px_rgba(236,255,227,0.3)]">
+                      开启扫描 <ScanLine className="ml-2 h-4 w-4" />
+                    </span>
+                  </div>
+                </NextLink>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ── 热门商品 // HOT ASSETS ── */}
+        <section className="mt-12">
+          <div className="flex items-end justify-between mb-6">
+            <h2 className="font-h2 text-h2 flex items-center text-primary">
+              <span className="mr-4 h-8 w-2 bg-primary shadow-glow-pink" />
+              热门商品 // HOT ASSETS
+            </h2>
+            <NextLink
+              href="/marketplace"
+              className="flex items-center font-label-caps text-label-caps text-primary transition-colors hover:text-on-surface"
+            >
+              查看全部 <ArrowRight className="ml-1 h-4 w-4" />
+            </NextLink>
+          </div>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+            {PRODUCTS.slice(0, 6).map((product) => {
+              const rarityColor: Record<string, string> = {
+                COMMON: '#9CA3AF',
+                RARE: '#60A5FA',
+                EPIC: '#A78BFA',
+                LEGENDARY: '#F59E0B',
+              };
+              return (
+                <div
+                  key={product.id}
+                  className="cyber-glass group flex flex-col border border-outline-variant transition-all hover:border-primary/30 hover:shadow-[0_0_20px_rgba(255,171,243,0.1)]"
+                >
+                  <NextLink href={`/product/${product.id}`}>
+                    <div className="relative h-48 overflow-hidden bg-surface-container">
+                      <img
+                        alt={product.nameZh}
+                        loading="lazy"
+                        className="h-full w-full object-cover opacity-80 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105"
+                        src={product.image}
+                      />
+                      <div
+                        className="absolute left-2 top-2 border px-2 py-1 font-mono-data text-[10px] font-bold backdrop-blur-sm"
+                        style={{
+                          color: rarityColor[product.rarity],
+                          borderColor: `${rarityColor[product.rarity]}60`,
+                          backgroundColor: `${rarityColor[product.rarity]}20`,
+                        }}
+                      >
+                        {product.rarity}
+                      </div>
+                    </div>
+                  </NextLink>
+                  <div className="flex flex-1 flex-col p-4">
+                    <NextLink href={`/product/${product.id}`}>
+                      <h4 className="font-h3 mb-1 text-sm text-on-surface group-hover:text-primary transition-colors">
+                        {product.nameZh}
+                      </h4>
+                    </NextLink>
+                    <p className="font-mono-data mb-2 text-xs text-primary">
+                      BY {product.authorLabel ?? product.author}
+                    </p>
+                    <p className="font-mono-data text-sm font-bold text-primary">
+                      {product.price} 金币
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ── Style Trends ── */}
+        <section className="mt-12">
+          <h2 className="font-h2 text-h2 mb-6 flex items-center text-primary">
+            <span className="mr-4 h-8 w-2 bg-tertiary shadow-[0_0_10px_#ffe04a]" />
             穿搭风格趋势 // FORECAST
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -285,9 +273,10 @@ export default function Home() {
                 href={`/product/${trend.productId}`}
                 className="block"
               >
-                <div className="cyber-glass group relative h-64 overflow-hidden border border-surface-variant transition-colors hover:border-primary-container/50">
+                <div className="cyber-glass group relative h-64 overflow-hidden border border-outline-variant transition-colors hover:border-primary/50">
                   <img
                     alt={trend.title}
+                    loading="lazy"
                     className="h-full w-full object-cover opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-80"
                     src={trend.image}
                   />
@@ -297,7 +286,9 @@ export default function Home() {
                     >
                       {trend.label}
                     </div>
-                    <h3 className="font-h2 text-xl text-on-surface group-hover:text-primary transition-colors">{trend.title}</h3>
+                    <h3 className="font-h2 text-xl text-on-surface group-hover:text-primary transition-colors">
+                      {trend.title}
+                    </h3>
                   </div>
                 </div>
               </NextLink>
@@ -306,17 +297,17 @@ export default function Home() {
         </section>
 
         {/* System status footer */}
-        <div className="mt-12 flex items-center justify-between border-t border-surface-variant py-8 font-mono-data text-xs text-outline-variant">
+        <div className="mt-12 flex items-center justify-between border-t border-outline-variant py-8 font-mono-data text-xs text-outline-variant">
           <div>SYS_V.12.4.99</div>
           <div className="flex items-center space-x-2">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-secondary-container shadow-[0_0_5px_#13ff43]" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-secondary shadow-[0_0_5px_#13ff43]" />
             <span>数据流已加密</span>
           </div>
         </div>
       </main>
 
       {/* ── Mobile bottom nav ── */}
-      <nav className="fixed bottom-0 left-0 z-50 flex w-full items-center justify-around border-t border-primary-container/30 bg-background/90 pb-safe shadow-[0_-5px_25px_rgba(255,171,243,0.15)] backdrop-blur-lg md:hidden">
+      <nav className="fixed bottom-0 left-0 z-50 flex w-full items-center justify-around border-t border-primary/30 bg-background/90 shadow-[0_-5px_25px_rgba(255,171,243,0.15)] backdrop-blur-lg md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
         {MOBILE_NAV.map((item, i) => {
           const Icon = item.icon;
           return (
@@ -326,7 +317,7 @@ export default function Home() {
               className={`flex flex-col items-center justify-center py-3 font-display text-[10px] font-bold uppercase transition-transform active:scale-90 ${
                 item.active
                   ? 'text-primary drop-shadow-[0_0_5px_rgba(255,171,243,0.6)]'
-                  : 'text-outline transition-colors hover:text-primary-fixed'
+                  : 'text-outline-variant transition-colors hover:text-primary'
               }`}
             >
               <Icon className="mb-1 h-5 w-5" />
