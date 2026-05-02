@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Cyber Wardrobe Design System - Stitch Design Spec */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CRT Scanline effect - full viewport overlay */
+body {
+  background-color: #1c0f1a;
+  background-image:
+    linear-gradient(rgba(255, 0, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@layer components {
+  /* Cyber Frosted Glass - exact from Stitch design */
+  .cyber-glass {
+    background: rgba(41, 27, 39, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .cyber-glass-card {
+    background: rgba(41, 27, 39, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.1);
+  }
+
+  .glass-card {
+    @apply bg-surface-container/60 backdrop-blur-xl border border-outline-variant/40;
+  }
+
+  /* Cyber Button - Neon Pink (Stitch spec) */
+  .cyber-button {
+    border: 1px solid #ffabf3;
+    box-shadow: 0 0 5px rgba(255, 171, 243, 0.3);
+    transition: all 0.2s ease;
+  }
+
+  .cyber-button:hover {
+    box-shadow: 0 0 15px rgba(255, 171, 243, 0.6);
+    background-color: rgba(255, 171, 243, 0.1);
+  }
+
+  /* Cyber Button - Hacker Green (Stitch spec) */
+  .cyber-button-green {
+    border: 1px solid #ecffe3;
+    box-shadow: 0 0 5px rgba(236, 255, 227, 0.3);
+    transition: all 0.2s ease;
+  }
+
+  .cyber-button-green:hover {
+    box-shadow: 0 0 15px rgba(236, 255, 227, 0.6);
+    background-color: rgba(236, 255, 227, 0.1);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      #ffabf3 0%,
+      #ecffe3 50%,
+      #ffe04a 100%
+    );
+  }
+
+  /* Neon glow text - pink */
+  .neon-text-pink {
+    color: #ffe0ec;
+    text-shadow: 0 0 10px rgba(255, 171, 243, 0.5);
+  }
+
+  /* Neon glow text - green */
+  .neon-text-green {
+    color: #c0fff4;
+    text-shadow: 0 0 10px rgba(236, 255, 227, 0.5);
+  }
+
+  /* HUD frame corners */
+  .hud-corner {
+    @apply relative;
+  }
+
+  .hud-corner::before,
+  .hud-corner::after {
+    content: "";
+    @apply absolute w-4 h-4 border-primary;
+  }
+
+  .hud-corner::before {
+    top: -4px;
+    left: -4px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+  }
+
+  .hud-corner::after {
+    bottom: -4px;
+    right: -4px;
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+  }
+
+  /* Tag/chip - monospace style */
+  .cyber-tag {
+    @apply font-mono-data text-[10px] px-2 py-1;
+    @apply bg-surface-container text-primary border border-primary/30;
+    letter-spacing: 0.05em;
+  }
+
+  /* Scanline overlay */
+  .scanlines::after {
+    content: "";
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.2)
+    );
+    background-size: 100% 4px;
+  }
+
+  /* Flicker animation on hover */
+  .flicker-on-hover:hover {
+    animation: flicker 0.3s ease-in-out;
+  }
+
+  @keyframes flicker {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 0.8;
+      transform: translateX(1px);
+    }
+    50% {
+      opacity: 0.9;
+      transform: translateX(-1px);
+    }
+    75% {
+      opacity: 0.85;
+      transform: translateX(0.5px);
+    }
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Material Symbols - cyber theme */
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+  font-size: 1.25em;
+  vertical-align: middle;
+}
+.material-symbols-outlined.filled {
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+.material-symbols-outlined.secondary {
+  color: #ecffe3;
+  filter: drop-shadow(0 0 6px rgba(236, 255, 227, 0.5));
+}
+.material-symbols-outlined.primary {
+  color: #ffabf3;
+  filter: drop-shadow(0 0 6px rgba(255, 171, 243, 0.5));
+}
+
+html {
+  scroll-behavior: smooth;
+  font-feature-settings:
+    "kern" 1,
+    "liga" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

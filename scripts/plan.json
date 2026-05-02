@@ -1,0 +1,23 @@
+{
+  "name": "Spro Vibe Coding Competition",
+  "workers": [
+    {
+      "name": "hero-particle",
+      "agent": "claude",
+      "task": "Create app/components/Hero.tsx — full-viewport hero with particle canvas, gradient headline, GSAP entrance animation. Follow DESIGN.md strictly.",
+      "session": "dev"
+    },
+    {
+      "name": "gsap-animations",
+      "agent": "codex",
+      "task": "Create app/lib/gsap.ts and app/lib/animations.ts — GSAP initialization with ScrollTrigger, particle canvas driver, and reusable animation helpers. Follow DESIGN.md motion specs.",
+      "session": "study"
+    },
+    {
+      "name": "features-ui",
+      "agent": "opencode",
+      "task": "Create app/components/Features.tsx and app/components/Navbar.tsx — glass morphism cards grid and fixed navbar. Use Button from @/components/ui/button. Follow DESIGN.md.",
+      "session": "competition"
+    }
+  ]
+}

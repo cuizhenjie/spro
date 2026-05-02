@@ -1,0 +1,32 @@
+{
+  "name": "spro",
+  "version": "1.0.0",
+  "description": "AI原生创意实验室首页 - 赛博朋克风格着陆页",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "next dev -p 3847",
+    "build": "next build",
+    "start": "next start -p 3847"
+  },
+  "keywords": ["ai", "创意实验室", "赛博朋克", "nextjs", "landing-page"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.5.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "gsap": "^3.15.0",
+    "lucide-react": "^1.14.0",
+    "next": "^15.5.15",
+    "postcss": "^8.5.12",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^6.0.3"
+  }
+}
