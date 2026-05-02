@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AppShell from "@/components/AppShell";
+import AnimationProvider from "@/components/AnimationProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -27,7 +28,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased font-body bg-bg-primary text-text-primary">
-        <AppShell>{children}</AppShell>
+        <AnimationProvider>
+          <AppShell>{children}</AppShell>
+        </AnimationProvider>
       </body>
     </html>
   );

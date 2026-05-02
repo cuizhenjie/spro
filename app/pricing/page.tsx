@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Coins, Zap, Check, X, Star, Crown, Sparkles, Shield } from 'lucide-react';
+import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
 
 const TIERS = [
   {
@@ -154,14 +155,11 @@ export default function PricingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {TIERS.map((tier) => (
-              <div
-                key={tier.id}
-                className={`cyber-glass border-t border-l p-6 relative overflow-hidden flex flex-col gap-4 transition-all duration-300 hover:-translate-y-1 ${
+              <HUDBrackets key={tier.id} className={`cyber-glass border-t border-l p-6 relative overflow-hidden flex flex-col gap-4 transition-all duration-300 hover:-translate-y-1 ${
                   tier.featured
                     ? 'border-primary/50 shadow-[0_0_30px_rgba(255,171,243,0.15)] hover:shadow-[0_0_40px_rgba(255,171,243,0.3)]'
                     : 'border-white/20 hover:border-primary/30'
-                }`}
-              >
+                }`}>
                 {/* Gradient corner accent */}
                 <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-secondary/20 to-transparent" />
 
@@ -216,7 +214,7 @@ export default function PricingPage() {
                 <button className={`w-full py-3 font-mono text-xs tracking-wider uppercase transition-all duration-300 ${tier.ctaStyle}`}>
                   {tier.cta}
                 </button>
-              </div>
+              </HUDBrackets>
             ))}
           </div>
         </section>
