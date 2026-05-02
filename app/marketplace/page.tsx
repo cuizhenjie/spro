@@ -422,9 +422,8 @@ export default function MarketplacePage() {
             </GlassCard>
           </HUDBrackets>
         </section>
-      </div>
 
-      {/* HOT ASSETS */}
+        {/* HOT ASSETS */}
         <section className="flex flex-col gap-4">
           <h2 className="text-2xl font-display font-bold text-on-surface flex items-center gap-2">
             <span className="w-2 h-2 bg-primary rounded-full shadow-[0_0_8px_rgba(255,171,243,0.8)] animate-pulse" />
