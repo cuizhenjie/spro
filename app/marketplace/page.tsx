@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { MARKET_TOOLS, CATEGORIES, STYLE_QUADRANTS, MOCK_ANALYSIS_RESULTS } from '@/lib/marketplace-data';
 import { MarketTool, StyleQuadrant } from '@/types/marketplace';
 import StyleQuiz from '@/components/StyleQuiz';
-import { Sparkles, ShoppingCart, Coins, Zap, Check, Star, Palette } from 'lucide-react';
+import { Sparkles, ShoppingCart, Coins, Check, Star, Palette } from 'lucide-react';
 import { GlassCard } from '@/components/CyberUI/GlassCard';
 import { HUDBrackets } from '@/components/CyberUI/HUDBrackets';
 
@@ -311,17 +311,11 @@ export default function MarketplacePage() {
 
         {/* Hero Section */}
         <header className="flex flex-col items-start gap-4 border-l-4 border-primary pl-6 py-2 relative">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/30 text-sm text-secondary font-mono mb-2">
-            <Zap className="w-3 h-3" />
-            NEW DROP · FIRST BUY 70% OFF
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold font-display text-on-surface glitch-hover transition-all duration-300"
-            data-split-reveal
-          >
+          <h1 className="text-4xl md:text-6xl font-bold font-display text-on-surface glitch-hover transition-all duration-300">
             NEURAL MARKET
           </h1>
           <p className="text-lg text-on-surface-variant max-w-2xl">
-            Upgrade your digital aesthetic with community-trained AI models and fashion analysis tools.
+            升级你的数字美学 · 社区训练AI模型与时尚分析工具
           </p>
           <div className="absolute top-0 right-0 text-primary/30 font-mono text-[10px] hidden md:block">
             SYS.STAT: OPTIMAL // LOC: SECTOR_4
@@ -430,11 +424,72 @@ export default function MarketplacePage() {
         </section>
       </div>
 
+      {/* HOT ASSETS */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-2xl font-display font-bold text-on-surface flex items-center gap-2">
+            <span className="w-2 h-2 bg-primary rounded-full shadow-[0_0_8px_rgba(255,171,243,0.8)] animate-pulse" />
+            HOT ASSETS
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              {
+                id: 'asset_01', name: 'NEO_TOKYO_TRENCH', author: 'K4RMA', rarity: 'EPIC', price: 850,
+                image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCouBAy2XhYNXNPNk5qoUw5rFtV44F8EzokDNNtHnupE3C24HZKzWHwh4fZZG-OG_uAH7rl3ZNesVCs6o70Vws5NgbfFgYDCOItj1XyoWuvscosuANh_NXnvuUNDmMDgnPZPg5AgAAagIgA193QpkHSJFFnoU8BO9rstgo4U7L799bVmBCDNAyq8s_pB3eX-M2yFB4YDZm9UOrjNOJkuCygXEOaSKQ1k6uRzjiJ_ibzOvkpqTyUrtgUsrUhyHCwRCztIDDTNjwjg1M',
+              },
+              {
+                id: 'asset_02', name: 'WASTELAND_VISOR', author: 'NUL_SEC', rarity: 'RARE', price: 420,
+                image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDb56ufQyjV2iw9dazYT_RquI3PmNhfHcAR_2OrPAqYRaEjUS5wP7YiwDh0juHA92BFurK1JGRQd1q8ld7U5fyeruP5Qqn7Q_RUgu4g8PeAoKQr3B83iWlNBwAw1mfJIwaFmu4PzaGZHpFZzl6fVPSxCJ3I6WxIuyx0il7C9feklbYvOzvxbqAvuwEIQUoM7jqv_xUW-ZwBcb3p9SDg784Apsri_JZFPjkozcqR8tlVj5AX2gJlTnMObRqZafIrEkPsWIfqepE6PjM',
+              },
+              {
+                id: 'asset_03', name: 'HAPTIC_GAUNTLETS', author: 'V0ID', rarity: 'LEGENDARY', price: 1200,
+                image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAyLBGkahoVPaDSRqVIPN9Q52oKT6J3dpwGKo5agWtKT9iLhwqvwcQzKiDDlu_b8jIjSHqDGH4jcaZdnzG4_A83W0FS8uucDMZRsETueZx016JNm1iHlYc7Q8jAa6FsyydpMp1LH5YQOFpIBdtx5otaZGsH0Si0HvJcE1aGPkD66fkeNh4QPC6VBLfRCP3KcemO8K6roXUR4DoTrppZJ0DbVBDqz8pFY03I3DA5v1jY_EpHuNX4OzqczgG2OW6ogyk6QW0meZJ9i74',
+              },
+            ].map((asset) => (
+              <div key={asset.id} className="cyber-glass border-t border-l border-white/20 p-2 flex flex-col gap-2 relative group">
+                {/* Cover Image */}
+                <div
+                  className="h-48 bg-surface-container-high relative overflow-hidden border border-white/10"
+                  style={{ backgroundImage: `url('${asset.image}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                >
+                  <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-300" />
+                  <div className="absolute top-2 left-2 bg-primary/20 text-primary font-mono text-[10px] px-1 border border-primary/50 backdrop-blur-sm">
+                    RARITY: {asset.rarity}
+                  </div>
+                </div>
+                {/* Info */}
+                <div className="flex justify-between items-start mt-1">
+                  <div>
+                    <h3 className="font-display text-base text-on-surface uppercase tracking-widest">{asset.name}</h3>
+                    <p className="font-mono text-xs text-on-surface-variant mt-1">AUTHOR: {asset.author}</p>
+                  </div>
+                  <span className="font-mono text-primary font-bold">{asset.price} CR</span>
+                </div>
+                {/* CTA */}
+                <button className="mt-1 border border-primary text-primary font-mono text-xs py-2 hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)] transition-all duration-300 w-full flex justify-center items-center gap-1 uppercase tracking-wider">
+                  ACQUIRE <span className="material-symbols-outlined text-sm">shopping_cart_checkout</span>
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      {/* FAB - Publish AI Skill */}
+      <button
+        aria-label="发布 AI 技能"
+        className="fixed bottom-24 right-4 md:bottom-6 md:right-6 w-14 h-14 bg-secondary/20 border border-secondary cyber-glass flex items-center justify-center text-secondary hover:bg-secondary/40 hover:shadow-[0_0_20px_rgba(236,255,227,0.8)] transition-all duration-300 z-40 group"
+      >
+        <span className="material-symbols-outlined text-[32px] group-hover:rotate-90 transition-transform duration-300">add</span>
+        <div className="absolute right-[calc(100%+12px)] bg-background/90 border border-secondary/50 px-2 py-1 font-mono text-xs text-secondary whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+          发布 AI 技能
+        </div>
+      </button>
+
       {/* FAB - Cart Quick Access */}
       {cart.length > 0 && (
         <button
           onClick={() => setShowCheckout(true)}
-          className="fixed bottom-24 right-4 md:bottom-6 md:right-6 w-14 h-14 bg-primary/20 border border-primary cyber-glass flex items-center justify-center text-primary hover:bg-primary/40 hover:shadow-[0_0_20px_rgba(255,171,243,0.8)] transition-all duration-300 z-40 group"
+          className="fixed bottom-40 right-4 md:bottom-20 md:right-6 w-14 h-14 bg-primary/20 border border-primary cyber-glass flex items-center justify-center text-primary hover:bg-primary/40 hover:shadow-[0_0_20px_rgba(255,171,243,0.8)] transition-all duration-300 z-40 group"
         >
           <ShoppingCart className="w-6 h-6" />
           <span className="absolute -top-2 -right-2 w-6 h-6 bg-primary text-background text-xs flex items-center justify-center font-bold">
