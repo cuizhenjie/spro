@@ -226,12 +226,12 @@ export default function ProductPage() {
                 <span className="px-2 py-1 bg-secondary/20 text-secondary font-mono text-xs border border-secondary/30">
                   -{Math.round((1 - price / originalPrice) * 100)}%
                 </span>
-                <span className="ml-auto font-mono text-sm text-on-surface-variant">CR</span>
+                <span className="ml-auto font-mono text-sm text-on-surface-variant">金币</span>
               </div>
               {/* Coin balance */}
               <div className="flex items-center gap-2 font-mono text-xs text-on-surface-variant mt-4 pt-4 border-t border-outline-variant/30">
                 <Coins className="w-4 h-4 text-tertiary" />
-                您的余额：520 CR
+                您的余额：520 金币
                 <button
                   onClick={() => router.push("/pricing")}
                   className="text-secondary hover:underline cursor-pointer ml-2"
@@ -267,7 +267,7 @@ export default function ProductPage() {
                 ) : (
                   <>
                     <ShoppingCart className="w-5 h-5" />
-                    加入购物车 — {price} CR
+                    加入购物车 — {price} 金币
                   </>
                 )}
               </button>

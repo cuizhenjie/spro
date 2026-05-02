@@ -186,7 +186,7 @@ export default function SellerDashboardPage() {
           <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-4">总收益</h3>
           <div className="font-h2 text-h2 text-primary flex items-center gap-2">
             <span className="material-symbols-outlined">toll</span>
-            {totalRevenue.toLocaleString()} CR
+            {totalRevenue.toLocaleString()} 金币
           </div>
           <div className="mt-2 font-mono-data text-xs text-secondary flex items-center gap-1">
             <span className="material-symbols-outlined text-sm">arrow_upward</span> +12% 24H
@@ -292,7 +292,7 @@ export default function SellerDashboardPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="font-label-caps text-label-caps text-on-surface-variant mb-2 block">
-                      价格 (CR) *
+                      价格 (金币) *
                     </label>
                     <input
                       type="number"
@@ -429,7 +429,7 @@ export default function SellerDashboardPage() {
                     </div>
                     <div className="flex gap-4 mt-2 font-mono-data text-mono-data text-on-surface-variant">
                       <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-base">sell</span> {tool.price} CR
+                        <span className="material-symbols-outlined text-base">sell</span> {tool.price} 金币
                       </span>
                       <span className="flex items-center gap-1">
                         <span className="material-symbols-outlined text-base">shopping_cart</span> 已售 {tool.orders}
@@ -497,7 +497,7 @@ export default function SellerDashboardPage() {
                     </div>
                     <div className="flex gap-4 mt-2 font-mono-data text-mono-data text-on-surface-variant">
                       <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-base">sell</span> {product.price} CR
+                        <span className="material-symbols-outlined text-base">sell</span> {product.price} 金币
                       </span>
                       <span className="flex items-center gap-1">
                         <span className="material-symbols-outlined text-base">shopping_cart</span> 已售 {product.sales}
@@ -594,7 +594,7 @@ export default function SellerDashboardPage() {
                     <td className={`p-4 text-right flex items-center justify-end gap-1 ${
                       order.value > 0 ? "text-secondary" : "text-secondary"
                     }`}>
-                      +{order.value} CR
+                      +{order.value} 金币
                     </td>
                     <td className="p-4 text-right text-on-surface-variant">{order.time}</td>
                     <td className="p-4">
