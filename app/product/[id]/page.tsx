@@ -32,6 +32,25 @@ export default function ProductPage() {
 
   const handleAddToCart = () => {
     setAdded(true);
+    try {
+      const orders = JSON.parse(localStorage.getItem("spro_orders") || "[]");
+      const exists = orders.find((o: any) => o.productId === product.id);
+      if (!exists) {
+        orders.unshift({
+          id: "ORD_" + Math.random().toString(36).slice(2, 8).toUpperCase(),
+          productId: product.id,
+          productName: product.name,
+          productImage: product.image,
+          author: product.author,
+          price: product.price,
+          type: "buy",
+          status: "completed",
+          time: "刚刚",
+          rarity: product.rarity,
+        });
+        localStorage.setItem("spro_orders", JSON.stringify(orders));
+      }
+    } catch {}
     setTimeout(() => setAdded(false), 2000);
   };
 

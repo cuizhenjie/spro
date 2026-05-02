@@ -9,6 +9,7 @@ import {
   User,
   type LucideIcon,
 } from 'lucide-react';
+import { PRODUCTS } from '@/lib/products-data';
 
   const MOBILE_NAV: { label: string; icon: LucideIcon; href: string; active?: boolean }[] = [
   { label: '首页', icon: LayoutGrid, href: '/' },
@@ -41,42 +42,6 @@ const INFLUENCERS = [
     accent: 'primary' as const,
     image:
       'https://lh3.googleusercontent.com/aida-public/AB6AXuC1s2FDSsenFYo6byRQdg6jE9lNjf5uauED2AC0HAnX8GKwZ8EEahTTNfWxm-0DBEKMf9kYweUVhhOvMf6-PiZa00Zc5MWa6XHmxBXfBiMeJU-xWIcOJlSiO_2FrPXJcEkh4qySpUcies4nMkslMhayxcBxOl3uA2cP6CBHnPOU666RGoEugkyS6_fv9Xwinz0aEqlYtiVE1oAjfhnBrCYr9HLiaLEn5Y99Jhf8jvomNr0WSGraHRKOzC09_c8BbWw_FfibK8EUoWM',
-  },
-];
-
-const PRODUCTS = [
-  {
-    name: '黑曜石外骨骼夹克',
-    price: '¥ 1,299.00 信用点',
-    badge: '新品首发',
-    badgeColor: 'primary-container' as const,
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBI8wxfilvYr76Z-jzaIxEJVOEC8PvWvpbdRH-y6xi22vnA-gCQZUbBIa2St56XmRT1o1BgckFGIMSqtphMltruk-sOk5eTp0SEgReNMlHmRUzNGeZJjjVebPu_s7ACkACuC8gZizMFZWvitVUUbyLdspDhIlYfdrdj2jdxIgGnwFJyNNeOwYMBVLB3wigbjCheQ_uLL0ZeskHWKPtExOfDl-DaSrOxUeg8ENeFcdUae0iFxdO_MPxP9aJszbKIjEPRXJ2moCjku-I',
-    hoverBorder: 'primary-container',
-    priceColor: 'text-primary-container',
-    desktopOnly: false,
-  },
-  {
-    name: '极速行者 V.4',
-    price: '¥ 850.00 信用点',
-    badge: null,
-    badgeColor: null,
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDIXDODg1Wu7r86eCMcrDcuQE2_vh7pGlAYBCtqMJ55miijxXoOjaPRDmexLQw9E-b8TKbQiw3In9IEaHv1nQss8EdRtUAPl24QXzzinC1ls9brCVyJHtzkeGeMJEqNCnbslI4l-KQW6jigbUv_vr44CHBPJkCM7ROyZ0yMcLzzkeIZkV96v7yPRB3NWuWh-MwP62V34JBg-04cuaelf17KyNX-eXboATdaJLFQDDtUNu52x357p4ObptHYl6qnWE9LOBfEOHhe8mo',
-    hoverBorder: 'secondary-container',
-    priceColor: 'text-secondary-container',
-    desktopOnly: false,
-  },
-  {
-    name: '神经元视界目镜',
-    price: '¥ 2,100.00 信用点',
-    badge: '稀有',
-    badgeColor: 'error' as const,
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC45VAOTUeThaHAb38O65R3YlxZtBhmZrrtkIeMzXd3ZI_WqqohIEkKSy8H24ikVL-a89kWYdTmFHFCKnU51Sxj0BTFlNGfvf2ugHmEBkxVzn_13put-X1r2Q-t-0mQkg0QvID-MH2auo7SfY1oNvo2mwAtbC2cMcUtXlKe9563_0SpKQ5tOAseXKIob04Bv7dYyzFqQ_U2q06qX1yA2dVNWv37K-5fMWUCBD8NtVszBM7mNjOWzTD79cGcmMO4F82TePeRZehFFWQ',
-    hoverBorder: 'primary-container',
-    priceColor: 'text-primary-container',
-    desktopOnly: true,
   },
 ];
 
@@ -254,44 +219,53 @@ export default function Home() {
               </NextLink>
             </div>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-              {PRODUCTS.map((product) => (
-                <div
-                  key={product.name}
-                  className={`cyber-glass group flex flex-col border border-surface-container-high transition-colors hover:border-primary-container/40 ${
-                    product.desktopOnly ? 'hidden md:flex' : ''
-                  }`}
-                >
-                  <div className="relative h-48 overflow-hidden bg-surface-container-lowest p-2">
-                    <img
-                      alt={product.name}
-                      className="h-full w-full object-cover opacity-80 mix-blend-lighten transition-opacity group-hover:opacity-100"
-                      src={product.image}
-                    />
-                    {product.badge && (
-                      <div
-                        className={`absolute ${
-                          product.badge === '新品首发' ? 'left-2 top-2' : 'right-2 top-2'
-                        } border bg-background/80 px-2 py-1 font-mono-data text-[10px] ${
-                          product.badgeColor === 'primary-container'
-                            ? 'border-primary-container text-primary'
-                            : 'border-error bg-error-container/80 text-error'
-                        }`}
-                      >
-                        {product.badge}
+              {PRODUCTS.slice(0, 6).map((product) => {
+                const rarityColor: Record<string,string> = {
+                  COMMON: "#9CA3AF", RARE: "#60A5FA", EPIC: "#A78BFA", LEGENDARY: "#F59E0B",
+                };
+                return (
+                  <div
+                    key={product.id}
+                    className="cyber-glass group flex flex-col border border-surface-container-high transition-colors hover:border-primary-container/40"
+                  >
+                    <NextLink href={`/product/${product.id}`}>
+                      <div className="relative h-48 overflow-hidden bg-surface-container-lowest p-2">
+                        <img
+                          alt={product.name}
+                          className="h-full w-full object-cover opacity-80 mix-blend-lighten transition-opacity group-hover:opacity-100"
+                          src={product.image}
+                        />
+                        <div
+                          className="absolute left-2 top-2 border bg-background/80 px-2 py-1 font-mono-data text-[10px]"
+                          style={{ color: rarityColor[product.rarity], borderColor: `${rarityColor[product.rarity]}60`, backgroundColor: `${rarityColor[product.rarity]}20` }}
+                        >
+                          {product.rarity}
+                        </div>
                       </div>
-                    )}
+                    </NextLink>
+                    <div className="flex flex-1 flex-col p-4">
+                      <NextLink href={`/product/${product.id}`}>
+                        <h4 className="font-h3 mb-1 text-sm text-on-surface hover:text-primary transition-colors">{product.name}</h4>
+                      </NextLink>
+                      <p className="font-mono-data mb-1 text-xs text-primary-container">
+                        BY {product.author}
+                      </p>
+                      <p className="font-mono-data mb-4 text-xs text-on-surface-variant">
+                        {product.rating} ★ · {product.sales} 已售
+                      </p>
+                      <p className="font-mono-data mb-4 text-sm font-bold text-primary">
+                        {product.price} CR
+                      </p>
+                      <NextLink
+                        href={`/product/${product.id}`}
+                        className="mt-auto w-full border border-outline-variant py-2 text-center font-label-caps text-[10px] text-on-surface transition-all hover:border-primary-container hover:text-primary-container hover:shadow-cyber-glass"
+                      >
+                        查看详情
+                      </NextLink>
+                    </div>
                   </div>
-                  <div className="flex flex-1 flex-col p-4">
-                    <h4 className="font-h3 mb-1 text-sm text-on-surface">{product.name}</h4>
-                    <p className={`font-mono-data mb-4 text-xs ${product.priceColor}`}>
-                      {product.price}
-                    </p>
-                    <button className="mt-auto w-full border border-outline-variant py-2 font-label-caps text-[10px] text-on-surface transition-all hover:border-primary-container hover:text-primary-container hover:shadow-cyber-glass">
-                      获取数据
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
         </div>
