@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Check, Download, Share2 } from "lucide-react";
-import { DataBox, DataTag } from "@/components/CyberUI/DataCard";
+import { DataBox } from "@/components/CyberUI/DataCard";
 
 /* ─── Read sessionStorage for real API result ─── */
 interface StoredResult {
@@ -25,25 +25,6 @@ function useStoredResult(toolId: string): StoredResult {
 }
 
 /* ─── MOCK DATA ─── */
-
-const FASHION_RESULT = {
-  style: "赛博战术通勤",
-  material: "碳纤维混纺 + 纳米涂层",
-  colorFamily: "哑光黑 / 铁黑",
-  matchScore: 94,
-  tags: ["战术通勤", "机能风", "都市", "低调", "防水"],
-  desc: "基于神经网络的材质结构分析，判定此服饰适合都市战术通勤场景。碳纤维混纺面料提供优异的耐磨性与轻量化体验，配合纳米涂层实现全天候防护。",
-};
-
-const COLOR_RESULT = {
-  season: "深秋型人",
-  undertone: "暖灰底调",
-  bestColors: "琥珀金 / 焦糖棕 / 暗红",
-  avoidColors: "荧光色 / 冷白",
-  matchScore: 91,
-  tags: ["暖调", "秋冬", "高级感", "显白", "复古"],
-  desc: "根据面部色彩特征分析，您的肤色属于深秋型人，瞳色与发色形成良好的暖灰对比。建议选择琥珀金系、焦糖棕系等暖色调服饰，避免冷色荧光色。",
-};
 
 const SEASONAL_OUTFIT_RESULT = {
   type: "秋季型人",
@@ -323,7 +304,8 @@ export default function ResultPage() {
   const [copied, setCopied] = useState(false);
 
   const copyResult = () => {
-    navigator.clipboard.writeText("spro result");
+    const text = `${meta.title} | 匹配度: ${meta.matchScore}% | ${window.location.href}`;
+    navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -451,26 +433,22 @@ export default function ResultPage() {
         )}
 
         {/* ── SEASONAL OUTFIT ── */}
-        {tool === "seasonal-outfit" && stored.photoDataUrl && stored.mock && (
+        {tool === "seasonal-outfit" && (
           <>
-            {/* Show uploaded photo if available */}
-            <div className="flex justify-center mb-8">
-              <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
-                <img src={stored.photoDataUrl} alt="上传照片" className="w-full h-full object-cover" />
-                {stored.mock && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-                    <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
-                  </div>
-                )}
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-8">
+                <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="上传照片" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-            {/* Render seasonal outfit cards */}
+            )}
             <SeasonalOutfitContent meta={meta} />
           </>
-        )}
-
-        {tool === "seasonal-outfit" && !stored.photoDataUrl && (
-          <SeasonalOutfitContent meta={meta} />
         )}
 
         {/* ── PERSONAL COLOR ── */}
@@ -565,22 +543,11 @@ export default function ResultPage() {
                 </div>
               </div>
             )}
-            {stored.mock && (
-              <div className="p-4 border border-secondary/20 text-center">
-                <p className="text-xs font-mono text-secondary">// MAKEUP_RESULT 完整内容（见旧版文件）</p>
-              </div>
-            )}
             {(stored as any).reportImage && (
-              <div className="mt-4 border border-white/10 overflow-hidden rounded-xl">
+              <div className="border border-white/10 overflow-hidden rounded-xl">
                 <img src={(stored as any).reportImage} alt="妆容分析报告图" className="w-full max-h-96 object-cover" />
               </div>
             )}
-          </div>
-        )}
-
-        {/* ── MAKEUP ANALYSIS ── */}
-        {tool === "makeup-analysis" && (
-          <>
             {/* Style header */}
             <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
               <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">整体妆容风格</div>
@@ -640,10 +607,8 @@ export default function ResultPage() {
                 </span>
               ))}
             </div>
-          </>
+          </div>
         )}
-
-        {/* Action buttons */}
         <div className="flex flex-col gap-4 sm:flex-row">
           <button
             onClick={copyResult}

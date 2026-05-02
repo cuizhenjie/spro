@@ -207,7 +207,7 @@ export default function UploadPage() {
             <span className="h-2 w-2 animate-pulse rounded-full" style={{ backgroundColor: meta.accentColor, boxShadow: `0 0 8px ${meta.accentColor}` }} />
             {meta.subtitle}
           </div>
-          <h1 className="font-h1 text-h1 text-on-background">{meta.title}</h1>
+          <h1 className="font-h1 text-h1 text-on-surface">{meta.title}</h1>
         </div>
 
         {/* Upload zone */}
