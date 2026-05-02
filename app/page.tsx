@@ -1,3 +1,4 @@
+import NextLink from 'next/link';
 import {
   ArrowRight,
   BarChart3,
@@ -9,11 +10,11 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 
-const MOBILE_NAV: { label: string; icon: LucideIcon; active?: boolean }[] = [
-  { label: '首页', icon: LayoutGrid },
-  { label: '分析', icon: BarChart3 },
-  { label: '商店', icon: Store, active: true },
-  { label: '我的', icon: User },
+  const MOBILE_NAV: { label: string; icon: LucideIcon; href: string; active?: boolean }[] = [
+  { label: '首页', icon: LayoutGrid, href: '/' },
+  { label: '分析', icon: BarChart3, href: '/ai-tools' },
+  { label: '商店', icon: Store, href: '/marketplace', active: true },
+  { label: '我的', icon: User, href: '/profile' },
 ];
 
 const INFLUENCERS = [
@@ -132,10 +133,13 @@ export default function Home() {
                 Initiate full-spectrum bio-metric analysis to determine optimal
                 aesthetic pathways. High-fidelity neural net processing ready.
               </p>
-              <button className="flex w-max items-center space-x-2 rounded-none border border-primary-container px-8 py-4 font-label-caps text-label-caps text-primary-container transition-all hover:bg-primary-container/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)]">
+              <NextLink
+                href="/ai-listing"
+                className="flex w-max items-center space-x-2 rounded-none border border-primary-container px-8 py-4 font-label-caps text-label-caps text-primary-container transition-all hover:bg-primary-container/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)]"
+              >
                 <span>开启扫描</span>
                 <ArrowRight className="transition-transform group-hover:translate-x-1" />
-              </button>
+              </NextLink>
             </div>
             {/* Animated scan line */}
             <div className="absolute left-0 top-0 h-1 w-full animate-pulse bg-secondary-container opacity-50 shadow-[0_0_10px_#13ff43]" />
@@ -160,12 +164,12 @@ export default function Home() {
                 <p className="font-body-md mb-4 text-sm text-on-surface-variant">
                   Structural analysis of synthetic fabrics and augment integration.
                 </p>
-                <a
-                  href="#"
+                <NextLink
+                  href="/ai-listing"
                   className="flex items-center text-sm font-label-caps text-secondary-fixed transition-colors hover:text-on-surface"
                 >
                   开始 <ArrowRight className="ml-1 h-4 w-4" />
-                </a>
+                </NextLink>
               </div>
             </div>
 
@@ -186,12 +190,12 @@ export default function Home() {
                 <p className="font-body-md mb-4 text-sm text-on-surface-variant">
                   Chromatic mapping for optimal neon reflection.
                 </p>
-                <a
-                  href="#"
+                <NextLink
+                  href="/ai-tools"
                   className="flex items-center text-sm font-label-caps text-primary-fixed transition-colors hover:text-on-surface"
                 >
                   提取 <ArrowRight className="ml-1 h-4 w-4" />
-                </a>
+                </NextLink>
               </div>
             </div>
           </div>
@@ -246,12 +250,12 @@ export default function Home() {
                 <span className="mr-4 h-8 w-2 bg-primary-container shadow-glow-pink" />
                 供货商直供 // ACQUIRE
               </h2>
-              <a
-                href="#"
+              <NextLink
+                href="/marketplace"
                 className="flex items-center font-label-caps text-label-caps text-primary-container transition-colors hover:text-primary-fixed"
               >
                 查看全部 <ArrowRight className="ml-1 h-4 w-4" />
-              </a>
+              </NextLink>
             </div>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
               {PRODUCTS.map((product) => (
@@ -341,9 +345,9 @@ export default function Home() {
         {MOBILE_NAV.map((item, i) => {
           const Icon = item.icon;
           return (
-            <a
+            <NextLink
               key={i}
-              href="#"
+              href={item.href}
               className={`flex flex-col items-center justify-center py-3 font-display text-[10px] font-bold uppercase transition-transform active:scale-90 ${
                 item.active
                   ? 'text-primary drop-shadow-[0_0_5px_rgba(255,171,243,0.6)]'
@@ -352,7 +356,7 @@ export default function Home() {
             >
               <Icon className="mb-1 h-5 w-5" />
               <span>{item.label}</span>
-            </a>
+            </NextLink>
           );
         })}
       </nav>
