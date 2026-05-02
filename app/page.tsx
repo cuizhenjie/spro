@@ -127,7 +127,7 @@ export default function Home() {
                 <span className="font-mono-data text-mono-data uppercase">系统运行中</span>
               </div>
               <h1 className="font-h1 text-h1 mb-2 tracking-widest text-on-background drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                AI 面部骨相测算
+                AI 面部美学分析
               </h1>
               <p className="font-body-lg text-body-lg mb-6 max-w-xl text-on-surface-variant">
                 Initiate full-spectrum bio-metric analysis to determine optimal
@@ -173,7 +173,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card: 冷暖肤色提取 */}
+            {/* Card: AI色彩诊断 */}
             <div className="cyber-glass group relative flex min-h-[238px] flex-1 flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-primary-container/50">
               <div
                 className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
@@ -185,7 +185,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
               <div className="relative z-10">
                 <h3 className="font-h2 mb-2 text-2xl text-primary-fixed drop-shadow-[0_0_8px_rgba(255,171,243,0.5)]">
-                  冷暖肤色提取
+                  AI色彩诊断
                 </h3>
                 <p className="font-body-md mb-4 text-sm text-on-surface-variant">
                   Chromatic mapping for optimal neon reflection.
