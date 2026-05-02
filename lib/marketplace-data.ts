@@ -90,6 +90,21 @@ export const MARKET_TOOLS: MarketTool[] = [
     color: '#ff6b9d',
     coverImage: '/assets/marketplace-cover.png',
   },
+  {
+    id: 'makeup-analysis',
+    name: '妆容分析',
+    nameEn: 'Makeup Analysis',
+    description: '上传真人正面照片，AI制作高质感妆容分析指南资讯图表。清新高级手绘手帐风，精准分析底妆/眉形/眼妆/腮红/唇妆，Before/After并排对比，展示最适合的妆容方向。',
+    icon: 'auto_awesome',
+    price: 49,
+    originalPrice: 159,
+    category: 'makeup',
+    features: ['精准分析最适合底妆类型（清透裸感/奶油肌/雾面/光泽肌）', '眉形与眼妆方向（眉形/眼线/眼影色系/浓淡）', '腮红与修容重点（位置/色系/修容区域）', '最适合唇妆（色系/质地/唇形修饰）', 'Before/After并排对比，适合/普通/不建议妆容', '整体妆容风格定位（韩系/通勤/法式/清冷），手帐风海报可直接分享'],
+    isHot: true,
+    isNew: true,
+    color: '#f472b6',
+    coverImage: '/assets/marketplace-cover.png',
+  },
 ];
 
 export const CATEGORIES = [
@@ -99,6 +114,7 @@ export const CATEGORIES = [
   { id: 'lipstick', name: '口红推荐', icon: 'palette' },
   { id: 'outfit', name: '穿搭指南', icon: 'calendar_month' },
   { id: 'color', name: '色彩分析', icon: 'palette' },
+  { id: 'makeup', name: '妆容分析', icon: 'auto_awesome' },
   { id: 'image-diagnosis', name: '形象诊断', icon: 'face' },
 ] as const;
 

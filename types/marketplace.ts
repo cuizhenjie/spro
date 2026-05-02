@@ -1,4 +1,4 @@
-export type ToolCategory = 'style' | 'fortune' | 'outfit' | 'color' | 'hair' | 'lipstick' | 'image-diagnosis';
+export type ToolCategory = 'style' | 'fortune' | 'outfit' | 'color' | 'makeup' | 'hair' | 'lipstick' | 'image-diagnosis';
 
 export interface MarketTool {
   id: string;

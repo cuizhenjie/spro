@@ -125,6 +125,49 @@ const PERSONAL_COLOR_RESULT = {
   colorDirection: "以暖色调、高饱和、有质感的颜色为主，避免冷色调和过于浅淡的颜色。",
 };
 
+const MAKEUP_RESULT = {
+  foundation: {
+    type: "奶油肌",
+    description: "微光泽感奶油肌底妆，保留皮肤自然质感，不追求过度的磨皮效果",
+    avoid: "雾面哑光底妆会显得干涩无生气",
+  },
+  brows: {
+    shape: "自然弧形眉",
+    color: "深棕/灰棕色",
+    direction: "顺着原生眉流方向描补，眉头轻眉尾实",
+    avoid: "过于平直的一字眉或过浓的黑眉",
+  },
+  eye: {
+    eyeshadow: "暖棕色系（焦糖/摩卡/浅金）",
+    liner: "内眼线 + 微上挑外眼线，不宜过粗",
+    intensity: "自然清透，睫毛根部晕染为主",
+    avoid: "蓝色/紫色/绿色等冷色眼影，过重烟熏妆",
+  },
+  blush: {
+    position: "颧骨偏内侧，轻扫至太阳穴方向",
+    color: "杏色/暖桃色/淡砖红",
+    avoid: "高光感太强的腮红，颜色过深或位置过低",
+  },
+  contour: {
+    zone: "颧骨下侧 + 鼻梁 + 发际线轻扫",
+    color: "偏灰棕修容色，比肤色深2-3度",
+    avoid: "发红的修容色，容易显脏",
+  },
+  lip: {
+    color: "焦糖棕/肉桂色/豆沙色",
+    texture: "缎光或微哑光，避免纯雾面显得干",
+    shape: "自然唇形，可轻抹出边缘",
+    avoid: "过浅的粉色或过深的正红，显得老气",
+  },
+  overallStyle: "韩系清透轻熟妆",
+  overallDesc: "以清透感为核心，暖调棕色系贯穿眼唇，保留五官的原生辨识度，轻微提亮轮廓，适合日常通勤和约会。",
+  comparison: {
+    best: { label: "最适合", desc: "暖调清透妆：焦糖棕眼影+杏色腮红+缎光唇釉", image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=400" },
+    good: { label: "普通", desc: "轻泰妆：略微加深的眼窝和小烟熏感", image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&q=80&w=400" },
+    avoid: { label: "不建议", desc: "浓重烟熏妆/冷粉色系：显得老气且失去辨识度", image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&q=80&w=400" },
+  },
+};
+
 /* ─── META MAP ─── */
 
 const RESULT_META: Record<string, {
@@ -156,6 +199,12 @@ const RESULT_META: Record<string, {
     subtitle: "PERSONAL COLOR ANALYSIS",
     accentColor: "#ff6b9d",
     matchScore: PERSONAL_COLOR_RESULT.matchScore,
+  },
+  "makeup-analysis": {
+    title: "妆容分析",
+    subtitle: "MAKEUP ANALYSIS",
+    accentColor: "#f472b6",
+    matchScore: 87,
   },
 };
 
@@ -444,6 +493,71 @@ export default function ResultPage() {
             {/* Color direction */}
             <div className="p-4 border border-secondary/20" style={{ borderColor: `${meta.accentColor}20` }}>
               <p className="text-sm text-on-surface-variant italic">{PERSONAL_COLOR_RESULT.colorDirection}</p>
+            </div>
+          </>
+        )}
+
+        {/* ── MAKEUP ANALYSIS ── */}
+        {tool === "makeup-analysis" && (
+          <>
+            {/* Style header */}
+            <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
+              <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">整体妆容风格</div>
+              <div className="text-2xl font-bold mb-2" style={{ color: meta.accentColor }}>{MAKEUP_RESULT.overallStyle}</div>
+              <p className="text-sm text-on-surface-variant">{MAKEUP_RESULT.overallDesc}</p>
+            </div>
+
+            {/* Comparison: Best / Good / Avoid */}
+            <div className="mb-8">
+              <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-4 block">妆容对比</label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  { key: "best", data: MAKEUP_RESULT.comparison.best, color: "#ecffe3", tagColor: "text-green-400", borderColor: "border-green-400/30" },
+                  { key: "good", data: MAKEUP_RESULT.comparison.good, color: "#fbbf24", tagColor: "text-yellow-400", borderColor: "border-yellow-400/30" },
+                  { key: "avoid", data: MAKEUP_RESULT.comparison.avoid, color: "#f87171", tagColor: "text-red-400", borderColor: "border-red-400/30" },
+                ].map(({ key, data, color, tagColor, borderColor }) => (
+                  <div key={key} className={`border ${borderColor} overflow-hidden`}>
+                    <div className="relative h-40 overflow-hidden">
+                      <img src={data.image} alt={data.label} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+                      <span className={`absolute top-2 left-2 px-2 py-0.5 text-[10px] font-mono font-bold ${tagColor}`} style={{ backgroundColor: `${color}20` }}>
+                        {data.label}
+                      </span>
+                    </div>
+                    <div className="p-3">
+                      <p className="text-xs text-on-surface-variant">{data.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Detail grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
+              {[
+                { label: "底妆", value: MAKEUP_RESULT.foundation.type, sub: MAKEUP_RESULT.foundation.description, avoid: MAKEUP_RESULT.foundation.avoid },
+                { label: "眉形", value: MAKEUP_RESULT.brows.shape, sub: `${MAKEUP_RESULT.brows.color} · ${MAKEUP_RESULT.brows.direction}`, avoid: MAKEUP_RESULT.brows.avoid },
+                { label: "眼妆", value: MAKEUP_RESULT.eye.eyeshadow, sub: `${MAKEUP_RESULT.eye.liner} · ${MAKEUP_RESULT.eye.intensity}`, avoid: MAKEUP_RESULT.eye.avoid },
+                { label: "腮红", value: MAKEUP_RESULT.blush.color, sub: MAKEUP_RESULT.blush.position, avoid: MAKEUP_RESULT.blush.avoid },
+                { label: "修容", value: MAKEUP_RESULT.contour.color, sub: MAKEUP_RESULT.contour.zone, avoid: MAKEUP_RESULT.contour.avoid },
+                { label: "唇妆", value: MAKEUP_RESULT.lip.color, sub: `${MAKEUP_RESULT.lip.texture} · ${MAKEUP_RESULT.lip.shape}`, avoid: MAKEUP_RESULT.lip.avoid },
+              ].map((item) => (
+                <div key={item.label} className="border border-white/10 p-3">
+                  <div className="font-mono text-[10px] text-outline uppercase mb-1">{item.label}</div>
+                  <div className="text-sm font-bold text-on-surface mb-1">{item.value}</div>
+                  <div className="text-[10px] text-on-surface-variant mb-1">{item.sub}</div>
+                  <div className="text-[10px] text-primary/70">{item.avoid}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Style summary tag */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {["清透感", "暖调棕色系", "自然弧形眉", "缎光唇釉", "颧骨内侧腮红"].map((tag) => (
+                <span key={tag} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>
+                  {tag}
+                </span>
+              ))}
             </div>
           </>
         )}

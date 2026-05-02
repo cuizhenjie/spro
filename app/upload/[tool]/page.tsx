@@ -45,6 +45,14 @@ const TOOL_META: Record<string, {
     accentColor: "#ff6b9d",
     steps: ["初始化色彩网络", "分析肤色冷暖调", "判断四季类型", "生成色盘分析", "打包个人报告"],
   },
+  "makeup-analysis": {
+    title: "妆容分析",
+    subtitle: "MAKEUP ANALYSIS // BEAUTY GUIDE",
+    placeholder: "上传真人正面照片，获取专属妆容分析",
+    bgImage: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=800",
+    accentColor: "#f472b6",
+    steps: ["初始化美妆网络", "分析五官结构", "判断脸型比例", "提取皮肤质感", "生成妆容方案", "打包妆容报告"],
+  },
 };
 
 export default function UploadPage() {
