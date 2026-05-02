@@ -50,6 +50,7 @@ const TRENDS = [
     label: '趋势_01',
     labelColor: 'text-primary-container',
     title: '霓虹街头辛迪加',
+    productId: 'neon-street-syndicate',
     image:
       'https://lh3.googleusercontent.com/aida-public/AB6AXuBaHkj7vtHkKKq7e-2A57tDfRtdGrxDXjU6xR7Zgy9iNyXVjsZOF5Sbh0B7eqE9RqcRy5fpggf46PAh53bW2_U8p3Z2W_zBIuEFBUvJup2WzmNgrcs5H7jypXO0sVhvByaqtBdievPHJW0EVHjGU60GnXIY4QbHGPE7bd-r8mkKmUpIIJH_7Gi-oiqCvoV_mFOUc2zAyHJqo9lu_MS2DpjRNCHEpzxelWzcuNSf2NN1Asdg8zlvtIzKA54FY899vhO-KTS7hi1xeFQ',
   },
@@ -57,6 +58,7 @@ const TRENDS = [
     label: '趋势_02',
     labelColor: 'text-secondary-container',
     title: '硬件植入派',
+    productId: 'hardware-implant-faction',
     image:
       'https://lh3.googleusercontent.com/aida-public/AB6AXuD4uqAgk5hEj-MCNCZLTKQ38AwrGdMUYXfnqpoXlt3UrO5YFnCPa4IgYv7AaG_RnyIL0JYssmeoE0nGhG3sZk6XagwJX-td3uu-wCGIwq8MbPlhStaSBog8Ks7TSflmoF6nJSg8vq_8yZRltnd8NFe2FXqsF6FPXec9KNbOz4_ZfOKdgWM-yS1RKhSUYvdfaHl9yV-Fy-ip5fLC59FV6UXo3DlOd09B7eirM77m1C43fH48FtUBGaPFixCWph7nChcBOrDng9iW2KI',
   },
@@ -278,24 +280,27 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {TRENDS.map((trend) => (
-              <div
+              <NextLink
                 key={trend.label}
-                className="cyber-glass group relative h-64 overflow-hidden border border-surface-variant"
+                href={`/product/${trend.productId}`}
+                className="block"
               >
-                <img
-                  alt={trend.title}
-                  className="h-full w-full object-cover opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-80"
-                  src={trend.image}
-                />
-                <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-background via-background/80 to-transparent p-6">
-                  <div
-                    className={`font-mono-data mb-2 text-xs tracking-widest ${trend.labelColor}`}
-                  >
-                    {trend.label}
+                <div className="cyber-glass group relative h-64 overflow-hidden border border-surface-variant transition-colors hover:border-primary-container/50">
+                  <img
+                    alt={trend.title}
+                    className="h-full w-full object-cover opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-80"
+                    src={trend.image}
+                  />
+                  <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-background via-background/80 to-transparent p-6">
+                    <div
+                      className={`font-mono-data mb-2 text-xs tracking-widest ${trend.labelColor}`}
+                    >
+                      {trend.label}
+                    </div>
+                    <h3 className="font-h2 text-xl text-on-surface group-hover:text-primary transition-colors">{trend.title}</h3>
                   </div>
-                  <h3 className="font-h2 text-xl text-on-surface">{trend.title}</h3>
                 </div>
-              </div>
+              </NextLink>
             ))}
           </div>
         </section>

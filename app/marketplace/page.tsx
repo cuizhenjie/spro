@@ -330,7 +330,7 @@ export default function MarketplacePage() {
       <div className="fixed bottom-[-20%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-secondary blur-[150px] opacity-10 pointer-events-none z-0" />
 
       {/* Main Content */}
-      <div className="relative z-10 pt-8 pb-[120px] px-4 md:px-6 max-w-7xl mx-auto flex flex-col gap-10">
+      <div className="relative z-10 pt-8 pb-24 md:pb-10 px-4 md:px-6 max-w-7xl mx-auto flex flex-col gap-10">
 
         {/* Hero Section */}
         <header className="flex flex-col items-start gap-4 border-l-4 border-primary pl-6 py-2 relative">
@@ -507,7 +507,7 @@ export default function MarketplacePage() {
       {cart.length > 0 && (
         <button
           onClick={() => setShowCheckout(true)}
-          className="fixed bottom-24 right-4 md:bottom-6 md:right-6 w-14 h-14 bg-primary/20 border border-primary cyber-glass flex items-center justify-center text-primary hover:bg-primary/40 hover:shadow-[0_0_20px_rgba(255,171,243,0.8)] transition-all duration-300 z-40 group"
+          className="fixed bottom-6 right-4 md:right-6 w-14 h-14 bg-primary/20 border border-primary cyber-glass flex items-center justify-center text-primary hover:bg-primary/40 hover:shadow-[0_0_20px_rgba(255,171,243,0.8)] transition-all duration-300 z-40 group"
         >
           <ShoppingCart className="w-6 h-6" />
           <span className="absolute -top-2 -right-2 w-6 h-6 bg-primary text-background text-xs flex items-center justify-center font-bold">
@@ -516,29 +516,6 @@ export default function MarketplacePage() {
         </button>
       )}
 
-      {/* Mobile Bottom Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2 bg-background/90 backdrop-blur-lg border-t border-primary/20 shadow-[0_-4px_20px_rgba(255,171,243,0.1)]">
-        <button className="flex flex-col items-center justify-center text-on-surface/40 hover:text-primary transition-colors font-mono text-[10px] font-bold tracking-widest gap-1 w-16">
-          <span className="material-symbols-outlined text-xl">grid_view</span>
-          <span>CORE</span>
-        </button>
-        <button className="flex flex-col items-center justify-center text-secondary drop-shadow-[0_0_10px_rgba(236,255,227,0.7)] scale-110 font-mono text-[10px] font-bold tracking-widest gap-1 w-16">
-          <span className="material-symbols-outlined text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>shopping_cart</span>
-          <span>MARKET</span>
-        </button>
-        <button className="flex flex-col items-center justify-center text-on-surface/40 hover:text-primary transition-colors font-mono text-[10px] font-bold tracking-widest gap-1 w-16">
-          <span className="material-symbols-outlined text-xl">android_fingerprint</span>
-          <span>SCAN</span>
-        </button>
-        <button className="flex flex-col items-center justify-center text-on-surface/40 hover:text-primary transition-colors font-mono text-[10px] font-bold tracking-widest gap-1 w-16">
-          <span className="material-symbols-outlined text-xl">inventory_2</span>
-          <span>ASSETS</span>
-        </button>
-        <button className="flex flex-col items-center justify-center text-on-surface/40 hover:text-primary transition-colors font-mono text-[10px] font-bold tracking-widest gap-1 w-16">
-          <span className="material-symbols-outlined text-xl">person</span>
-          <span>PROFILE</span>
-        </button>
-      </nav>
 
       {/* Checkout Modal */}
       {showCheckout && (
