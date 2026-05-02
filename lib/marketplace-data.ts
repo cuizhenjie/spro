@@ -14,21 +14,21 @@ export const MARKET_TOOLS: MarketTool[] = [
     isHot: true,
     isNew: true,
     color: '#ffabf3',
-    coverImage: '/assets/marketplace-cover.png',
+    coverImage: '/assets/tool-palm-reading.png',
   },
   {
     id: 'style-analyzer',
     name: '风格测试',
     nameEn: 'Style Quiz',
-    description: '15道趣味穿搭题，AI深度分析您的面部轮廓、五官量感、气质特征，精准定位您的专属风格象限。直线型还是曲线型？大量感还是小量感？明星同款风格分析，让穿搭从此不踩雷。',
+    description: '15道趣味穿搭题，基于「直线型/曲线型×大量感/小量感」四象限模型，AI深度分析您的面部轮廓、五官量感、气质特征，精准定位您的专属风格象限。三步变帅法则指导——做减法（扔掉过紧/过花/过时单品）、建基础（5种重点颜色清单）、加细节（鞋子升级+配饰点缀+发型打理），让穿搭从此不踩雷。',
     icon: 'checkroom',
     price: 19,
     originalPrice: 69,
     category: 'style',
-    features: ['15道精选穿搭题，涵盖脸型/五官/气质/偏好', '4大风格象限精确定位（直线/曲线 × 大量感/小量感）', '明星风格参考对照，找到您的穿搭偶像', '专属穿搭颜色推荐（避雷色+推荐色）', '适合风格+不适合风格双列表'],
+    features: ['15道精选穿搭题，涵盖脸型/五官/气质/偏好/职业场景', '4大风格象限精确定位（直线/曲线 × 大量感/小量感）', '明星风格参考对照，找到您的穿搭偶像', '专属体型脸型匹配推荐（发型+上下装版型）', '适合风格+避雷风格双列表，含5种核心颜色推荐', '三步变帅法则：做减法→建基础→加细节'],
     isHot: true,
     color: '#ecffe3',
-    coverImage: '/assets/marketplace-cover.png',
+    coverImage: '/assets/tool-style-analyzer.png',
   },
   {
     id: 'lipstick-recommendation',
@@ -43,7 +43,7 @@ export const MARKET_TOOLS: MarketTool[] = [
     isHot: true,
     isNew: true,
     color: '#fbbf24',
-    coverImage: '/assets/marketplace-cover.png',
+    coverImage: '/assets/tool-lipstick-recommendation.png',
   },
   {
     id: 'image-diagnosis',
@@ -58,22 +58,22 @@ export const MARKET_TOOLS: MarketTool[] = [
     isHot: true,
     isNew: true,
     color: '#bfd043',
-    coverImage: '/assets/marketplace-cover.png',
+    coverImage: '/assets/tool-image-diagnosis.png',
   },
   {
     id: 'seasonal-outfit',
     name: '四季穿搭指南',
     nameEn: 'Seasonal Outfit Guide',
-    description: '上传正面或全身人物照片，AI生成一套高完成度的小红书风格四季韩系潮牌穿搭指南系列海报。保留人物真实辨识度，基于同一人分别模拟春夏秋冬四种色彩穿搭逻辑下的造型方案。',
+    description: '上传正面或全身人物照片，AI生成一套高完成度的小红书风格四季韩系潮牌穿搭指南系列海报。保留人物真实辨识度，基于同一人分别模拟春夏秋冬四种色彩穿搭逻辑下的造型方案。根据体型（倒三角/矩形/三角/椭圆/高瘦）推荐上下装版型，根据脸型（圆/方/长/菱形/心形/椭圆）推荐适配发型。',
     icon: 'calendar_month',
     price: 69,
     originalPrice: 199,
     category: 'outfit',
-    features: ['韩系潮牌首尔街拍风格lookbook', '保留本人真实五官、脸型、身材比例', '四季色彩逻辑独立造型方案（春夏秋冬）', 'Hero主推造型+5-6套延展lookbook', '推荐色/慎用色/配色公式/单品建议', '顾问式总结+避雷提醒，可直接分享'],
+    features: ['韩系潮牌首尔街拍风格lookbook', '保留本人真实五官、脸型、身材比例', '四季色彩逻辑独立造型方案（春夏秋冬）', 'Hero主推造型+5-6套延展lookbook', '推荐色/慎用色/配色公式/单品建议', '体型脸型双重匹配推荐（上下装版型+发型）', '洋葱式叠穿原则：外厚内薄，应对换季温差', '顾问式总结+避雷提醒，可直接分享'],
     isHot: true,
     isNew: true,
     color: '#ff9f43',
-    coverImage: '/assets/marketplace-cover.png',
+    coverImage: '/assets/tool-seasonal-outfit.png',
   },
   {
     id: 'personal-color',
@@ -88,7 +88,7 @@ export const MARKET_TOOLS: MarketTool[] = [
     isHot: true,
     isNew: true,
     color: '#ff6b9d',
-    coverImage: '/assets/marketplace-cover.png',
+    coverImage: '/assets/tool-personal-color.png',
   },
   {
     id: 'neon-street-syndicate',
@@ -109,7 +109,7 @@ export const MARKET_TOOLS: MarketTool[] = [
     isHot: true,
     isNew: true,
     color: '#ff6b9d',
-    coverImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBaHkj7vtHkKKq7e-2A57tDfRtdGrxDXjU6xR7Zgy9iNyXVjsZOF5Sbh0B7eqE9RqcRy5fpggf46PAh53bW2_U8p3Z2W_zBIuEFBUvJup2WzmNgrcs5H7jypXO0sVhvByaqtBdievPHJW0EVHjGU60GnXIY4QbHGPE7bd-r8mkKmUpIIJH_7Gi-oiqCvoV_mFOUc2zAyHJqo9lu_MS2DpjRNCHEpzxelWzcuNSf2NN1Asdg8zlvtIzKA54FY899vhO-KTS7hi1xeFQ',
+    coverImage: '/assets/tool-neon-street-syndicate.png',
   },
   {
     id: 'hardware-implant-faction',
@@ -130,7 +130,7 @@ export const MARKET_TOOLS: MarketTool[] = [
     isHot: true,
     isNew: true,
     color: '#ff9f43',
-    coverImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD4uqAgk5hEj-MCNCZLTKQ38AwrGdMUYXfnqpoXlt3UrO5YFnCPa4IgYv7AaG_RnyIL0JYssmeoE0nGhG3sZk6XagwJX-td3uu-wCGIwq8MbPlhStaSBog8Ks7TSflmoF6nJSg8vq_8yZRltnd8NFe2FXqsF6FPXec9KNbOz4_ZfOKdgWM-yS1RKhSUYvdfaHl9yV-Fy-ip5fLC59FV6UXo3DlOd09B7eirM77m1C43fH48FtUBGaPFixCWph7nChcBOrDng9iW2KI',
+    coverImage: '/assets/tool-hardware-implant-faction.png',
   },
   {
     id: 'makeup-analysis',
@@ -145,19 +145,19 @@ export const MARKET_TOOLS: MarketTool[] = [
     isHot: true,
     isNew: true,
     color: '#f472b6',
-    coverImage: '/assets/marketplace-cover.png',
+    coverImage: '/assets/tool-makeup-analysis.png',
   },
 ];
 
 export const CATEGORIES = [
-  { id: 'all', name: '全部工具', icon: 'apps' },
-  { id: 'fortune', name: '玄学解读', icon: 'auto_awesome' },
-  { id: 'style', name: '风格测试', icon: 'checkroom' },
-  { id: 'lipstick', name: '口红推荐', icon: 'palette' },
-  { id: 'outfit', name: '穿搭指南', icon: 'calendar_month' },
-  { id: 'color', name: '色彩分析', icon: 'palette' },
-  { id: 'makeup', name: '妆容分析', icon: 'auto_awesome' },
-  { id: 'image-diagnosis', name: '形象诊断', icon: 'face' },
+  { id: 'all', name: '全部工具', icon: '/assets/cat-all.png' },
+  { id: 'fortune', name: '玄学解读', icon: '/assets/cat-fortune.png' },
+  { id: 'style', name: '风格测试', icon: '/assets/cat-style.png' },
+  { id: 'lipstick', name: '口红推荐', icon: '/assets/cat-lipstick.png' },
+  { id: 'outfit', name: '穿搭指南', icon: '/assets/cat-outfit.png' },
+  { id: 'color', name: '色彩分析', icon: '/assets/cat-color.png' },
+  { id: 'makeup', name: '妆容分析', icon: '/assets/cat-makeup.png' },
+  { id: 'image-diagnosis', name: '形象诊断', icon: '/assets/cat-image-diagnosis.png' },
 ] as const;
 
 export const STYLE_QUADRANTS: StyleQuadrant[] = [
@@ -175,6 +175,19 @@ export const STYLE_QUADRANTS: StyleQuadrant[] = [
     avoidColors: ['粉红', '浅粉', '亮黄', '荧光色'],
     avoidStyles: ['柔软毛绒', '鲜艳颜色', '可爱风格'],
     recommendedItems: ['工装靴', '皮夹克', '直筒牛仔裤', '军绿色外套', '黑色皮鞋'],
+    bodyTypeMatch: {
+      type: '倒三角体型（V形）',
+      features: '肩宽>腰宽，上半身壮实',
+      recommend: {
+        top: ['直筒T恤', 'V领', '避免垫肩'],
+        bottom: ['直筒裤', '微锥裤，增加下身量感']
+      },
+      avoid: ['紧身上衣凸显肩腰差']
+    },
+    faceShapeMatch: {
+      recommend: ['三七分/四六分', '碎盖刘海', '短刘海'],
+      avoid: ['寸头', '极短发型']
+    }
   },
   {
     id: 'straight-small',
@@ -190,6 +203,19 @@ export const STYLE_QUADRANTS: StyleQuadrant[] = [
     avoidColors: ['老年款颜色', '花色', '过于鲜艳'],
     avoidStyles: ['老年款', '宽松Oversized', '复杂图案'],
     recommendedItems: ['黑色打底', '直筒裤', '简约球鞋', '工装马甲', '白衬衫'],
+    bodyTypeMatch: {
+      type: '矩形体型（H形）',
+      features: '肩宽≈腰宽≈臀宽',
+      recommend: {
+        top: ['叠穿', '落肩款', '有口袋设计'],
+        bottom: ['任何版型均可']
+      },
+      avoid: ['紧身款暴露身材平淡']
+    },
+    faceShapeMatch: {
+      recommend: ['前刺/飞机头', '短寸', '侧分纹理'],
+      avoid: ['齐刘海', '贴头皮']
+    }
   },
   {
     id: 'curve-small',
@@ -205,6 +231,19 @@ export const STYLE_QUADRANTS: StyleQuadrant[] = [
     avoidColors: ['纯黑', '深紫', '大红色'],
     avoidStyles: ['过于硬挺老干部风', '深沉暗黑风', '粗犷工装'],
     recommendedItems: ['白色T恤', '针织开衫', '休闲裤', '小白鞋', '学院风polo'],
+    bodyTypeMatch: {
+      type: '高瘦体型（偏瘦）',
+      features: '身高较高但偏瘦',
+      recommend: {
+        top: ['横条纹', '叠穿', '落肩款'],
+        bottom: ['直筒或微宽裤']
+      },
+      avoid: ['紧身款', '竖条纹', '全黑']
+    },
+    faceShapeMatch: {
+      recommend: ['中分', '三七分'],
+      avoid: ['蓬松感太强的发型']
+    }
   },
   {
     id: 'curve-large',
@@ -220,6 +259,19 @@ export const STYLE_QUADRANTS: StyleQuadrant[] = [
     avoidColors: ['臃肿的浅色', '荧光色'],
     avoidStyles: ['臃肿', '不修边幅', '过于紧身'],
     recommendedItems: ['西装外套', '直筒大衣', '修身长裤', '乐福鞋', '高领毛衣'],
+    bodyTypeMatch: {
+      type: '三角体型（A形）/椭圆形（O形）',
+      features: '臀宽>肩宽，下半身壮实；或腰腹明显，四肢相对细',
+      recommend: {
+        top: ['横条纹（V形）', '亮色', '有设计感'],
+        bottom: ['深色直筒裤', '深色牛仔裤']
+      },
+      avoid: ['浅色裤装', '紧身裤', '亮色上衣', '扎腰']
+    },
+    faceShapeMatch: {
+      recommend: ['三七分/四六分', '碎盖刘海', '短刘海'],
+      avoid: ['寸头', '极短发型']
+    }
   },
 ];
 

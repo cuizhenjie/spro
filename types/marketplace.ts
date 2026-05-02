@@ -186,4 +186,17 @@ export interface StyleQuadrant {
   avoidColors: string[];
   avoidStyles: string[];
   recommendedItems: string[];
+  bodyTypeMatch?: {
+    type: string;
+    features: string;
+    recommend: {
+      top: string[];
+      bottom: string[];
+    };
+    avoid: string[];
+  };
+  faceShapeMatch?: {
+    recommend: string[];
+    avoid: string[];
+  };
 }
