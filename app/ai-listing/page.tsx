@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
 import { TerminalLog } from "@/components/CyberUI/TerminalLog";
+import { NeuralViz } from "@/components/CyberUI/NeuralViz";
 import { gsapScanLine } from "@/lib/animations";
 
 const MODES = [
@@ -89,6 +90,8 @@ export default function AIListingPage() {
 
         {/* Left Column: Image Scanning */}
         <div className="w-full md:w-1/2 relative bg-surface-container-lowest flex items-center justify-center border-b md:border-b-0 md:border-r border-primary/30 overflow-hidden min-h-[300px]">
+          {/* NeuralViz background (ai_4 Neural theme) */}
+          <NeuralViz className="z-0" intensity={step === 'processing' ? 'high' : 'medium'} />
           {/* Uploaded Image */}
           <div className="absolute inset-0">
             <Image
