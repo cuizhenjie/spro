@@ -3,14 +3,11 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { GlassCard } from "@/components/CyberUI/GlassCard";
 import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
-import { MARKET_TOOLS, CATEGORIES } from "@/lib/marketplace-data";
+import { CATEGORIES } from "@/lib/marketplace-data";
 import { PRODUCTS, type Product } from "@/lib/products-data";
-import type { MarketTool } from "@/types/marketplace";
 import { CheckCircle, XCircle, ArrowDown, ArrowUp, Filter, Download } from "lucide-react";
 
 // --- Local Types ---
-
-type ToolCategory = MarketTool["category"];
 
 interface SellerOrder {
   id: string;
@@ -26,18 +23,11 @@ interface SellerProduct extends Product {
   listed: boolean;
 }
 
-interface SellerTool extends MarketTool {
-  listed: boolean;
-  orders: number;
-  revenue: number;
-  coverPreview?: string;
-}
-
 interface UploadForm {
   name: string;
   description: string;
   price: string;
-  category: ToolCategory;
+  category: string;
   coverPreview: string;
 }
 
@@ -54,17 +44,6 @@ const SELLER_ORDERS: SellerOrder[] = [
   { id: "TX-0XA1C-19", productName: "WASTELAND_VISOR", type: "product", value: 420, status: "completed", buyer: "FLUX_23", time: "1天前" },
 ];
 
-const INITIAL_ORDERS = [86, 42, 31];
-
-const initialSellerTools: SellerTool[] = MARKET_TOOLS.slice(0, 3).map(
-  (tool, idx) => ({
-    ...tool,
-    listed: true,
-    orders: INITIAL_ORDERS[idx] ?? 12,
-    revenue: tool.price * (INITIAL_ORDERS[idx] ?? 12),
-  }),
-);
-
 const initialSellerProducts: SellerProduct[] = PRODUCTS.map((p) => ({
   ...p,
   listed: true,
@@ -75,7 +54,6 @@ const UPLOAD_CATEGORIES = CATEGORIES.filter((c) => c.id !== "all");
 // --- Component ---
 
 export default function SellerDashboardPage() {
-  const [sellerTools, setSellerTools] = useState<SellerTool[]>(initialSellerTools);
   const [sellerProducts, setSellerProducts] = useState<SellerProduct[]>(initialSellerProducts);
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [activeTab, setActiveTab] = useState<"assets" | "orders">("assets");
@@ -91,9 +69,8 @@ export default function SellerDashboardPage() {
   const objectUrlsRef = useRef<Set<string>>(new Set());
 
   // Derived stats
-  const totalRevenue = sellerTools.reduce((sum, t) => sum + t.revenue, 0)
-    + sellerProducts.filter((p) => p.listed).reduce((sum, p) => sum + p.price * Math.floor(p.sales * 0.3), 0);
-  const activeTools = sellerTools.filter((t) => t.listed).length + sellerProducts.filter((p) => p.listed).length;
+  const totalRevenue = sellerProducts.filter((p) => p.listed).reduce((sum, p) => sum + p.price * Math.floor(p.sales * 0.3), 0);
+  const activeTools = sellerProducts.filter((p) => p.listed).length;
 
   // --- Handlers ---
 
@@ -110,7 +87,7 @@ export default function SellerDashboardPage() {
       if (!file) return;
 
       const prev = form.coverPreview;
-      if (prev && !sellerTools.some((t) => t.coverPreview === prev)) {
+      if (prev) {
         URL.revokeObjectURL(prev);
         objectUrlsRef.current.delete(prev);
       }
@@ -129,34 +106,11 @@ export default function SellerDashboardPage() {
       const price = Number(form.price);
       if (!form.name.trim() || !form.description.trim() || !Number.isFinite(price) || price <= 0) return;
 
-      const newTool: SellerTool = {
-        id: `seller-${Date.now()}`,
-        name: form.name.trim(),
-        nameEn: form.name.trim(),
-        description: form.description.trim(),
-        icon: "✨",
-        price,
-        originalPrice: price,
-        category: form.category,
-        features: ["AI 时尚分析", "即时交付"],
-        color: "#c0fff4",
-        listed: true,
-        orders: 0,
-        revenue: 0,
-        isNew: true,
-        coverPreview: form.coverPreview || undefined,
-      };
-
-      setSellerTools((prev) => [newTool, ...prev]);
       setForm({ name: "", description: "", price: "", category: "style", coverPreview: "" });
       setShowUploadForm(false);
     },
     [form],
   );
-
-  const toggleToolListed = useCallback((toolId: string) => {
-    setSellerTools((prev) => prev.map((t) => (t.id === toolId ? { ...t, listed: !t.listed } : t)));
-  }, []);
 
   const toggleProductListed = useCallback((productId: string) => {
     setSellerProducts((prev) => prev.map((p) => (p.id === productId ? { ...p, listed: !p.listed } : p)));
@@ -202,7 +156,7 @@ export default function SellerDashboardPage() {
             {activeTools}
           </div>
           <div className="mt-2 font-mono-data text-xs text-on-surface-variant">
-            {sellerTools.length + sellerProducts.length - activeTools} 待审核
+            {sellerProducts.length - activeTools} 待审核
           </div>
         </GlassCard>
 
@@ -310,7 +264,7 @@ export default function SellerDashboardPage() {
                     </label>
                     <select
                       value={form.category}
-                      onChange={(e) => updateField("category", e.target.value as ToolCategory)}
+                      onChange={(e) => updateField("category", e.target.value)}
                       className="w-full bg-background/80 border border-primary/20 px-4 py-3 text-on-surface font-body focus:border-primary focus:outline-none transition-colors appearance-none cursor-pointer"
                     >
                       {UPLOAD_CATEGORIES.map((cat) => (
@@ -391,70 +345,6 @@ export default function SellerDashboardPage() {
 
           {/* Right: Asset List */}
           <div className="lg:col-span-2 space-y-4">
-            {/* Section: AI Tools */}
-            <div className="flex justify-between items-center mb-4 border-b border-primary/20 pb-2">
-              <h2 className="font-h3 text-h3 text-on-surface">AI 工具</h2>
-              <span className="font-mono-data text-mono-data text-primary">
-                [{sellerTools.length}_项]
-              </span>
-            </div>
-
-            {sellerTools.map((tool) => (
-              <HUDBrackets key={tool.id}>
-                <div className="bg-surface/80 backdrop-blur-md border border-outline-variant p-4 flex items-center gap-6 hover:border-primary/50 transition-colors group">
-                  {/* Icon */}
-                  <div className="w-20 h-20 bg-surface-container-high border border-outline-variant relative shrink-0 overflow-hidden">
-                    <div
-                      className="w-full h-full flex items-center justify-center text-3xl"
-                      style={{ backgroundColor: `${tool.color}20` }}
-                    >
-                      {tool.icon}
-                    </div>
-                    {tool.isNew && (
-                      <div className="absolute top-0 left-0 bg-primary/80 px-1 py-px font-mono-data text-[10px] text-on-surface">
-                        NEW
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h4 className="font-h3 text-h3 text-on-surface group-hover:text-primary transition-colors truncate">
-                        {tool.name}
-                      </h4>
-                      <span className="cyber-tag">
-                        {UPLOAD_CATEGORIES.find((c) => c.id === tool.category)?.name ?? tool.category}
-                      </span>
-                    </div>
-                    <div className="flex gap-4 mt-2 font-mono-data text-mono-data text-on-surface-variant">
-                      <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-base">sell</span> {tool.price} 金币
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-base">shopping_cart</span> 已售 {tool.orders}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="hidden sm:block shrink-0">
-                    <button
-                      onClick={() => toggleToolListed(tool.id)}
-                      className={`border px-4 py-2 font-label-caps text-label-caps transition-colors ${
-                        tool.listed
-                          ? "border-primary text-primary hover:bg-primary/20 shadow-[0_0_10px_rgba(255,171,243,0)] hover:shadow-[0_0_15px_rgba(255,171,243,0.5)]"
-                          : "border-outline-variant text-on-surface-variant hover:bg-surface-container"
-                      }`}
-                      title={tool.listed ? "点击下架" : "点击上架"}
-                    >
-                      {tool.listed ? "在售" : "已下架"}
-                    </button>
-                  </div>
-                </div>
-              </HUDBrackets>
-            ))}
-
             {/* Section: Products */}
             <div className="flex justify-between items-center mb-4 border-b border-primary/20 pb-2 mt-8">
               <h2 className="font-h3 text-h3 text-on-surface">穿搭商品</h2>
