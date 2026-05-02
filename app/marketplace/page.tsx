@@ -6,7 +6,7 @@ import { MARKET_TOOLS, CATEGORIES, STYLE_QUADRANTS, MOCK_ANALYSIS_RESULTS } from
 import { PRODUCTS as PRODUCT_LIST } from '@/lib/products-data';
 import { MarketTool, StyleQuadrant } from '@/types/marketplace';
 import StyleQuiz from '@/components/StyleQuiz';
-import { Sparkles, ShoppingCart, Coins, Check, Star, Palette, Trash2, Minus, Plus, X, Terminal } from 'lucide-react';
+import { Sparkles, ShoppingCart, Coins, Check, Star, Palette, Trash2, Minus, Plus, X, Terminal, Search, TrendingUp, Zap, ChevronRight } from 'lucide-react';
 import { GlassCard } from '@/components/CyberUI/GlassCard';
 import { HUDBrackets } from '@/components/CyberUI/HUDBrackets';
 
@@ -320,182 +320,266 @@ export default function MarketplacePage() {
   return (
     <main className="min-h-screen bg-background text-on-surface relative overflow-x-hidden">
       {/* Scanline Overlay */}
-      <div className="fixed inset-0 pointer-events-none z-0 opacity-30" style={{
-        background: 'linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1))',
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]" style={{
+        background: 'linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.15))',
         backgroundSize: '100% 4px'
       }} />
 
       {/* Background Glow Orbs */}
-      <div className="fixed top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-primary blur-[150px] opacity-10 pointer-events-none z-0" />
-      <div className="fixed bottom-[-20%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-secondary blur-[150px] opacity-10 pointer-events-none z-0" />
+      <div className="fixed top-[-15%] left-[-5%] w-[40vw] h-[40vw] rounded-full bg-primary blur-[180px] opacity-[0.07] pointer-events-none z-0" />
+      <div className="fixed bottom-[-10%] right-[-5%] w-[35vw] h-[35vw] rounded-full bg-secondary blur-[180px] opacity-[0.06] pointer-events-none z-0" />
 
       {/* Main Content */}
-      <div className="relative z-10 pt-8 pb-24 md:pb-10 px-4 md:px-6 max-w-7xl mx-auto flex flex-col gap-10">
+      <div className="relative z-10 pt-6 pb-32 md:pb-16 px-4 md:px-8 max-w-7xl mx-auto">
 
-        {/* Hero Section */}
-        <header className="flex flex-col items-start gap-4 border-l-4 border-primary pl-6 py-2 relative">
-          <h1 className="text-4xl md:text-6xl font-bold font-display text-on-surface glitch-hover transition-all duration-300">
-            NEURAL MARKET
-          </h1>
-          <p className="text-lg text-on-surface-variant max-w-2xl">
-            升级你的数字美学 · 社区训练AI模型与时尚分析工具
-          </p>
-          <div className="absolute top-0 right-0 text-primary/30 font-mono text-[10px] hidden md:block">
-            SYS.STAT: OPTIMAL // LOC: SECTOR_4
+        {/* ── Hero Section ── */}
+        <header className="mb-10">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+            <div>
+              <div className="flex items-baseline gap-3 mb-2">
+                <h1 className="text-4xl md:text-5xl font-display font-bold text-on-surface">
+                  市场
+                </h1>
+                <span className="text-sm md:text-base font-mono text-primary/60 tracking-widest uppercase">
+                  / Market
+                </span>
+              </div>
+              <p className="text-on-surface-variant text-sm md:text-base">
+                AI穿搭分析工具 & 数字时尚资产 · 升级你的赛博美学
+              </p>
+            </div>
+            <div className="flex items-center gap-6 font-mono text-xs text-on-surface-variant">
+              <div className="flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5 text-tertiary" />
+                <span>{MARKET_TOOLS.length} 工具</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Coins className="w-3.5 h-3.5 text-tertiary" />
+                <span>{coins} 金币</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5 text-primary" />
+                <span>{PRODUCT_LIST.length} 资产</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Coin Balance Bar */}
+          <div className="flex items-center gap-4 px-4 py-3 rounded-lg bg-surface-container/60 border border-outline-variant/50 backdrop-blur-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-tertiary/10 border border-tertiary/30 flex items-center justify-center">
+                <Coins className="w-4 h-4 text-tertiary drop-shadow-[0_0_6px_rgba(191,208,67,0.6)]" />
+              </div>
+              <div>
+                <div className="text-xs text-on-surface-variant font-mono">账户余额</div>
+                <div className="font-display font-bold text-tertiary text-lg leading-tight">{coins} <span className="text-xs font-mono text-on-surface-variant">金币</span></div>
+              </div>
+            </div>
+            <div className="flex-1 hidden md:block">
+              <div className="h-1.5 rounded-full bg-outline-variant/30 overflow-hidden">
+                <div className="h-full rounded-full bg-gradient-to-r from-tertiary/80 to-tertiary/40" style={{ width: `${Math.min(100, (coins / 1000) * 100)}%` }} />
+              </div>
+            </div>
+            <div className="flex items-center gap-3 ml-auto">
+              <Link href="/pricing" className="text-xs text-primary font-mono hover:underline flex items-center gap-1">
+                充值 <ChevronRight className="w-3 h-3" />
+              </Link>
+              <div className="flex items-center gap-1.5 text-xs text-on-surface-variant">
+                <Star className="w-3.5 h-3.5 text-tertiary" />
+                每日签到 +20
+              </div>
+            </div>
           </div>
         </header>
 
-        {/* Category Filter */}
-        <section className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`flex items-center gap-2 px-4 py-2 whitespace-nowrap transition-all font-mono text-xs tracking-wider uppercase ${
-                activeCategory === cat.id
-                  ? 'bg-secondary text-background font-bold shadow-[0_0_10px_rgba(236,255,227,0.4)]'
-                  : 'cyber-glass border border-white/10 text-on-surface-variant hover:bg-white/5'
-              }`}
-            >
-              <span className="material-symbols-outlined text-base">{cat.icon}</span>
-              <span>{cat.name}</span>
-            </button>
-          ))}
-        </section>
-
-        {/* AI ANALYSIS GRID */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-2xl font-display font-bold text-on-surface flex items-center gap-2">
-            <span className="w-2 h-2 bg-secondary rounded-full shadow-[0_0_8px_rgba(236,255,227,0.8)] animate-pulse" />
-            AI ANALYSIS GRID
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {filteredTools.map((tool) => (
-              <HUDBrackets key={tool.id} data-scroll-animate>
-                <GlassCard className="p-4 flex flex-col gap-4 hover:bg-white/10 transition-colors duration-300 relative group overflow-hidden">
-                  {/* Gradient corner accent */}
-                  <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-secondary/20 to-transparent" />
-
-                <div className="flex items-start justify-between">
-                  <div
-                    className="w-12 h-12 flex items-center justify-center"
-                    style={{ color: tool.color }}
-                  >
-                    <span className="material-symbols-outlined text-[32px]" style={{ filter: `drop-shadow(0 0 8px ${tool.color}80)` }}>
-                      {tool.icon}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-end gap-1">
-                    {tool.isHot && (
-                      <span className="px-2 py-0.5 bg-primary/20 text-primary text-[10px] font-mono border border-primary/30">
-                        HOT
-                      </span>
-                    )}
-                    {tool.isNew && (
-                      <span className="px-2 py-0.5 bg-secondary/20 text-secondary text-[10px] font-mono border border-secondary/30">
-                        NEW
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-bold text-on-surface mb-1">{tool.name}</h3>
-                  <p className="text-sm text-on-surface-variant">{tool.description}</p>
-                </div>
-
-                {ownedTools.includes(tool.id) ? (
-                  <button
-                    onClick={() => router.push('/scan?target=/ai-listing')}
-                    className="mt-auto border border-secondary text-secondary font-mono text-xs py-2 px-4 hover:bg-secondary/10 hover:shadow-[0_0_15px_rgba(236,255,227,0.5)] transition-all duration-300 glitch-hover w-full flex items-center justify-center gap-1 uppercase tracking-wider"
-                  >
-                    开启扫描 <span className="material-symbols-outlined text-sm">barcode_scanner</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => addToCart(tool)}
-                    className="mt-auto border border-primary text-primary font-mono text-xs py-2 px-4 hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)] transition-all duration-300 glitch-hover w-full flex items-center justify-center gap-1 uppercase tracking-wider"
-                  >
-                    {tool.price} 金币 <span className="material-symbols-outlined text-sm">shopping_cart_checkout</span>
-                  </button>
+        {/* ── Category Tabs ── */}
+        <section className="mb-8">
+          <div className="flex gap-1 overflow-x-auto pb-3 scrollbar-hide border-b border-outline-variant/30">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`relative flex items-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all text-sm ${
+                  activeCategory === cat.id
+                    ? 'text-primary font-semibold'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                {activeCategory === cat.id && (
+                  <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-primary shadow-[0_0_8px_rgba(255,171,243,0.6)] rounded-full" />
                 )}
-                </GlassCard>
-              </HUDBrackets>
+                <span>{cat.name}</span>
+              </button>
             ))}
           </div>
         </section>
 
-        {/* Free Coins Banner */}
-        <section data-scroll-animate>
-          <HUDBrackets>
-            <GlassCard className="border-t border-l border-tertiary/30 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <Coins className="w-5 h-5 text-tertiary drop-shadow-[0_0_6px_rgba(191,208,67,0.6)]" />
-                  <span className="font-bold text-on-surface">余额：{coins} 金币</span>
+        {/* ── AI Tools Grid ── */}
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl md:text-2xl font-display font-bold text-on-surface flex items-center gap-2">
+              <span className="w-1.5 h-6 bg-primary rounded-full shadow-[0_0_8px_rgba(255,171,243,0.4)]" />
+              AI 分析工具
+            </h2>
+            <span className="text-xs font-mono text-on-surface-variant">
+              {filteredTools.length} 项
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredTools.map((tool) => (
+              <div
+                key={tool.id}
+                className="group relative bg-surface-container/40 border border-outline-variant/50 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-[0_0_20px_rgba(255,171,243,0.08)] transition-all duration-300"
+              >
+                {/* Top gradient accent bar */}
+                <div className="h-1 w-full" style={{ background: `linear-gradient(to right, ${tool.color}60, transparent)` }} />
+
+                <div className="p-5">
+                  {/* Header: icon + badges */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center border border-white/5" style={{ backgroundColor: `${tool.color}10` }}>
+                      <span className="material-symbols-outlined text-2xl" style={{ color: tool.color, filter: `drop-shadow(0 0 6px ${tool.color}60)` }}>
+                        {tool.icon}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      {tool.isHot && (
+                        <span className="px-2 py-0.5 bg-primary/15 text-primary text-[10px] font-mono font-semibold rounded border border-primary/20">
+                          HOT
+                        </span>
+                      )}
+                      {tool.isNew && (
+                        <span className="px-2 py-0.5 bg-secondary/15 text-secondary text-[10px] font-mono font-semibold rounded border border-secondary/20">
+                          NEW
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Title + desc */}
+                  <h3 className="font-display font-bold text-on-surface text-base mb-1.5">{tool.name}</h3>
+                  <p className="text-xs text-on-surface-variant leading-relaxed mb-4 line-clamp-2">{tool.description}</p>
+
+                  {/* Price + action */}
+                  <div className="flex items-center justify-between pt-3 border-t border-outline-variant/30">
+                    <div className="flex items-baseline gap-1.5">
+                      {tool.originalPrice && tool.originalPrice > tool.price && (
+                        <span className="text-xs text-on-surface-variant/50 line-through font-mono">{tool.originalPrice}</span>
+                      )}
+                      <span className="font-display font-bold text-tertiary text-lg">{tool.price}</span>
+                      <span className="text-xs text-on-surface-variant font-mono">金币</span>
+                    </div>
+                    {ownedTools.includes(tool.id) ? (
+                      <button
+                        onClick={() => router.push('/scan?target=/ai-listing')}
+                        className="px-4 py-1.5 rounded-lg border border-secondary/50 text-secondary text-xs font-mono hover:bg-secondary/10 hover:shadow-[0_0_12px_rgba(236,255,227,0.3)] transition-all duration-300 flex items-center gap-1"
+                      >
+                        <Check className="w-3.5 h-3.5" /> 已拥有
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => addToCart(tool)}
+                        className="px-4 py-1.5 rounded-lg bg-primary/10 border border-primary/40 text-primary text-xs font-mono hover:bg-primary/20 hover:shadow-[0_0_12px_rgba(255,171,243,0.3)] transition-all duration-300 flex items-center gap-1"
+                      >
+                        <ShoppingCart className="w-3.5 h-3.5" /> 购买
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <span className="text-sm text-primary font-mono hover:underline cursor-pointer">
-                  {'// GET MORE COINS?'}
-                </span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-on-surface-variant font-mono">
-                <Star className="w-4 h-4 text-tertiary" />
-                每日签到 → +20 金币
-              </div>
-            </GlassCard>
-          </HUDBrackets>
+            ))}
+          </div>
         </section>
 
-        {/* HOT ASSETS */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-2xl font-display font-bold text-on-surface flex items-center gap-2">
-            <span className="w-2 h-2 bg-primary rounded-full shadow-[0_0_8px_rgba(255,171,243,0.8)] animate-pulse" />
-            HOT ASSETS
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* ── Divider ── */}
+        <div className="flex items-center gap-4 mb-10">
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-outline-variant/50 to-transparent" />
+          <span className="text-xs font-mono text-on-surface-variant/40 tracking-widest">DIGITAL ASSETS</span>
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-outline-variant/50 to-transparent" />
+        </div>
+
+        {/* ── Hot Assets Grid ── */}
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl md:text-2xl font-display font-bold text-on-surface flex items-center gap-2">
+              <span className="w-1.5 h-6 bg-tertiary rounded-full shadow-[0_0_8px_rgba(191,208,67,0.4)]" />
+              热门资产
+            </h2>
+            <Link href="/seller" className="text-xs font-mono text-primary hover:underline flex items-center gap-1">
+              查看全部 <ChevronRight className="w-3 h-3" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {PRODUCT_LIST.slice(0, 6).map((asset) => {
               const rarityColor: Record<string,string> = {
                 COMMON: "#9CA3AF", RARE: "#60A5FA", EPIC: "#A78BFA", LEGENDARY: "#F59E0B",
               };
+              const rarityLabel: Record<string,string> = {
+                COMMON: "普通", RARE: "稀有", EPIC: "史诗", LEGENDARY: "传说",
+              };
               return (
-                <div key={asset.id} className="cyber-glass border-t border-l border-white/20 p-2 flex flex-col gap-2 relative group">
-                  {/* Cover Image - links to product page */}
+                <div
+                  key={asset.id}
+                  className="group relative bg-surface-container/40 border border-outline-variant/50 rounded-xl overflow-hidden hover:border-primary/30 hover:shadow-[0_0_24px_rgba(255,171,243,0.06)] transition-all duration-300"
+                >
+                  {/* Cover Image */}
                   <Link href={`/product/${asset.id}`}>
                     <div
-                      className="h-48 bg-surface-container-high relative overflow-hidden border border-white/10 cursor-pointer"
+                      className="h-52 relative overflow-hidden cursor-pointer"
                       style={{ backgroundImage: `url('${asset.image}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
                     >
-                      <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+                      {/* Rarity badge */}
                       <div
-                        className="absolute top-2 left-2 px-2 py-0.5 font-mono text-[10px] border backdrop-blur-sm"
-                        style={{ color: rarityColor[asset.rarity], borderColor: `${rarityColor[asset.rarity]}60`, backgroundColor: `${rarityColor[asset.rarity]}20` }}
+                        className="absolute top-3 left-3 px-2.5 py-1 font-mono text-[10px] font-semibold rounded border backdrop-blur-md"
+                        style={{ color: rarityColor[asset.rarity], borderColor: `${rarityColor[asset.rarity]}40`, backgroundColor: `${rarityColor[asset.rarity]}15` }}
                       >
-                        {asset.rarity}
+                        {rarityLabel[asset.rarity]} · {asset.rarity}
+                      </div>
+                      {/* Rating */}
+                      <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 rounded bg-black/40 backdrop-blur-sm">
+                        <Star className="w-3 h-3 text-tertiary fill-tertiary" />
+                        <span className="text-[10px] font-mono text-on-surface">{asset.rating}</span>
                       </div>
                     </div>
                   </Link>
+
                   {/* Info */}
-                  <div className="flex justify-between items-start mt-1">
-                    <div>
-                      <Link href={`/product/${asset.id}`}>
-                        <h3 className="font-display text-base text-on-surface uppercase tracking-widest hover:text-primary transition-colors cursor-pointer">
-                          {(asset as any).nameZh ?? asset.name}
-                        </h3>
-                      </Link>
-                      <p className="font-mono text-xs text-on-surface-variant mt-1">BY {(asset as any).authorLabel ?? asset.author}</p>
+                  <div className="p-4">
+                    <Link href={`/product/${asset.id}`}>
+                      <h3 className="font-display font-bold text-sm text-on-surface mb-1 hover:text-primary transition-colors cursor-pointer">
+                        {asset.nameZh}
+                      </h3>
+                    </Link>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="font-mono text-[10px] text-on-surface-variant">
+                        by {(asset as any).authorLabel ?? asset.author}
+                      </span>
+                      <span className="font-mono text-[10px] text-on-surface-variant">
+                        {asset.sales} 已售
+                      </span>
                     </div>
-                    <span className="font-mono text-primary font-bold">{asset.price} 金币</span>
+
+                    {/* Price + CTA */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-baseline gap-1.5">
+                        {asset.originalPrice > asset.price && (
+                          <span className="text-xs text-on-surface-variant/40 line-through font-mono">{asset.originalPrice}</span>
+                        )}
+                        <span className="font-display font-bold text-primary">{asset.price}</span>
+                        <span className="text-[10px] text-on-surface-variant font-mono">金币</span>
+                      </div>
+                      <button
+                        onClick={() => {
+                          const tool = { ...asset, icon: "star", color: rarityColor[asset.rarity], description: asset.description, features: asset.features, isHot: false, isNew: false, originalPrice: asset.originalPrice } as unknown as MarketTool;
+                          addToCart(tool);
+                        }}
+                        className="px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/30 text-primary text-xs font-mono hover:bg-primary/20 hover:shadow-[0_0_12px_rgba(255,171,243,0.3)] transition-all duration-300 flex items-center gap-1"
+                      >
+                        <ShoppingCart className="w-3 h-3" /> 加入
+                      </button>
+                    </div>
                   </div>
-                  {/* CTA */}
-                  <button
-                    onClick={() => {
-                      const tool = { ...asset, icon: "star", color: rarityColor[asset.rarity], description: asset.description, features: asset.features, isHot: false, isNew: false, originalPrice: asset.originalPrice } as unknown as MarketTool;
-                      addToCart(tool);
-                    }}
-                    className="mt-1 border border-primary text-primary font-mono text-xs py-2 hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)] transition-all duration-300 w-full flex justify-center items-center gap-1 uppercase tracking-wider"
-                  >
-                    ADD TO CART <span className="material-symbols-outlined text-sm">shopping_cart_checkout</span>
-                  </button>
                 </div>
               );
             })}
@@ -507,10 +591,10 @@ export default function MarketplacePage() {
       {cart.length > 0 && (
         <button
           onClick={() => setShowCheckout(true)}
-          className="fixed bottom-6 right-4 md:right-6 w-14 h-14 bg-primary/20 border border-primary cyber-glass flex items-center justify-center text-primary hover:bg-primary/40 hover:shadow-[0_0_20px_rgba(255,171,243,0.8)] transition-all duration-300 z-40 group"
+          className="fixed bottom-8 right-6 md:right-8 w-14 h-14 rounded-full bg-primary/15 border border-primary/40 backdrop-blur-md flex items-center justify-center text-primary hover:bg-primary/25 hover:shadow-[0_0_24px_rgba(255,171,243,0.3)] transition-all duration-300 z-40"
         >
-          <ShoppingCart className="w-6 h-6" />
-          <span className="absolute -top-2 -right-2 w-6 h-6 bg-primary text-background text-xs flex items-center justify-center font-bold">
+          <ShoppingCart className="w-5 h-5" />
+          <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-background text-[10px] font-bold rounded-full flex items-center justify-center">
             {cart.length}
           </span>
         </button>
@@ -752,20 +836,13 @@ export default function MarketplacePage() {
       )}
 
       <style jsx global>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .cyber-glass {
-          background-color: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(12px);
-        }
-        .glitch-hover:hover {
-          transform: translate(1px, -1px);
-          text-shadow: 2px 0 #ffabf3, -2px 0 #ecffe3;
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
       `}</style>
     </main>
