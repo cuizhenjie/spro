@@ -112,92 +112,89 @@ export default function Home() {
         {/* Split header: large hero + 2 small cards */}
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Large feature card */}
-          <div className="cyber-glass group relative overflow-hidden rounded-xl border border-outline-variant lg:col-span-8 lg:h-[500px] transition-colors hover:border-primary-container/50">
-            <div
-              className="absolute inset-0 bg-cover bg-center opacity-50 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
-              style={{
-                backgroundImage:
-                  "url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200')",
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-            <div className="absolute inset-0 z-10 flex flex-col justify-end p-8">
-              <div className="mb-4 inline-flex w-max items-center space-x-2 rounded-sm border border-secondary-container bg-secondary-container/20 px-3 py-1 text-secondary-fixed backdrop-blur-sm">
-                <ScanLine className="h-4 w-4" />
-                <span className="font-mono-data text-mono-data uppercase">系统运行中</span>
+          <NextLink href="/ai-listing" className="lg:col-span-8 lg:h-[500px]">
+            <div className="cyber-glass group relative overflow-hidden rounded-xl border border-outline-variant h-full transition-colors hover:border-primary-container/50">
+              <div
+                className="absolute inset-0 bg-cover bg-center opacity-50 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
+                style={{
+                  backgroundImage:
+                    "url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200')",
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+              <div className="absolute inset-0 z-10 flex flex-col justify-end p-8">
+                <div className="mb-4 inline-flex w-max items-center space-x-2 rounded-sm border border-secondary-container bg-secondary-container/20 px-3 py-1 text-secondary-fixed backdrop-blur-sm">
+                  <ScanLine className="h-4 w-4" />
+                  <span className="font-mono-data text-mono-data uppercase">系统运行中</span>
+                </div>
+                <h1 className="font-h1 text-h1 mb-2 tracking-widest text-on-background drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                  AI 面部美学分析
+                </h1>
+                <p className="font-body-lg text-body-lg mb-6 max-w-xl text-on-surface-variant">
+                  Initiate full-spectrum bio-metric analysis to determine optimal
+                  aesthetic pathways. High-fidelity neural net processing ready.
+                </p>
+                <span className="flex w-max items-center space-x-2 rounded-none border border-primary-container px-8 py-4 font-label-caps text-label-caps text-primary-container transition-all hover:bg-primary-container/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)]">
+                  <span>开启扫描</span>
+                  <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                </span>
               </div>
-              <h1 className="font-h1 text-h1 mb-2 tracking-widest text-on-background drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                AI 面部美学分析
-              </h1>
-              <p className="font-body-lg text-body-lg mb-6 max-w-xl text-on-surface-variant">
-                Initiate full-spectrum bio-metric analysis to determine optimal
-                aesthetic pathways. High-fidelity neural net processing ready.
-              </p>
-              <NextLink
-                href="/ai-listing"
-                className="flex w-max items-center space-x-2 rounded-none border border-primary-container px-8 py-4 font-label-caps text-label-caps text-primary-container transition-all hover:bg-primary-container/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)]"
-              >
-                <span>开启扫描</span>
-                <ArrowRight className="transition-transform group-hover:translate-x-1" />
-              </NextLink>
+              {/* Animated scan line */}
+              <div className="absolute left-0 top-0 h-1 w-full animate-pulse bg-secondary-container opacity-50 shadow-[0_0_10px_#13ff43]" />
             </div>
-            {/* Animated scan line */}
-            <div className="absolute left-0 top-0 h-1 w-full animate-pulse bg-secondary-container opacity-50 shadow-[0_0_10px_#13ff43]" />
-          </div>
+          </NextLink>
 
           {/* Right side: two stacked cards */}
           <div className="flex flex-col gap-6 lg:col-span-4">
             {/* Card: 赛博穿搭解析 */}
-            <div className="cyber-glass group relative flex min-h-[238px] flex-1 flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-secondary-container/50">
-              <div
-                className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
-                style={{
-                  backgroundImage:
-                    "url('https://images.unsplash.com/photo-1515688594390-b649af70d282?auto=format&fit=crop&q=80&w=800')",
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
-              <div className="relative z-10">
-                <h3 className="font-h2 mb-2 text-2xl text-secondary-fixed drop-shadow-[0_0_8px_rgba(236,255,227,0.5)]">
-                  赛博穿搭解析
-                </h3>
-                <p className="font-body-md mb-4 text-sm text-on-surface-variant">
-                  Structural analysis of synthetic fabrics and augment integration.
-                </p>
-                <NextLink
-                  href="/ai-listing"
-                  className="flex items-center text-sm font-label-caps text-secondary-fixed transition-colors hover:text-on-surface"
-                >
-                  开始 <ArrowRight className="ml-1 h-4 w-4" />
-                </NextLink>
+            <NextLink href="/upload/fashion" className="flex-1">
+              <div className="cyber-glass group relative flex min-h-[238px] flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-secondary-container/50 h-full">
+                <div
+                  className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
+                  style={{
+                    backgroundImage:
+                      "url('https://images.unsplash.com/photo-1515688594390-b649af70d282?auto=format&fit=crop&q=80&w=800')",
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+                <div className="relative z-10">
+                  <h3 className="font-h2 mb-2 text-2xl text-secondary-fixed drop-shadow-[0_0_8px_rgba(236,255,227,0.5)]">
+                    赛博穿搭解析
+                  </h3>
+                  <p className="font-body-md mb-4 text-sm text-on-surface-variant">
+                    Structural analysis of synthetic fabrics and augment integration.
+                  </p>
+                  <span className="flex items-center text-sm font-label-caps text-secondary-fixed transition-colors hover:text-on-surface">
+                    开始 <ArrowRight className="ml-1 h-4 w-4" />
+                  </span>
+                </div>
               </div>
-            </div>
+            </NextLink>
 
             {/* Card: AI色彩诊断 */}
-            <div className="cyber-glass group relative flex min-h-[238px] flex-1 flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-primary-container/50">
-              <div
-                className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
-                style={{
-                  backgroundImage:
-                    "url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800')",
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
-              <div className="relative z-10">
-                <h3 className="font-h2 mb-2 text-2xl text-primary-fixed drop-shadow-[0_0_8px_rgba(255,171,243,0.5)]">
-                  AI色彩诊断
-                </h3>
-                <p className="font-body-md mb-4 text-sm text-on-surface-variant">
-                  Chromatic mapping for optimal neon reflection.
-                </p>
-                <NextLink
-                  href="/marketplace"
-                  className="flex items-center text-sm font-label-caps text-primary-fixed transition-colors hover:text-on-surface"
-                >
-                  提取 <ArrowRight className="ml-1 h-4 w-4" />
-                </NextLink>
+            <NextLink href="/upload/color" className="flex-1">
+              <div className="cyber-glass group relative flex min-h-[238px] flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-primary-container/50 h-full">
+                <div
+                  className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
+                  style={{
+                    backgroundImage:
+                      "url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800')",
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+                <div className="relative z-10">
+                  <h3 className="font-h2 mb-2 text-2xl text-primary-fixed drop-shadow-[0_0_8px_rgba(255,171,243,0.5)]">
+                    AI色彩诊断
+                  </h3>
+                  <p className="font-body-md mb-4 text-sm text-on-surface-variant">
+                    Chromatic mapping for optimal neon reflection.
+                  </p>
+                  <span className="flex items-center text-sm font-label-caps text-primary-fixed transition-colors hover:text-on-surface">
+                    提取 <ArrowRight className="ml-1 h-4 w-4" />
+                  </span>
+                </div>
               </div>
-            </div>
+            </NextLink>
           </div>
         </section>
 
