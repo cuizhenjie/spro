@@ -2,9 +2,7 @@ import {
   ArrowRight,
   BarChart3,
   ChevronRight,
-  Coins,
   LayoutGrid,
-  Power,
   ScanLine,
   Store,
   User,
@@ -98,61 +96,15 @@ const TRENDS = [
   },
 ];
 
-const NAV_LINKS = ['市场', '趋势', '分析', '创作者'];
-
 export default function Home() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-background pb-24 text-on-surface md:pb-0 md:pt-20">
+    <div className="relative min-h-screen overflow-x-hidden bg-background pb-24 text-on-surface md:pb-0">
       {/* Scanline overlay */}
       <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(to_bottom,transparent,transparent_50%,rgba(0,0,0,0.1)_50%,rgba(0,0,0,0.1))] bg-[length:100%_4px] opacity-30" />
 
       {/* HUD corner brackets */}
       <div className="pointer-events-none fixed left-4 top-24 z-40 h-16 w-16 border-t-2 border-l-2 border-primary-container/30" />
       <div className="pointer-events-none fixed right-4 top-24 z-40 h-16 w-16 border-t-2 border-r-2 border-primary-container/30" />
-
-      {/* ── Desktop top nav ── */}
-      <header className="fixed top-0 z-50 hidden w-full items-center justify-between border-b border-primary-container/30 bg-black/40 px-6 py-4 shadow-glow backdrop-blur-xl md:flex">
-        <div className="flex items-center">
-          <span className="font-display text-2xl font-black italic text-primary drop-shadow-[0_0_8px_rgba(255,171,243,0.8)]">
-            赛博衣橱
-          </span>
-          <nav className="ml-12 flex space-x-8 font-display text-sm uppercase tracking-widest">
-            {NAV_LINKS.map((link, i) => (
-              <a
-                key={link}
-                href="#"
-                className={`pb-1 transition-all duration-300 ease-in-out hover:scale-105 hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)] active:skew-x-2 ${
-                  i === 0
-                    ? 'border-b-2 border-primary text-primary-fixed'
-                    : 'text-on-surface-variant transition-colors hover:text-primary-fixed'
-                }`}
-              >
-                {link}
-              </a>
-            ))}
-          </nav>
-        </div>
-
-        <div className="ml-auto flex items-center space-x-4 text-primary">
-          <div className="flex items-center rounded border border-primary-container/30 bg-black/50 px-3 py-1.5">
-            <Coins className="mr-2 h-4 w-4" />
-            <span className="font-mono-data text-sm">12,450 信用点</span>
-          </div>
-          <button className="transition-all duration-300 hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)]">
-            <Power className="h-5 w-5" />
-          </button>
-          <a
-            href="#"
-            className="ml-2 block overflow-hidden rounded-full border border-primary-container/50 shadow-cyber-glass transition-colors hover:border-primary hover:shadow-glow"
-          >
-            <img
-              alt="User avatar"
-              className="h-8 w-8 object-cover"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU6zPSzHbjpE0VT-ChMF5ftbQAdBiOITIkDEl9qg2i23mJBmIUfKJLbyxVSNnq8IW-b8UId7bjjwCoc9Im5GKxXXjn5vsF-IbUqLPc8yWwvCSLnIijtOCLb2pth4-PXxBWQ8vN_dv_zVeejqW-_S9gftK7ULvqq2R5o_WcnQBW5vmFBH26EqecwnAZgA1F5e2eUm54z6ySFgmlWgM5kgHC95YnuCyGTMBHuP8uNYDIFYDXUYjpmQDaeaz_XAF7bLIgoV_KtxGHwuo"
-            />
-          </a>
-        </div>
-      </header>
 
       {/* ── Main content ── */}
       <main className="mx-auto max-w-container-max space-y-xl p-6 md:p-10">
