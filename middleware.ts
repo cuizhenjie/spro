@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const PROTECTED_ROUTES = ['/seller', '/profile', '/orders', '/ai-listing'];
+const PROTECTED_ROUTES = ['/seller', '/profile', '/orders'];
 const AUTH_KEY = 'cyberdress_auth';
 
 export function middleware(request: NextRequest) {

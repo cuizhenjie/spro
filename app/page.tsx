@@ -32,7 +32,7 @@ const AI_TOOLS = [
     title: '面部美学评分',
     description: '面部特征深度分析，多维度美学综合评分',
     icon: Eye,
-    href: '/ai-listing',
+    href: '/marketplace',
   },
   {
     title: '穿搭推荐',
@@ -80,7 +80,7 @@ export default function Home() {
         {/* ── Hero section ── */}
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Large feature card */}
-          <NextLink href="/ai-listing" className="lg:col-span-8 lg:h-[500px]">
+          <NextLink href="/marketplace" className="lg:col-span-8 lg:h-[500px]">
             <div className="cyber-glass group relative overflow-hidden rounded-xl border border-outline-variant h-full transition-colors hover:border-primary/50">
               <div
                 className="absolute inset-0 bg-cover bg-center opacity-50 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"

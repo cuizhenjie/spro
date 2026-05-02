@@ -6,9 +6,10 @@ import { MARKET_TOOLS, CATEGORIES, STYLE_QUADRANTS, MOCK_ANALYSIS_RESULTS } from
 import { PRODUCTS as PRODUCT_LIST } from '@/lib/products-data';
 import { MarketTool, StyleQuadrant } from '@/types/marketplace';
 import StyleQuiz from '@/components/StyleQuiz';
-import { Sparkles, ShoppingCart, Coins, Check, Star, Palette, Trash2, Minus, Plus, X, Terminal, Search, TrendingUp, Zap, ChevronRight } from 'lucide-react';
-import { GlassCard } from '@/components/CyberUI/GlassCard';
 import { HUDBrackets } from '@/components/CyberUI/HUDBrackets';
+import { GlassCard } from '@/components/CyberUI/GlassCard';
+import { Sparkles, ShoppingCart, Coins, Check, Star, Palette, Trash2, Minus, Plus, X, Terminal, Search, TrendingUp, Zap, ChevronRight } from 'lucide-react';
+import { getAuth } from '@/lib/auth';
 
 export default function MarketplacePage() {
   const router = useRouter();
@@ -61,27 +62,37 @@ export default function MarketplacePage() {
         localStorage.setItem("spro_orders", JSON.stringify(orders));
       } catch {}
       setCoins(coins - total);
-      setOwnedTools([...ownedTools, ...cart.map(t => t.id)]);
+      const purchasedIds = cart.map(t => t.id);
+      setOwnedTools([...ownedTools, ...purchasedIds]);
       setCart([]);
       setShowCheckout(false);
+      // Redirect to scan for the active tool
+      if (activeTool) {
+        sessionStorage.setItem('spro_active_tool', activeTool.id);
+        router.push('/scan');
+      }
     }
   };
 
   const startAnalysis = (tool: MarketTool) => {
-    setActiveTool(tool);
-    setShowResult(false);
-    setQuizResult(null);
-
-    if (tool.id === 'style-analyzer') {
-      setShowQuiz(true);
+    // Step 1: Check login
+    const auth = getAuth();
+    if (!auth.loggedIn) {
+      router.push('/login?redirect=/marketplace');
       return;
     }
 
-    setAnalyzing(true);
-    setTimeout(() => {
-      setAnalyzing(false);
-      setShowResult(true);
-    }, 2000);
+    // Step 2: Not owned → add to cart and open checkout
+    if (!ownedTools.includes(tool.id)) {
+      addToCart(tool);
+      setShowCheckout(true);
+      return;
+    }
+
+    // Step 3: Owned → scan then upload/[tool]
+    setActiveTool(tool);
+    sessionStorage.setItem('spro_active_tool', tool.id);
+    router.push('/scan');
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -471,14 +482,14 @@ export default function MarketplacePage() {
                     </div>
                     {ownedTools.includes(tool.id) ? (
                       <button
-                        onClick={() => router.push('/scan?target=/ai-listing')}
+                        onClick={() => startAnalysis(tool)}
                         className="px-4 py-1.5 rounded-lg border border-secondary/50 text-secondary text-xs font-mono hover:bg-secondary/10 hover:shadow-[0_0_12px_rgba(236,255,227,0.3)] transition-all duration-300 flex items-center gap-1"
                       >
                         <Check className="w-3.5 h-3.5" /> 已拥有
                       </button>
                     ) : (
                       <button
-                        onClick={() => addToCart(tool)}
+                        onClick={() => startAnalysis(tool)}
                         className="px-4 py-1.5 rounded-lg bg-primary/10 border border-primary/40 text-primary text-xs font-mono hover:bg-primary/20 hover:shadow-[0_0_12px_rgba(255,171,243,0.3)] transition-all duration-300 flex items-center gap-1"
                       >
                         <ShoppingCart className="w-3.5 h-3.5" /> 购买

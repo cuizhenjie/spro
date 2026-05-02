@@ -30,7 +30,7 @@ No linter or test runner is configured.
 `AppShell` wraps all pages. It renders `TopNav` (fixed top bar) and conditionally shows `Sidebar` (fixed left, 288px) on pages that aren't in the no-sidebar list (`/`, `/profile`, `/pricing`, `/marketplace`, `/seller`). Pages with sidebar get `lg:pl-72` padding. All pages get `pt-[73px]` for the top nav.
 
 ### Routing & Auth
-- **Middleware** (`middleware.ts`) protects: `/marketplace`, `/seller`, `/profile`, `/orders`, `/pricing`, `/ai-listing`
+- **Middleware** (`middleware.ts`) protects: `/marketplace`, `/seller`, `/profile`, `/orders`, `/pricing`, `/marketplace`
 - **Auth** (`lib/auth.ts`) — client-side only. Uses `localStorage` + a `cyberdress_auth` cookie (7-day max-age, `SameSite=Lax`). Single hardcoded demo user: `demo@cyberdress.ai` / `cyberdress123` (520 coins, level "Cyberpunk").
 - Unauthenticated users hitting protected routes get redirected to `/login?redirect=<original-path>`.
 

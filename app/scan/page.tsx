@@ -12,7 +12,7 @@ const SCAN_STEPS = [
 function ScanContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const target = searchParams.get('target') || '/ai-listing';
+  const target = searchParams.get('target') || '/upload/color';
   const [progress, setProgress] = useState(0);
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -22,7 +22,10 @@ function ScanContent() {
         const next = prev + 1.5;
         if (next >= 100) {
           clearInterval(timer);
-          setTimeout(() => router.push(target), 400);
+          // Read tool from sessionStorage and navigate to upload/[tool]
+          const toolId = sessionStorage.getItem('spro_active_tool');
+          const dest = toolId ? `/upload/${toolId}` : target;
+          setTimeout(() => router.push(dest), 400);
           return 100;
         }
         if (next > 30 && stepIndex < 1) setStepIndex(1);
