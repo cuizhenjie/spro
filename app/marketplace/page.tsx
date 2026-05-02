@@ -4,6 +4,8 @@ import { MARKET_TOOLS, CATEGORIES, STYLE_QUADRANTS, MOCK_ANALYSIS_RESULTS } from
 import { MarketTool, StyleQuadrant } from '@/types/marketplace';
 import StyleQuiz from '@/components/StyleQuiz';
 import { Sparkles, ShoppingCart, Coins, Zap, Check, Star, Palette } from 'lucide-react';
+import { GlassCard } from '@/components/CyberUI/GlassCard';
+import { HUDBrackets } from '@/components/CyberUI/HUDBrackets';
 
 export default function MarketplacePage() {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -341,7 +343,9 @@ export default function MarketplacePage() {
             <Zap className="w-3 h-3" />
             NEW DROP · FIRST BUY 70% OFF
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold font-display text-on-surface glitch-hover transition-all duration-300">
+          <h1 className="text-4xl md:text-6xl font-bold font-display text-on-surface glitch-hover transition-all duration-300"
+            data-split-reveal
+          >
             NEURAL MARKET
           </h1>
           <p className="text-lg text-on-surface-variant max-w-2xl">
@@ -378,12 +382,10 @@ export default function MarketplacePage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {filteredTools.map((tool) => (
-              <div
-                key={tool.id}
-                className="cyber-glass border-t border-l border-white/20 p-4 flex flex-col gap-4 hover:bg-white/10 transition-colors duration-300 relative group overflow-hidden"
-              >
-                {/* Gradient corner accent */}
-                <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-secondary/20 to-transparent" />
+              <HUDBrackets key={tool.id} data-scroll-animate>
+                <GlassCard className="p-4 flex flex-col gap-4 hover:bg-white/10 transition-colors duration-300 relative group overflow-hidden">
+                  {/* Gradient corner accent */}
+                  <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-secondary/20 to-transparent" />
 
                 <div className="flex items-start justify-between">
                   <div
@@ -428,26 +430,31 @@ export default function MarketplacePage() {
                     {tool.price} CR <span className="material-symbols-outlined text-sm">shopping_cart_checkout</span>
                   </button>
                 )}
-              </div>
+                </GlassCard>
+              </HUDBrackets>
             ))}
           </div>
         </section>
 
         {/* Free Coins Banner */}
-        <section className="cyber-glass border-t border-l border-tertiary/30 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Coins className="w-5 h-5 text-tertiary drop-shadow-[0_0_6px_rgba(191,208,67,0.6)]" />
-              <span className="font-bold text-on-surface">BALANCE: {coins} CR</span>
-            </div>
-            <span className="text-sm text-primary font-mono hover:underline cursor-pointer">
-              {'// GET MORE COINS?'}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-on-surface-variant font-mono">
-            <Star className="w-4 h-4 text-tertiary" />
-            DAILY CHECK-IN → +20 CR
-          </div>
+        <section data-scroll-animate>
+          <HUDBrackets>
+            <GlassCard className="border-t border-l border-tertiary/30 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <Coins className="w-5 h-5 text-tertiary drop-shadow-[0_0_6px_rgba(191,208,67,0.6)]" />
+                  <span className="font-bold text-on-surface">BALANCE: {coins} CR</span>
+                </div>
+                <span className="text-sm text-primary font-mono hover:underline cursor-pointer">
+                  {'// GET MORE COINS?'}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-on-surface-variant font-mono">
+                <Star className="w-4 h-4 text-tertiary" />
+                DAILY CHECK-IN → +20 CR
+              </div>
+            </GlassCard>
+          </HUDBrackets>
         </section>
       </div>
 
@@ -491,8 +498,9 @@ export default function MarketplacePage() {
       {/* Checkout Modal */}
       {showCheckout && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="cyber-glass border-t border-l border-primary/30 w-full max-w-md p-6">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2 text-on-surface">
+          <HUDBrackets>
+            <GlassCard className="border-t border-l border-primary/30 w-full max-w-md p-6">
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2 text-on-surface">
               <ShoppingCart className="w-5 h-5 text-primary" />
               CART // 购物车
             </h2>
@@ -559,14 +567,16 @@ export default function MarketplacePage() {
             >
               {'// CLOSE'}
             </button>
-          </div>
+            </GlassCard>
+          </HUDBrackets>
         </div>
       )}
 
       {/* Analysis Modal */}
       {activeTool && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="cyber-glass border-t border-l border-primary/30 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
+          <HUDBrackets>
+            <GlassCard className="border-t border-l border-primary/30 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 relative">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold flex items-center gap-2 text-on-surface">
                 <span className="material-symbols-outlined" style={{ color: activeTool.color, filter: `drop-shadow(0 0 8px ${activeTool.color}80)` }}>
@@ -654,7 +664,8 @@ export default function MarketplacePage() {
                 </button>
               </div>
             )}
-          </div>
+          </GlassCard>
+          </HUDBrackets>
         </div>
       )}
 

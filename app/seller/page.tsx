@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useRef } from "react";
 import { GlassCard } from "@/components/CyberUI/GlassCard";
+import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
 import { MARKET_TOOLS, CATEGORIES } from "@/lib/marketplace-data";
 import type { MarketTool } from "@/types/marketplace";
 
@@ -146,7 +147,9 @@ export default function SellerDashboardPage() {
       {/* Header */}
       <div className="flex justify-between items-end border-b border-primary/20 pb-4">
         <div>
-          <h1 className="font-h1 text-h1 text-primary drop-shadow-[0_0_15px_rgba(255,171,243,0.4)]">
+          <h1 className="font-h1 text-h1 text-primary drop-shadow-[0_0_15px_rgba(255,171,243,0.4)]"
+            data-split-reveal
+          >
             CREATOR_TERMINAL
           </h1>
           <p className="font-mono-data text-mono-data text-on-surface-variant mt-2">
@@ -157,35 +160,41 @@ export default function SellerDashboardPage() {
 
       {/* Dashboard Widgets */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <StatWidget
-          label="TOTAL_REVENUE"
-          value={`${totalRevenue.toLocaleString()} Ƀ`}
-          icon="toll"
-          valueColor="text-primary"
-          delta="+12% 24H"
-          positive
-          widgetId="01"
-        />
-        <StatWidget
-          label="ACTIVE_ASSETS"
-          value={activeTools.toString()}
-          icon="view_in_ar"
-          valueColor="text-on-surface"
-          delta={
-            pendingCount > 0 ? `${pendingCount} PENDING APPROVAL` : "ALL LISTED"
-          }
-          positive={false}
-          widgetId="02"
-        />
-        <StatWidget
-          label="DAILY_TRAFFIC"
-          value="1,204"
-          icon="monitoring"
-          valueColor="text-on-surface"
-          delta="+5% 24H"
-          positive
-          widgetId="03"
-        />
+        <div data-scroll-animate>
+          <StatWidget
+            label="TOTAL_REVENUE"
+            value={`${totalRevenue.toLocaleString()} Ƀ`}
+            icon="toll"
+            valueColor="text-primary"
+            delta="+12% 24H"
+            positive
+            widgetId="01"
+          />
+        </div>
+        <div data-scroll-animate>
+          <StatWidget
+            label="ACTIVE_ASSETS"
+            value={activeTools.toString()}
+            icon="view_in_ar"
+            valueColor="text-on-surface"
+            delta={
+              pendingCount > 0 ? `${pendingCount} PENDING APPROVAL` : "ALL LISTED"
+            }
+            positive={false}
+            widgetId="02"
+          />
+        </div>
+        <div data-scroll-animate>
+          <StatWidget
+            label="DAILY_TRAFFIC"
+            value="1,204"
+            icon="monitoring"
+            valueColor="text-on-surface"
+            delta="+5% 24H"
+            positive
+            widgetId="03"
+          />
+        </div>
       </div>
 
       {/* Main Action & Asset List */}
@@ -367,7 +376,9 @@ export default function SellerDashboardPage() {
           )}
 
           {sellerTools.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} onToggle={toggleListed} />
+            <HUDBrackets key={tool.id} data-scroll-animate>
+              <ToolCard tool={tool} onToggle={toggleListed} />
+            </HUDBrackets>
           ))}
         </div>
       </div>
