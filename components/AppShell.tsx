@@ -6,12 +6,12 @@ import Sidebar from '@/components/Sidebar';
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isHome = pathname === '/';
+  const isNoSidebar = pathname === '/' || pathname === '/profile';
 
   return (
     <>
       <TopNav />
-      {isHome ? (
+      {isNoSidebar ? (
         <div className="pt-[73px]">{children}</div>
       ) : (
         <>
