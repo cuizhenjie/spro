@@ -247,10 +247,10 @@ export default function Home() {
                     </NextLink>
                     <div className="flex flex-1 flex-col p-4">
                       <NextLink href={`/product/${product.id}`}>
-                        <h4 className="font-h3 mb-1 text-sm text-on-surface hover:text-primary transition-colors">{product.name}</h4>
+                        <h4 className="font-h3 mb-1 text-sm text-on-surface hover:text-primary transition-colors">{product.nameZh}</h4>
                       </NextLink>
                       <p className="font-mono-data mb-1 text-xs text-primary-container">
-                        BY {product.author}
+                        BY {(product as any).authorLabel ?? product.author}
                       </p>
                       <p className="font-mono-data mb-4 text-xs text-on-surface-variant">
                         {product.rating} ★ · {product.sales} 已售

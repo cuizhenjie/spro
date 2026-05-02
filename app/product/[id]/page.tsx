@@ -58,8 +58,9 @@ export default function ProductPage() {
     ? product!.image
     : (tool!.coverImage || "/assets/marketplace-cover.png");
 
-  const displayName = isProduct ? product!.name : tool!.name;
-  const author = isProduct ? product!.author : "StyleBoxAI 官方";
+  const displayName = isProduct ? product!.nameZh : tool!.name;
+  const displaySubname = isProduct ? product!.name : tool!.nameEn;
+  const author = isProduct ? (product!.authorLabel ?? product!.author) : "StyleBoxAI 官方";
   const description = isProduct ? product!.description : tool!.description;
   const features = isProduct ? product!.features : tool!.features;
   const price = item.price;
@@ -68,7 +69,7 @@ export default function ProductPage() {
   const sales = isProduct ? product!.sales : 256;
   const rarity = isProduct ? product!.rarity : "EPIC";
   const category = isProduct
-    ? product!.category
+    ? (product!.categoryLabel ?? product!.category)
     : CATEGORIES.find((c) => c.id === tool!.category)?.name ?? tool!.category;
   const isHot = !isProduct && tool!.isHot;
   const isNew = !isProduct && tool!.isNew;
@@ -180,9 +181,9 @@ export default function ProductPage() {
               <h1 className="text-3xl md:text-4xl font-display font-bold text-on-surface tracking-wider">
                 {displayName}
               </h1>
-              {!isProduct && tool!.nameEn && (
+              {displaySubname && (
                 <p className="font-mono-data text-mono-data text-on-surface-variant mt-1">
-                  {tool!.nameEn}
+                  {displaySubname}
                 </p>
               )}
             </div>

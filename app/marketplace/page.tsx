@@ -479,10 +479,10 @@ export default function MarketplacePage() {
                     <div>
                       <Link href={`/product/${asset.id}`}>
                         <h3 className="font-display text-base text-on-surface uppercase tracking-widest hover:text-primary transition-colors cursor-pointer">
-                          {asset.name}
+                          {(asset as any).nameZh ?? asset.name}
                         </h3>
                       </Link>
-                      <p className="font-mono text-xs text-on-surface-variant mt-1">CREATED BY {asset.author}</p>
+                      <p className="font-mono text-xs text-on-surface-variant mt-1">BY {(asset as any).authorLabel ?? asset.author}</p>
                     </div>
                     <span className="font-mono text-primary font-bold">{asset.price} 金币</span>
                   </div>

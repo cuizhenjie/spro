@@ -65,7 +65,7 @@ const initialSellerTools: SellerTool[] = MARKET_TOOLS.slice(0, 3).map(
   }),
 );
 
-const initialSellerProducts: SellerProduct[] = PRODUCTS.slice(0, 4).map((p) => ({
+const initialSellerProducts: SellerProduct[] = PRODUCTS.map((p) => ({
   ...p,
   listed: true,
 }));
@@ -472,7 +472,7 @@ export default function SellerDashboardPage() {
                   <div className="w-20 h-20 bg-surface-container-high border border-outline-variant relative shrink-0 overflow-hidden">
                     <img
                       src={product.image}
-                      alt={product.name}
+                      alt={(product as any).nameZh ?? product.name}
                       className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all"
                     />
                   </div>
@@ -481,7 +481,7 @@ export default function SellerDashboardPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <h4 className="font-h3 text-h3 text-on-surface group-hover:text-primary transition-colors truncate">
-                        {product.name}
+                        {(product as any).nameZh ?? product.name}
                       </h4>
                       <span className={`px-1 py-px text-[10px] font-mono-data border ${
                         product.rarity === "LEGENDARY"
@@ -500,7 +500,10 @@ export default function SellerDashboardPage() {
                         <span className="material-symbols-outlined text-base">sell</span> {product.price} 金币
                       </span>
                       <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-base">shopping_cart</span> 已售 {product.sales}
+                        <span className="material-symbols-outlined text-base">category</span> {(product as any).categoryLabel ?? product.category}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span className="material-symbols-outlined text-base">shopping_cart</span> {product.sales}
                       </span>
                       <span className="flex items-center gap-1">
                         <span className="material-symbols-outlined text-base">star</span> {product.rating}
