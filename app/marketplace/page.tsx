@@ -44,10 +44,11 @@ export default function MarketplacePage() {
   const checkout = () => {
     const total = cart.reduce((sum, t) => sum + t.price, 0);
     if (total <= coins) {
+      const purchasedIds = cart.map((t: MarketTool) => t.id);
       // Save orders to localStorage
       try {
         const orders = JSON.parse(localStorage.getItem("spro_orders") || "[]");
-        cart.forEach((tool) => {
+        cart.forEach((tool: MarketTool) => {
           orders.unshift({
             id: "ORD_" + Math.random().toString(36).slice(2, 8).toUpperCase(),
             productId: tool.id,
@@ -62,9 +63,12 @@ export default function MarketplacePage() {
           });
         });
         localStorage.setItem("spro_orders", JSON.stringify(orders));
+        // Sync owned tools list for scan page to read
+        const owned = JSON.parse(localStorage.getItem('spro_owned_tools') || '[]');
+        purchasedIds.forEach((id: string) => { if (!owned.includes(id)) owned.push(id); });
+        localStorage.setItem('spro_owned_tools', JSON.stringify(owned));
       } catch {}
       setCoins(coins - total);
-      const purchasedIds = cart.map(t => t.id);
       setOwnedTools([...ownedTools, ...purchasedIds]);
       setCart([]);
       setShowCheckout(false);
@@ -412,14 +416,14 @@ export default function MarketplacePage() {
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`relative flex items-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all text-sm ${
+                className={`relative flex items-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all text-sm rounded-lg ${
                   activeCategory === cat.id
-                    ? 'text-primary font-semibold'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'bg-pink-500 text-white font-semibold'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/40'
                 }`}
               >
                 {activeCategory === cat.id && (
-                  <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-primary shadow-[0_0_8px_rgba(255,171,243,0.6)] rounded-full" />
+                  <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-white/60 rounded-full" />
                 )}
                 <span>{cat.name}</span>
               </button>
@@ -477,7 +481,7 @@ export default function MarketplacePage() {
                   <div className="flex items-center justify-between pt-3 border-t border-outline-variant/30">
                     <div className="flex items-baseline gap-1.5">
                       {tool.originalPrice && tool.originalPrice > tool.price && (
-                        <span className="text-xs text-on-surface-variant/50 line-through font-mono">{tool.originalPrice}</span>
+                        <span className="text-xs text-on-surface-variant/60 line-through font-mono mr-0.5">{tool.originalPrice}</span>
                       )}
                       <span className="font-display font-bold text-tertiary text-lg">{tool.price}</span>
                       <span className="text-xs text-on-surface-variant font-mono">金币</span>
@@ -487,7 +491,7 @@ export default function MarketplacePage() {
                         onClick={() => startAnalysis(tool)}
                         className="px-4 py-1.5 rounded-lg border border-secondary/50 text-secondary text-xs font-mono hover:bg-secondary/10 hover:shadow-[0_0_12px_rgba(236,255,227,0.3)] transition-all duration-300 flex items-center gap-1"
                       >
-                        <Check className="w-3.5 h-3.5" /> 已拥有
+                        <Check className="w-3.5 h-3.5" /> 去使用
                       </button>
                     ) : (
                       <button
@@ -537,10 +541,12 @@ export default function MarketplacePage() {
                 >
                   {/* Cover Image */}
                   <Link href={`/product/${asset.id}`}>
-                    <div
-                      className="h-52 relative overflow-hidden cursor-pointer"
-                      style={{ backgroundImage: `url('${asset.image}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-                    >
+                    <div className="relative overflow-hidden cursor-pointer" style={{ aspectRatio: '4/3' }}>
+                      <img
+                        src={asset.image}
+                        alt={asset.nameZh}
+                        className="w-full h-full object-cover"
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
                       {/* Rarity badge */}
                       <div

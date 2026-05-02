@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [accountType, setAccountType] = useState<'consumer' | 'creator'>('consumer');
 
   useEffect(() => {
     if (getAuth().loggedIn) router.replace('/');
@@ -112,6 +113,40 @@ export default function LoginPage() {
                 <div className="absolute bottom-0 left-0 w-full h-px bg-secondary-container shadow-[0_0_10px_rgba(0,255,204,0.8)] scale-x-0 peer-focus:scale-x-100 transition-transform origin-left duration-300" />
               </div>
             </div>
+
+            {/* Account Type (register only) */}
+            {mode === 'register' && (
+              <div className="flex flex-col gap-unit">
+                <label className="font-label-caps text-label-caps text-on-surface flex items-center gap-xs">
+                  <Badge className="w-3.5 h-3.5 text-on-surface-variant" />
+                  账户类型
+                </label>
+                <div className="grid grid-cols-2 gap-sm">
+                  <button
+                    type="button"
+                    onClick={() => setAccountType('consumer')}
+                    className={`py-sm px-md border text-xs font-mono rounded transition-all ${
+                      accountType === 'consumer'
+                        ? 'border-primary bg-primary/15 text-primary'
+                        : 'border-outline hover:border-primary/40 text-on-surface-variant'
+                    }`}
+                  >
+                    👤 消费者
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAccountType('creator')}
+                    className={`py-sm px-md border text-xs font-mono rounded transition-all ${
+                      accountType === 'creator'
+                        ? 'border-secondary bg-secondary/15 text-secondary'
+                        : 'border-outline hover:border-secondary/40 text-on-surface-variant'
+                    }`}
+                  >
+                    ✨ 创作者
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Actions */}
             <div className="flex flex-col gap-md mt-lg">

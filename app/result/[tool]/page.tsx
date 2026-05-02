@@ -338,7 +338,7 @@ export default function ResultPage() {
           </Link>
           <div className="flex items-center gap-3">
             <div className="h-2 w-2 animate-pulse rounded-full" style={{ backgroundColor: meta.accentColor, boxShadow: `0 0 8px ${meta.accentColor}` }} />
-            <span className="font-mono text-[11px] uppercase" style={{ color: meta.accentColor }}>
+            <span className="font-mono text-[11px] uppercase font-bold" style={{ color: meta.accentColor }}>
               {meta.subtitle}
             </span>
           </div>

@@ -70,15 +70,7 @@ export default function TopNav() {
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU6zPSzHbjpE0VT-ChMF5ftbQAdBiOITIkDEl9qg2i23mJBmIUfKJLbyxVSNnq8IW-b8UId7bjjwCoc9Im5GKxXXjn5vsF-IbUqLPc8yWwvCSLnIijtOCLb2pth4-PXxBWQ8vN_dv_zVeejqW-_S9gftK7ULvqq2R5o_WcnQBW5vmFBH26EqecwnAZgA1F5e2eUm54z6ySFgmlWgM5kgHC95YnuCyGTMBHuP8uNYDIFYDXUYjpmQDaeaz_XAF7bLIgoV_KtxGHwuo"
             />
           </Link>
-        ) : (
-          <Link
-            href="/login"
-            className="flex items-center gap-2 border border-primary/50 bg-primary/10 px-4 py-2 font-display text-sm uppercase tracking-widest text-primary transition-colors hover:bg-primary/20 hover:shadow-glow"
-          >
-            <LogIn className="h-4 w-4" />
-            登录
-          </Link>
-        )}
+        ) : null}
       </div>
     </header>
   );
