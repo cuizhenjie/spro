@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
 import { TerminalLog } from "@/components/CyberUI/TerminalLog";
+import { gsapScanLine } from "@/lib/animations";
 
 const MODES = [
   {
@@ -45,6 +46,13 @@ export default function AIListingPage() {
     "processing",
   );
   const [dragOver, setDragOver] = useState(false);
+  const scanLineRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scanLineRef.current && step === "processing") {
+      gsapScanLine(scanLineRef.current, { duration: 2.2 });
+    }
+  }, [step]);
 
   const handleFileDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -94,8 +102,12 @@ export default function AIListingPage() {
 
           {step === "processing" && (
             <>
-              {/* Laser Scan Line */}
-              <div className="absolute top-1/3 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#ff5500] to-transparent shadow-[0_0_10px_#ff5500,0_0_20px_#ff5500] z-10 animate-pulse"></div>
+              {/* GSAP Scan Line */}
+              <div
+                ref={scanLineRef}
+                className="absolute left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#ff5500] to-transparent shadow-[0_0_10px_#ff5500,0_0_20px_#ff5500] z-10"
+                style={{ top: '33%' }}
+              />
               {/* Scanning Overlay Grid */}
               <div
                 className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-20"
@@ -159,30 +171,30 @@ export default function AIListingPage() {
 
         {/* Right Column: Data & Form */}
         <div className="w-full md:w-1/2 p-lg flex flex-col justify-between bg-surface-container-low/50 relative">
-          {/* Progress Indicator */}
-          <div className="w-full mb-lg">
-            <div className="flex justify-between font-label-caps text-label-caps text-outline mb-xs">
-              <span className="text-primary">01 初始化</span>
-              <span
-                className={`text-primary ${step === "processing" ? "drop-shadow-[0_0_5px_rgba(255,171,243,0.8)]" : ""}`}
-              >
-                02 AI 分析中
-              </span>
-              <span
-                className={`${step === "done" ? "text-primary drop-shadow-[0_0_5px_rgba(255,171,243,0.8)]" : ""}`}
-              >
-                03 审核
-              </span>
+          {/* 3-Step Progress Stepper */}
+          <div className="mb-lg">
+            <div className="flex justify-between font-mono text-[11px] text-[#ff5500]/60 mb-xs">
+              <span className={step !== 'upload' ? 'text-[#ff5500] drop-shadow-[0_0_6px_#ff5500]' : ''}>INIT</span>
+              <span className={step === 'processing' ? 'text-[#ff5500] drop-shadow-[0_0_6px_#ff5500]' : step === 'done' ? 'text-[#ff5500]/60' : ''}>AI_ANALYSIS</span>
+              <span className={step === 'done' ? 'text-[#ff5500] drop-shadow-[0_0_6px_#ff5500]' : ''}>REVIEW</span>
             </div>
-            <div className="w-full h-1 bg-surface-variant flex">
-              <div className="w-1/3 bg-primary/50 h-full"></div>
-              <div
-                className={`w-1/3 h-full ${step === "processing" ? "bg-primary shadow-[0_0_10px_#ffabf3]" : "bg-primary/50"}`}
-              ></div>
-              <div
-                className={`w-1/3 h-full ${step === "done" ? "bg-primary shadow-[0_0_10px_#ffabf3]" : "bg-transparent"}`}
-              ></div>
+            <div className="w-full h-[2px] bg-[#ff5500]/20 flex">
+              <div className={`h-full bg-[#ff5500] transition-all duration-500 ${step !== 'upload' ? 'w-1/3' : 'w-0'}`} />
+              <div className={`h-full bg-[#ff5500] shadow-[0_0_8px_#ff5500] transition-all duration-500 ${step === 'processing' ? 'w-1/3' : step === 'done' ? 'w-2/3' : 'w-0'}`} />
+              <div className={`h-full bg-[#ff5500] shadow-[0_0_8px_#ff5500] transition-all duration-500 ${step === 'done' ? 'w-1/3' : 'w-0'}`} />
             </div>
+            {/* Confidence Level Indicator */}
+            {step === 'processing' && (
+              <div className="mt-md flex items-center justify-between font-mono text-[10px]">
+                <span className="text-[#ff5500]/60">CONFIDENCE:</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-24 h-1 bg-[#ff5500]/20 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#ff5500] rounded-full shadow-[0_0_6px_#ff5500] animate-[shimmer_2s_ease-in-out_infinite]" style={{ width: '78%' }} />
+                  </div>
+                  <span className="text-[#ff5500] font-bold">78%</span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Terminal Logs */}
