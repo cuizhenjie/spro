@@ -1,14 +1,28 @@
 "use client";
 
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { GlassCard } from "@/components/CyberUI/GlassCard";
 import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
 import { MARKET_TOOLS, CATEGORIES } from "@/lib/marketplace-data";
+import { PRODUCTS } from "@/lib/products-data";
 import type { MarketTool } from "@/types/marketplace";
+import { Coins, ShoppingBag, Clock, CheckCircle } from "lucide-react";
+import Link from "next/link";
 
 // --- Local Types ---
 
 type ToolCategory = MarketTool["category"];
+
+interface SellerOrder {
+  id: string;
+  productId: string;
+  productName: string;
+  productImage?: string;
+  price: number;
+  time: string;
+  status: string;
+  buyer: string;
+}
 
 interface SellerTool extends MarketTool {
   listed: boolean;
@@ -45,6 +59,7 @@ const UPLOAD_CATEGORIES = CATEGORIES.filter((c) => c.id !== "all");
 export default function SellerDashboardPage() {
   const [sellerTools, setSellerTools] =
     useState<SellerTool[]>(initialSellerTools);
+  const [sellerOrders, setSellerOrders] = useState<SellerOrder[]>([]);
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [form, setForm] = useState<UploadForm>({
     name: "",
@@ -61,6 +76,16 @@ export default function SellerDashboardPage() {
   const totalRevenue = sellerTools.reduce((sum, t) => sum + t.revenue, 0);
   const activeTools = sellerTools.filter((t) => t.listed).length;
   const pendingCount = sellerTools.length - activeTools;
+
+  // Load seller orders from localStorage
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("spro_orders") || "[]");
+      setSellerOrders(saved.slice(0, 10));
+    } catch {
+      setSellerOrders([]);
+    }
+  }, []);
 
   // --- Handlers ---
 
@@ -383,17 +408,49 @@ export default function SellerDashboardPage() {
         </div>
       </div>
 
+      {/* Seller Orders */}
+      {sellerOrders.length > 0 && (
+        <section className="border-t border-primary/20 pt-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="font-h3 text-h3 text-on-surface">INCOMING_ORDERS</h2>
+            <span className="font-mono-data text-xs text-secondary animate-pulse flex items-center gap-1">
+              <span className="w-2 h-2 bg-secondary rounded-full" />
+              LIVE
+            </span>
+          </div>
+          <div className="space-y-2">
+            {sellerOrders.map((order) => (
+              <HUDBrackets key={order.id}>
+                <div className="bg-surface/80 backdrop-blur border border-primary/20 p-4 flex items-center gap-4 hover:border-primary/40 transition-colors">
+                  <div className="w-10 h-10 bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden rounded">
+                    {order.productImage ? (
+                      <img src={order.productImage} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <ShoppingBag className="w-5 h-5 text-primary" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-h3 text-h3 text-on-surface truncate">{order.productName}</div>
+                    <div className="font-mono-data text-mono-data text-on-surface-variant flex items-center gap-3 mt-1">
+                      <span>#{order.id}</span>
+                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{order.time}</span>
+                      <span className="flex items-center gap-1 text-secondary"><Coins className="w-3 h-3" />{order.price} CR</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-1 bg-secondary/10 border border-secondary/30 text-secondary font-mono text-xs">
+                      <CheckCircle className="w-3 h-3 inline mr-1" />
+                      COMPLETED
+                    </span>
+                  </div>
+                </div>
+              </HUDBrackets>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* System HUD decorative corners */}
-      <div className="fixed top-20 right-4 font-mono-data text-[10px] text-primary/30 pointer-events-none hidden lg:block">
-        SYS_STATUS: NOMINAL
-        <br />
-        UPLINK: ACTIVE
-        <br />
-        SEC_LEVEL: 04
-      </div>
-      <div className="fixed bottom-24 left-4 font-mono-data text-[10px] text-primary/30 pointer-events-none hidden lg:block">
-        GRID_REF: 44.9/X
-      </div>
     </main>
   );
 }

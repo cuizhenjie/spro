@@ -131,8 +131,7 @@ export default function Home() {
                   AI 面部美学分析
                 </h1>
                 <p className="font-body-lg text-body-lg mb-6 max-w-xl text-on-surface-variant">
-                  Initiate full-spectrum bio-metric analysis to determine optimal
-                  aesthetic pathways. High-fidelity neural net processing ready.
+                  通过面部特征智能分析，为您匹配最适合的穿搭风格与色彩方案
                 </p>
                 <span className="flex w-max items-center space-x-2 rounded-none border border-primary-container px-8 py-4 font-label-caps text-label-caps text-primary-container transition-all hover:bg-primary-container/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)]">
                   <span>开启扫描</span>
@@ -162,7 +161,7 @@ export default function Home() {
                     赛博穿搭解析
                   </h3>
                   <p className="font-body-md mb-4 text-sm text-on-surface-variant">
-                    Structural analysis of synthetic fabrics and augment integration.
+                    基于身材特征与风格偏好，生成专属赛博朋克穿搭方案
                   </p>
                   <span className="flex items-center text-sm font-label-caps text-secondary-fixed transition-colors hover:text-on-surface">
                     开始 <ArrowRight className="ml-1 h-4 w-4" />
@@ -187,7 +186,7 @@ export default function Home() {
                     AI色彩诊断
                   </h3>
                   <p className="font-body-md mb-4 text-sm text-on-surface-variant">
-                    Chromatic mapping for optimal neon reflection.
+                    智能分析肤色冷暖，精准推荐最适合您的色彩搭配方案
                   </p>
                   <span className="flex items-center text-sm font-label-caps text-primary-fixed transition-colors hover:text-on-surface">
                     提取 <ArrowRight className="ml-1 h-4 w-4" />

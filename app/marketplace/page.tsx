@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { MARKET_TOOLS, CATEGORIES, STYLE_QUADRANTS, MOCK_ANALYSIS_RESULTS } from '@/lib/marketplace-data';
+import { PRODUCTS as PRODUCT_LIST } from '@/lib/products-data';
 import { MarketTool, StyleQuadrant } from '@/types/marketplace';
 import StyleQuiz from '@/components/StyleQuiz';
 import { Sparkles, ShoppingCart, Coins, Check, Star, Palette } from 'lucide-react';
@@ -37,6 +39,25 @@ export default function MarketplacePage() {
   const checkout = () => {
     const total = cart.reduce((sum, t) => sum + t.price, 0);
     if (total <= coins) {
+      // Save orders to localStorage
+      try {
+        const orders = JSON.parse(localStorage.getItem("spro_orders") || "[]");
+        cart.forEach((tool) => {
+          orders.unshift({
+            id: "ORD_" + Math.random().toString(36).slice(2, 8).toUpperCase(),
+            productId: tool.id,
+            productName: tool.name,
+            productImage: "",
+            author: "",
+            price: tool.price,
+            type: "buy",
+            status: "completed",
+            time: "刚刚",
+            rarity: "",
+          });
+        });
+        localStorage.setItem("spro_orders", JSON.stringify(orders));
+      } catch {}
       setCoins(coins - total);
       setOwnedTools([...ownedTools, ...cart.map(t => t.id)]);
       setCart([]);
@@ -430,45 +451,52 @@ export default function MarketplacePage() {
             HOT ASSETS
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              {
-                id: 'asset_01', name: 'NEO_TOKYO_TRENCH', author: 'K4RMA', rarity: 'EPIC', price: 850,
-                image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCouBAy2XhYNXNPNk5qoUw5rFtV44F8EzokDNNtHnupE3C24HZKzWHwh4fZZG-OG_uAH7rl3ZNesVCs6o70Vws5NgbfFgYDCOItj1XyoWuvscosuANh_NXnvuUNDmMDgnPZPg5AgAAagIgA193QpkHSJFFnoU8BO9rstgo4U7L799bVmBCDNAyq8s_pB3eX-M2yFB4YDZm9UOrjNOJkuCygXEOaSKQ1k6uRzjiJ_ibzOvkpqTyUrtgUsrUhyHCwRCztIDDTNjwjg1M',
-              },
-              {
-                id: 'asset_02', name: 'WASTELAND_VISOR', author: 'NUL_SEC', rarity: 'RARE', price: 420,
-                image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDb56ufQyjV2iw9dazYT_RquI3PmNhfHcAR_2OrPAqYRaEjUS5wP7YiwDh0juHA92BFurK1JGRQd1q8ld7U5fyeruP5Qqn7Q_RUgu4g8PeAoKQr3B83iWlNBwAw1mfJIwaFmu4PzaGZHpFZzl6fVPSxCJ3I6WxIuyx0il7C9feklbYvOzvxbqAvuwEIQUoM7jqv_xUW-ZwBcb3p9SDg784Apsri_JZFPjkozcqR8tlVj5AX2gJlTnMObRqZafIrEkPsWIfqepE6PjM',
-              },
-              {
-                id: 'asset_03', name: 'HAPTIC_GAUNTLETS', author: 'V0ID', rarity: 'LEGENDARY', price: 1200,
-                image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAyLBGkahoVPaDSRqVIPN9Q52oKT6J3dpwGKo5agWtKT9iLhwqvwcQzKiDDlu_b8jIjSHqDGH4jcaZdnzG4_A83W0FS8uucDMZRsETueZx016JNm1iHlYc7Q8jAa6FsyydpMp1LH5YQOFpIBdtx5otaZGsH0Si0HvJcE1aGPkD66fkeNh4QPC6VBLfRCP3KcemO8K6roXUR4DoTrppZJ0DbVBDqz8pFY03I3DA5v1jY_EpHuNX4OzqczgG2OW6ogyk6QW0meZJ9i74',
-              },
-            ].map((asset) => (
-              <div key={asset.id} className="cyber-glass border-t border-l border-white/20 p-2 flex flex-col gap-2 relative group">
-                {/* Cover Image */}
-                <div
-                  className="h-48 bg-surface-container-high relative overflow-hidden border border-white/10"
-                  style={{ backgroundImage: `url('${asset.image}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-                >
-                  <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-300" />
-                  <div className="absolute top-2 left-2 bg-primary/20 text-primary font-mono text-[10px] px-1 border border-primary/50 backdrop-blur-sm">
-                    RARITY: {asset.rarity}
+            {PRODUCT_LIST.slice(0, 6).map((asset) => {
+              const rarityColor: Record<string,string> = {
+                COMMON: "#9CA3AF", RARE: "#60A5FA", EPIC: "#A78BFA", LEGENDARY: "#F59E0B",
+              };
+              return (
+                <div key={asset.id} className="cyber-glass border-t border-l border-white/20 p-2 flex flex-col gap-2 relative group">
+                  {/* Cover Image - links to product page */}
+                  <Link href={`/product/${asset.id}`}>
+                    <div
+                      className="h-48 bg-surface-container-high relative overflow-hidden border border-white/10 cursor-pointer"
+                      style={{ backgroundImage: `url('${asset.image}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                    >
+                      <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-300" />
+                      <div
+                        className="absolute top-2 left-2 px-2 py-0.5 font-mono text-[10px] border backdrop-blur-sm"
+                        style={{ color: rarityColor[asset.rarity], borderColor: `${rarityColor[asset.rarity]}60`, backgroundColor: `${rarityColor[asset.rarity]}20` }}
+                      >
+                        {asset.rarity}
+                      </div>
+                    </div>
+                  </Link>
+                  {/* Info */}
+                  <div className="flex justify-between items-start mt-1">
+                    <div>
+                      <Link href={`/product/${asset.id}`}>
+                        <h3 className="font-display text-base text-on-surface uppercase tracking-widest hover:text-primary transition-colors cursor-pointer">
+                          {asset.name}
+                        </h3>
+                      </Link>
+                      <p className="font-mono text-xs text-on-surface-variant mt-1">CREATED BY {asset.author}</p>
+                    </div>
+                    <span className="font-mono text-primary font-bold">{asset.price} CR</span>
                   </div>
+                  {/* CTA */}
+                  <button
+                    onClick={() => {
+                      const tool = { ...asset, icon: "star", color: rarityColor[asset.rarity], description: asset.description, features: asset.features, isHot: false, isNew: false, originalPrice: asset.originalPrice } as unknown as MarketTool;
+                      addToCart(tool);
+                    }}
+                    className="mt-1 border border-primary text-primary font-mono text-xs py-2 hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)] transition-all duration-300 w-full flex justify-center items-center gap-1 uppercase tracking-wider"
+                  >
+                    ADD TO CART <span className="material-symbols-outlined text-sm">shopping_cart_checkout</span>
+                  </button>
                 </div>
-                {/* Info */}
-                <div className="flex justify-between items-start mt-1">
-                  <div>
-                    <h3 className="font-display text-base text-on-surface uppercase tracking-widest">{asset.name}</h3>
-                    <p className="font-mono text-xs text-on-surface-variant mt-1">AUTHOR: {asset.author}</p>
-                  </div>
-                  <span className="font-mono text-primary font-bold">{asset.price} CR</span>
-                </div>
-                {/* CTA */}
-                <button className="mt-1 border border-primary text-primary font-mono text-xs py-2 hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(255,171,243,0.5)] transition-all duration-300 w-full flex justify-center items-center gap-1 uppercase tracking-wider">
-                  ACQUIRE <span className="material-symbols-outlined text-sm">shopping_cart_checkout</span>
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Coins, ArrowUp, ArrowDown, Clock, CheckCircle, ChevronRight, Filter, Download, Sparkles, TrendingUp, TrendingDown, Zap } from 'lucide-react';
 
 const MOCK_ORDERS = [
@@ -12,16 +12,62 @@ const MOCK_ORDERS = [
   { id: 'ORD_8A5B7C', tool: '场合穿搭顾问', type: 'buy', amount: 200, coins: 600, time: '1天前', status: 'completed' },
 ];
 
+interface LiveOrder {
+  id: string;
+  productId: string;
+  productName: string;
+  productImage?: string;
+  author?: string;
+  price: number;
+  type: 'buy' | 'sell';
+  amount: number;
+  coins: number;
+  time: string;
+  status: 'completed' | 'pending';
+  rarity?: string;
+}
+
 export default function OrdersPage() {
   const [filter, setFilter] = useState<'all' | 'buy' | 'sell'>('all');
   const [page, setPage] = useState(1);
+  const [orders, setOrders] = useState<LiveOrder[]>([]);
 
-  const filtered = filter === 'all' ? MOCK_ORDERS : MOCK_ORDERS.filter(o => o.type === filter);
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("spro_orders") || "[]");
+      const live: LiveOrder[] = saved.map((o: LiveOrder) => ({
+        ...o,
+        amount: 1,
+        coins: o.price,
+        type: "buy",
+      }));
+      setOrders(live);
+    } catch {
+      setOrders([]);
+    }
+  }, []);
+
+  const displayOrders = orders.length > 0 ? orders : MOCK_ORDERS.map((o) => ({
+    id: o.id,
+    productId: "",
+    productName: o.tool,
+    productImage: "",
+    author: "",
+    price: o.amount,
+    type: o.type as "buy" | "sell",
+    amount: o.amount,
+    coins: o.coins,
+    time: o.time,
+    status: "completed" as const,
+    rarity: "",
+  }));
+
+  const filtered = filter === 'all' ? displayOrders : displayOrders.filter(o => o.type === filter);
   const totalPages = Math.ceil(filtered.length / 5);
   const paginated = filtered.slice((page - 1) * 5, page * 5);
 
-  const totalBuy = MOCK_ORDERS.filter(o => o.type === 'buy').reduce((s, o) => s + o.coins, 0);
-  const totalSell = MOCK_ORDERS.filter(o => o.type === 'sell').reduce((s, o) => s + o.coins, 0);
+  const totalBuy = displayOrders.filter(o => o.type === 'buy').reduce((s, o) => s + o.coins, 0);
+  const totalSell = displayOrders.filter(o => o.type === 'sell').reduce((s, o) => s + o.coins, 0);
 
   return (
     <main className="min-h-screen bg-background text-on-surface relative overflow-x-hidden">
@@ -160,10 +206,14 @@ export default function OrdersPage() {
                     <td className="px-6 py-4 font-mono text-sm text-primary">{order.id}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded bg-primary/10 border border-primary/20 flex items-center justify-center">
-                          <ShoppingBag className="w-4 h-4 text-primary" />
+                        <div className="w-8 h-8 rounded bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden">
+                          {order.productImage ? (
+                            <img src={order.productImage} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <ShoppingBag className="w-4 h-4 text-primary" />
+                          )}
                         </div>
-                        <span className="text-on-surface text-sm font-medium">{order.tool}</span>
+                        <span className="text-on-surface text-sm font-medium">{order.productName}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -209,7 +259,7 @@ export default function OrdersPage() {
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <div className="font-mono text-xs text-primary mb-1">{order.id}</div>
-                    <div className="text-on-surface text-sm font-medium">{order.tool}</div>
+                    <div className="text-on-surface text-sm font-medium">{order.productName}</div>
                   </div>
                   <span className={`inline-flex items-center gap-1 px-2 py-1 font-mono text-[10px] tracking-wider uppercase ${
                     order.type === 'buy'
