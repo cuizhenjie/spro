@@ -46,7 +46,7 @@ export default function LoginPage() {
       {/* Left Panel — Atmospheric Artwork */}
       <div className="hidden lg:flex w-1/2 relative bg-surface-container-lowest border-r border-primary-container/20">
         <div className="absolute inset-0 opacity-80 mix-blend-luminosity saturate-50">
-          <Image src="/images/login_bg.png" alt="" fill className="object-cover" priority />
+          <Image src="/images/login_bg.png" alt="" fill className="object-cover" priority sizes="50vw" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />
@@ -85,7 +85,7 @@ export default function LoginPage() {
             <div className="mb-xxl text-center">
               <div className="inline-flex items-center gap-3 mb-unit">
                 <div className="relative w-10 h-10 rounded overflow-hidden border border-primary-container shadow-[0_0_15px_rgba(255,0,255,0.3)]">
-                  <Image src="/images/logo_spro.png" alt="SPRO" fill className="object-cover" />
+                  <Image src="/images/logo_spro.png" alt="SPRO" fill className="object-cover" sizes="40px" />
                 </div>
               </div>
               <h1 className="font-h2 text-h2 text-primary-container drop-shadow-[0_0_10px_rgba(255,0,255,0.6)] mb-unit glitch-text cursor-default">

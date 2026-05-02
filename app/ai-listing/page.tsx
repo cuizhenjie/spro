@@ -98,17 +98,17 @@ export default function AIListingPage() {
           {step === "processing" && (
             <>
               {/* Laser Scan Line */}
-              <div className="absolute top-1/3 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent shadow-[0_0_10px_#ffabf3,0_0_20px_#ffabf3] z-10 animate-pulse"></div>
+              <div className="absolute top-1/3 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#ff5500] to-transparent shadow-[0_0_10px_#ff5500,0_0_20px_#ff5500] z-10 animate-pulse"></div>
               {/* Scanning Overlay Grid */}
               <div
                 className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-20"
                 style={{
                   backgroundImage:
-                    "linear-gradient(rgba(255,171,243,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,171,243,0.2) 1px, transparent 1px)",
+                    "linear-gradient(rgba(255,85,0,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,85,0,0.2) 1px, transparent 1px)",
                   backgroundSize: "20px 20px",
                 }}
               ></div>
-              <div className="absolute bottom-md left-md bg-background/90 px-sm py-xs border border-primary text-primary font-mono-data text-mono-data uppercase flex items-center gap-xs">
+              <div className="absolute bottom-md left-md bg-background/90 px-sm py-xs border border-[#ff5500] text-[#ff5500] font-mono-data text-mono-data uppercase flex items-center gap-xs">
                 <span className="material-symbols-outlined text-[16px]">
                   radar
                 </span>

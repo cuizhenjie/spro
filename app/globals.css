@@ -2,10 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --color-accent-orange: #ff5500;
+  }
+}
+
 /* Cyber Wardrobe Design System - Stitch Design Spec */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* CRT Scanline effect - full viewport overlay */
 body {
@@ -83,6 +86,23 @@ body {
   .neon-text-green {
     color: #c0fff4;
     text-shadow: 0 0 10px rgba(236, 255, 227, 0.5);
+  }
+
+  /* Cyber Button - Accent Orange (Scanner/Loading state) */
+  .cyber-button-orange {
+    border: 1px solid #ff5500;
+    box-shadow: 0 0 5px rgba(255, 85, 0, 0.3);
+    transition: all 0.2s ease;
+  }
+
+  .cyber-button-orange:hover {
+    box-shadow: 0 0 15px rgba(255, 85, 0, 0.6);
+    background-color: rgba(255, 85, 0, 0.1);
+  }
+
+  .neon-text-orange {
+    color: #ff7733;
+    text-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
   }
 
   /* HUD frame corners */
