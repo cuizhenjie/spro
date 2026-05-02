@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const SCAN_STEPS = [
@@ -9,7 +9,7 @@ const SCAN_STEPS = [
   { label: '正在匹配机能装备...', status: 'pending' as const },
 ];
 
-export default function ScanPage() {
+function ScanContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const target = searchParams.get('target') || '/ai-listing';
@@ -143,5 +143,13 @@ export default function ScanPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ScanPage() {
+  return (
+    <Suspense fallback={<div className="w-full min-h-screen bg-background" />}>
+      <ScanContent />
+    </Suspense>
   );
 }
