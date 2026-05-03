@@ -74,8 +74,8 @@ export default function ProfilePage() {
   return (
     <main className="flex-1 pt-24 pb-24 px-6 md:px-12 max-w-[container-max] mx-auto w-full relative z-10 min-h-screen">
       {/* Profile Header Section */}
-      <section className="mb-12 flex flex-col md:flex-row items-start md:items-center gap-8 relative z-10">
-        <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-secondary overflow-hidden shadow-[0_0_15px_rgba(236,255,227,0.3)] shrink-0 relative group cursor-pointer">
+      <section className="mb-8 md:mb-12 flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-8 relative z-10">
+        <div className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-full border-4 border-secondary overflow-hidden shadow-[0_0_15px_rgba(236,255,227,0.3)] shrink-0 relative group cursor-pointer">
           <div className="absolute inset-0 bg-secondary/10 group-hover:bg-secondary/30 transition-colors duration-300 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100">
             <span className="material-symbols-outlined text-secondary text-3xl">
               add_a_photo
@@ -90,38 +90,27 @@ export default function ProfilePage() {
           />
         </div>
 
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <h2 className="font-h1 text-h1 text-on-background">{user.name}</h2>
-            <span className="px-2 py-1 bg-primary/20 text-primary font-mono-data text-xs border border-primary/50 rounded-none shadow-[0_0_8px_rgba(255,171,243,0.3)] uppercase">
+        <div className="flex-1 w-full">
+          <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-3 mb-4 xs:mb-6">
+            <h2 className="font-h1 text-h1 md:text-h1 text-on-background leading-tight">{user.name}</h2>
+            <span className="self-start xs:self-center px-2 py-1 bg-primary/20 text-primary font-mono-data text-xs border border-primary/50 rounded-none shadow-[0_0_8px_rgba(255,171,243,0.3)] uppercase">
               {user.level}
             </span>
           </div>
 
-          <div className="flex flex-wrap gap-4 mt-6">
-            <div className="flex items-center gap-2 px-3 py-1.5 cyber-glass">
-              <span className="material-symbols-outlined text-secondary text-sm">
-                wifi_tethering
-              </span>
-              <span className="font-mono-data text-mono-data text-secondary">
-                神经连接：稳定
-              </span>
+          <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-3">
+            <div className="flex items-center gap-2 px-2 py-1.5 cyber-glass shrink-0">
+              <span className="material-symbols-outlined text-secondary text-xs sm:text-sm">wifi_tethering</span>
+              <span className="font-mono-data text-[10px] sm:text-xs text-secondary hidden xs:inline">神经连接：稳定</span>
+              <span className="font-mono-data text-[10px] sm:text-xs text-secondary xs:hidden">连接稳定</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 cyber-glass">
-              <span className="material-symbols-outlined text-primary text-sm">
-                location_on
-              </span>
-              <span className="font-mono-data text-mono-data text-primary">
-                LOC: SECTOR 7
-              </span>
+            <div className="flex items-center gap-2 px-2 py-1.5 cyber-glass shrink-0">
+              <span className="material-symbols-outlined text-primary text-xs sm:text-sm">location_on</span>
+              <span className="font-mono-data text-[10px] sm:text-xs text-primary">LOC: SECTOR 7</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 cyber-glass">
-              <span className="material-symbols-outlined text-outline text-sm">
-                schedule
-              </span>
-              <span className="font-mono-data text-mono-data text-outline">
-                运行时间: 98.4%
-              </span>
+            <div className="flex items-center gap-2 px-2 py-1.5 cyber-glass shrink-0">
+              <span className="material-symbols-outlined text-outline text-xs sm:text-sm">schedule</span>
+              <span className="font-mono-data text-[10px] sm:text-xs text-outline">运行: 98.4%</span>
             </div>
           </div>
         </div>
