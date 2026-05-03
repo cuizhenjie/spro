@@ -1,4 +1,7 @@
+'use client';
+
 import NextLink from 'next/link';
+import ClientToolLink from '@/components/ClientToolLink';
 import {
   ArrowRight,
   BarChart3,
@@ -23,28 +26,25 @@ const MOBILE_NAV: { label: string; icon: LucideIcon; href: string; active?: bool
 
 const AI_TOOLS = [
   {
-    title: '风格分析',
-    description: 'AI智能识别您的穿搭风格类型，生成专属风格档案',
-    icon: Sparkles,
-    href: '/marketplace',
-  },
-  {
-    title: '面部美学评分',
+    title: '面部美学分析',
     description: '面部特征深度分析，多维度美学综合评分',
     icon: Eye,
-    href: '/marketplace',
+    href: '/upload/image-diagnosis',
+    toolId: 'image-diagnosis',
   },
   {
-    title: '穿搭推荐',
-    description: '基于身材特征与风格偏好，生成专属穿搭方案',
+    title: '赛博穿搭分析',
+    description: '基于身材特征与风格偏好，生成专属赛博穿搭方案',
     icon: Shirt,
-    href: '/upload/fashion',
+    href: '/upload/seasonal-outfit',
+    toolId: 'seasonal-outfit',
   },
   {
-    title: '色彩诊断',
+    title: 'AI色彩诊断',
     description: '智能分析肤色冷暖，精准推荐最适合的色彩方案',
     icon: Palette,
-    href: '/upload/color',
+    href: '/upload/personal-color',
+    toolId: 'personal-color',
   },
 ];
 
@@ -80,7 +80,7 @@ export default function Home() {
         {/* ── Hero section ── */}
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Large feature card */}
-          <NextLink href="/marketplace" className="lg:col-span-8 lg:h-[500px]">
+          <ClientToolLink href="/upload/image-diagnosis" toolId="image-diagnosis" className="lg:col-span-8 lg:h-[500px] block">
             <div className="cyber-glass group relative overflow-hidden rounded-xl border border-outline-variant h-full transition-colors hover:border-primary/50">
               <div
                 className="absolute inset-0 bg-cover bg-center opacity-50 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
@@ -102,19 +102,18 @@ export default function Home() {
                   通过面部特征智能分析，为您匹配最适合的穿搭风格与色彩方案
                 </p>
                 <span className="flex w-max items-center space-x-2 border border-secondary px-8 py-4 font-label-caps text-label-caps text-secondary transition-all hover:bg-secondary/10 hover:shadow-[0_0_15px_rgba(236,255,227,0.5)]">
-                  <span>开启扫描</span>
-                  <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                  开启扫描 <ArrowRight className="transition-transform group-hover:translate-x-1" />
                 </span>
               </div>
               {/* Animated scan line */}
               <div className="absolute left-0 top-0 h-1 w-full animate-pulse bg-secondary opacity-50 shadow-[0_0_10px_#13ff43]" />
             </div>
-          </NextLink>
+          </ClientToolLink>
 
           {/* Right side: two stacked cards */}
           <div className="flex flex-col gap-6 lg:col-span-4">
-            {/* Card: 赛博穿搭解析 */}
-            <NextLink href="/upload/fashion" className="flex-1">
+            {/* Card: 赛博穿搭分析 */}
+            <ClientToolLink href="/upload/seasonal-outfit" toolId="seasonal-outfit" className="flex-1 block">
               <div className="cyber-glass group relative flex min-h-[238px] flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-secondary/50 h-full">
                 <div
                   className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
@@ -126,20 +125,20 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
                 <div className="relative z-10">
                   <h3 className="font-h2 mb-2 text-2xl text-secondary drop-shadow-[0_0_8px_rgba(236,255,227,0.5)]">
-                    赛博穿搭解析
+                    赛博穿搭分析
                   </h3>
                   <p className="font-body-md mb-4 text-sm text-on-surface-variant">
-                    基于身材特征与风格偏好，生成专属赛博朋克穿搭方案
+                    基于身材特征与风格偏好，生成专属赛博穿搭方案
                   </p>
                   <span className="flex items-center text-sm font-label-caps text-secondary transition-colors hover:text-on-surface">
-                    开始 <ArrowRight className="ml-1 h-4 w-4" />
+                    开启扫描 <ArrowRight className="ml-1 h-4 w-4" />
                   </span>
                 </div>
               </div>
-            </NextLink>
+            </ClientToolLink>
 
             {/* Card: AI色彩诊断 */}
-            <NextLink href="/upload/color" className="flex-1">
+            <ClientToolLink href="/upload/personal-color" toolId="personal-color" className="flex-1 block">
               <div className="cyber-glass group relative flex min-h-[238px] flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-primary/50 h-full">
                 <div
                   className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
@@ -161,7 +160,7 @@ export default function Home() {
                   </span>
                 </div>
               </div>
-            </NextLink>
+            </ClientToolLink>
           </div>
         </section>
 
@@ -171,11 +170,11 @@ export default function Home() {
             <span className="mr-4 h-8 w-2 bg-secondary shadow-[0_0_10px_#13ff43]" />
             AI 分析工具 // SCAN
           </h2>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
             {AI_TOOLS.map((tool) => {
               const Icon = tool.icon;
               return (
-                <NextLink key={tool.title} href={tool.href} className="group">
+                <ClientToolLink key={tool.title} href={tool.href} toolId={tool.toolId} className="group">
                   <div className="cyber-glass flex h-full flex-col border border-outline-variant p-6 transition-all hover:border-secondary/50 hover:shadow-[0_0_20px_rgba(236,255,227,0.1)]">
                     <div className="mb-4 flex h-12 w-12 items-center justify-center border border-secondary/30 bg-secondary/10">
                       <Icon className="h-6 w-6 text-secondary" />
@@ -188,7 +187,7 @@ export default function Home() {
                       开启扫描 <ScanLine className="ml-2 h-4 w-4" />
                     </span>
                   </div>
-                </NextLink>
+                </ClientToolLink>
               );
             })}
           </div>
