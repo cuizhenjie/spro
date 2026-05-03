@@ -15,7 +15,7 @@ const NAV_ITEMS = [
 export default function TopNav() {
   const pathname = usePathname();
   // SSR-safe: always start as not-logged-in, populate from localStorage in useEffect
-  const [auth, setAuth] = useState<AuthUser>({ loggedIn: false, name: '', level: 0, coins: 0, email: '', vipTier: 'free' });
+  const [auth, setAuth] = useState<AuthUser>({ loggedIn: false, name: '', level: '', coins: 0, email: '' });
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
