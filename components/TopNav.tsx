@@ -14,14 +14,17 @@ const NAV_ITEMS = [
 
 export default function TopNav() {
   const pathname = usePathname();
-  const [coins, setCoins] = useState(0);
+  // SSR-safe: always start as not-logged-in, populate from localStorage in useEffect
+  const [auth, setAuth] = useState<AuthUser>({ loggedIn: false, name: '', level: 0, coins: 0, email: '', vipTier: 'free' });
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setCoins(getAuth().coins);
+    setAuth(getAuth());
+    setMounted(true);
   }, [pathname]);
 
   useEffect(() => {
-    const handler = () => setCoins(getAuth().coins);
+    const handler = () => setAuth(getAuth());
     window.addEventListener('spro-coins-updated', handler);
     return () => window.removeEventListener('spro-coins-updated', handler);
   }, []);
@@ -55,15 +58,15 @@ export default function TopNav() {
       </div>
 
       <div className="flex items-center gap-4 px-6 py-4">
-        {/* Wallet Balance — visible md+ */}
-        {getAuth().loggedIn && (
+        {/* Wallet Balance — SSR-safe, only show after mount */}
+        {mounted && auth.loggedIn && (
           <div className="hidden md:flex items-center gap-1.5 text-primary font-mono text-sm px-3 py-1.5 border border-primary/30 cyber-glass">
             <Coins className="w-4 h-4" />
-            <span>{coins} 赛博币</span>
+            <span>{auth.coins} 赛博币</span>
           </div>
         )}
 
-        {getAuth().loggedIn ? (
+        {mounted && auth.loggedIn ? (
           <Link
             href="/profile"
             className="block overflow-hidden rounded-full border border-primary-container/50 shadow-cyber-glass transition-colors hover:border-primary hover:shadow-glow"
