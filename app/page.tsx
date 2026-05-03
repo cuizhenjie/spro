@@ -27,10 +27,10 @@ const MOBILE_NAV: { label: string; icon: LucideIcon; href: string; active?: bool
 const AI_TOOLS = [
   {
     title: '衣品升级改造',
-    description: 'Before & After 高反差衣品升级，韩系轻潮风格改造报告',
+    description: '上传照片，AI生成Before & After高反差衣品升级报告',
     icon: Eye,
-    href: '/upload/image-diagnosis',
-    toolId: 'image-diagnosis',
+    href: '/upload/seasonal-outfit',
+    toolId: 'seasonal-outfit',
   },
   {
     title: '四季穿搭指南',
@@ -80,7 +80,7 @@ export default function Home() {
         {/* ── Hero section ── */}
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Large feature card */}
-          <ClientToolLink href="/upload/image-diagnosis" toolId="image-diagnosis" className="lg:col-span-8 lg:h-[500px] block">
+          <ClientToolLink href="/upload/seasonal-outfit" toolId="seasonal-outfit" className="lg:col-span-8 lg:h-[500px] block">
             <div className="cyber-glass group relative overflow-hidden rounded-xl border border-outline-variant h-full transition-colors hover:border-primary/50">
               <div
                 className="absolute inset-0 bg-cover bg-center opacity-50 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
@@ -96,10 +96,10 @@ export default function Home() {
                   <span className="font-mono-data text-mono-data uppercase">系统运行中</span>
                 </div>
                 <h1 className="font-h1 text-h1 mb-2 tracking-widest text-on-surface drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                  AI 衣品升级改造
+                  AI 四季穿搭指南
                 </h1>
                 <p className="font-body-lg text-body-lg mb-6 max-w-xl text-on-surface-variant">
-                  上传照片，AI生成Before & After高反差衣品升级报告，韩系轻潮风格焕然一新
+                  上传照片，AI生成春夏秋冬四套韩系潮牌穿搭方案，保留本人真实辨识度
                 </p>
                 <span className="flex w-max items-center space-x-2 border border-secondary px-8 py-4 font-label-caps text-label-caps text-secondary transition-all hover:bg-secondary/10 hover:shadow-[0_0_15px_rgba(236,255,227,0.5)]">
                   开启扫描 <ArrowRight className="transition-transform group-hover:translate-x-1" />
