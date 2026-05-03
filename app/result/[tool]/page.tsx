@@ -212,14 +212,14 @@ const RESULT_META: Record<string, {
     matchScore: 85,
   },
   "neon-street-syndicate": {
-    title: "霓虹街头穿搭",
-    subtitle: "NEON STREET SYNDICATE",
+    title: "穿搭分析",
+    subtitle: "OUTFIT ANALYSIS COMPLETE",
     accentColor: "#ff2d78",
     matchScore: 91,
   },
   "hardware-implant-faction": {
-    title: "机能植入派穿搭",
-    subtitle: "HARDWARE IMPLANT FACTION",
+    title: "配饰分析",
+    subtitle: "ACCESSORY ANALYSIS COMPLETE",
     accentColor: "#60a5fa",
     matchScore: 87,
   },
@@ -228,6 +228,12 @@ const RESULT_META: Record<string, {
     subtitle: "MAKEUP ANALYSIS",
     accentColor: "#f472b6",
     matchScore: 87,
+  },
+  "hair-analysis": {
+    title: "发型分析",
+    subtitle: "HAIR ANALYSIS COMPLETE",
+    accentColor: "#a78bfa",
+    matchScore: 90,
   },
 };
 
@@ -365,16 +371,25 @@ export default function ResultPage() {
         {/* ── PALM READING ── */}
         {tool === "palm-reading" && (
           <div className="space-y-6">
-            {stored.photoDataUrl && (
+            {(stored as any).reportImage && (
+              <div className="border border-white/10 overflow-hidden rounded-xl">
+                <img src={(stored as any).reportImage} alt="掌相玄学分析报告图" className="w-full" />
+              </div>
+            )}
+            {!((stored as any).reportImage) && stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
                 <div className="relative w-40 h-40 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="掌纹" className="w-full h-full object-cover" />
                 </div>
               </div>
             )}
-            <DataBox label="掌心纹路" value="生命线深刻，情感线柔和，智慧线发达" verified accentColor="green" />
-            <DataBox label="命运曲线" value="中期上升，短期调整，长期平稳" accentColor="orange" />
-            <DataBox label="性格解码" value="独立思考型，创造力强，适应力极佳" accentColor="orange" />
+            {!((stored as any).reportImage) && (
+              <>
+                <DataBox label="掌心纹路" value="生命线深刻，情感线柔和，智慧线发达" verified accentColor="green" />
+                <DataBox label="命运曲线" value="中期上升，短期调整，长期平稳" accentColor="orange" />
+                <DataBox label="性格解码" value="独立思考型，创造力强，适应力极佳" accentColor="orange" />
+              </>
+            )}
             <div className="p-4 border border-white/10">
               <p className="text-sm text-on-surface-variant">掌心占卜仅供娱乐参考。真正的命运掌握在自己手中，AI 分析可帮助你更好地了解自我特质。</p>
             </div>
@@ -384,51 +399,78 @@ export default function ResultPage() {
         {/* ── STYLE ANALYZER ── */}
         {tool === "style-analyzer" && (
           <div className="space-y-6">
-            {stored.photoDataUrl && (
+            {(stored as any).reportImage && (
+              <div className="border border-white/10 overflow-hidden rounded-xl">
+                <img src={(stored as any).reportImage} alt="风格解析报告图" className="w-full" />
+              </div>
+            )}
+            {!((stored as any).reportImage) && stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
                 <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="全身照" className="w-full h-full object-cover" />
                 </div>
               </div>
             )}
-            <DataBox label="风格定位" value={stored.mock ? "赛博机能风" : (stored.style as string) || "赛博机能风"} verified accentColor="green" />
-            <DataBox label="轮廓类型" value="直线型 · 宽肩窄腰" accentColor="orange" />
-            <DataBox label="色彩倾向" value="深空黑 + 霓虹粉 + 翡翠绿" accentColor="orange" />
-            <DataBox label="核心特质" value="未来感 · 锐利 · 极简主义" accentColor="orange" />
+            {!((stored as any).reportImage) && (
+              <>
+                <DataBox label="风格定位" value={stored.mock ? "赛博机能风" : (stored.style as string) || "赛博机能风"} verified accentColor="green" />
+                <DataBox label="轮廓类型" value="直线型 · 宽肩窄腰" accentColor="orange" />
+                <DataBox label="色彩倾向" value="深空黑 + 霓虹粉 + 翡翠绿" accentColor="orange" />
+                <DataBox label="核心特质" value="未来感 · 锐利 · 极简主义" accentColor="orange" />
+              </>
+            )}
           </div>
         )}
 
         {/* ── LIPSTICK RECOMMENDATION ── */}
         {tool === "lipstick-recommendation" && (
           <div className="space-y-6">
-            {stored.photoDataUrl && (
+            {(stored as any).reportImage && (
+              <div className="border border-white/10 overflow-hidden rounded-xl">
+                <img src={(stored as any).reportImage} alt="口红推荐报告图" className="w-full" />
+              </div>
+            )}
+            {!((stored as any).reportImage) && stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
                 <div className="relative w-32 h-32 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="唇部" className="w-full h-full object-cover" />
                 </div>
               </div>
             )}
-            <DataBox label="推荐色系" value="暖调玫瑰 / 肉桂棕 / 焦糖橘" verified accentColor="pink" />
-            <DataBox label="最适合场合" value="日常通勤 · 约会 · 派对" accentColor="orange" />
-            <DataBox label="质地推荐" value="缎光质感，不宜纯雾面" accentColor="pink" />
-            <DataBox label="避用色号" value="冷调玫粉 · 荧光橘" accentColor="pink" />
+            {!((stored as any).reportImage) && (
+              <>
+                <DataBox label="推荐色系" value="暖调玫瑰 / 肉桂棕 / 焦糖橘" verified accentColor="pink" />
+                <DataBox label="最适合场合" value="日常通勤 · 约会 · 派对" accentColor="orange" />
+                <DataBox label="质地推荐" value="缎光质感，不宜纯雾面" accentColor="pink" />
+                <DataBox label="避用色号" value="冷调玫粉 · 荧光橘" accentColor="pink" />
+              </>
+            )}
           </div>
         )}
 
         {/* ── IMAGE DIAGNOSIS ── */}
         {tool === "image-diagnosis" && (
           <div className="space-y-6">
-            {stored.photoDataUrl && (
+            {(stored as any).reportImage && (
+              <div className="border border-white/10 overflow-hidden rounded-xl">
+                <img src={(stored as any).reportImage} alt="形象诊断报告图" className="w-full" />
+              </div>
+            )}
+            {!((stored as any).reportImage) && stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
                 <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="形象照" className="w-full h-full object-cover" />
                 </div>
               </div>
             )}
-            <DataBox label="整体评分" value="89/100 · 优秀" verified accentColor="green" />
-            <DataBox label="风格属性" value="都市机能 · 赛博朋克" accentColor="orange" />
-            <DataBox label="体型分析" value="标准型 · 肩线清晰" accentColor="orange" />
-            <DataBox label="形象建议" value="加强层次感，配饰点睛" accentColor="orange" />
+            {!((stored as any).reportImage) && (
+              <>
+                <DataBox label="整体评分" value="89/100 · 优秀" verified accentColor="green" />
+                <DataBox label="风格属性" value="都市机能 · 赛博朋克" accentColor="orange" />
+                <DataBox label="体型分析" value="标准型 · 肩线清晰" accentColor="orange" />
+                <DataBox label="形象建议" value="加强层次感，配饰点睛" accentColor="orange" />
+              </>
+            )}
           </div>
         )}
 
@@ -499,37 +541,55 @@ export default function ResultPage() {
           </div>
         )}
 
-        {/* ── NEON STREET SYNDICATE ── */}
+        {/* ── NEON STREET SYNDICATE (OUTFIT ANALYSIS) ── */}
         {tool === "neon-street-syndicate" && (
           <div className="space-y-6">
-            {stored.photoDataUrl && (
+            {(stored as any).reportImage && (
+              <div className="border border-white/10 overflow-hidden rounded-xl">
+                <img src={(stored as any).reportImage} alt="穿搭分析报告图" className="w-full" />
+              </div>
+            )}
+            {!((stored as any).reportImage) && stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
                 <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
-                  <img src={stored.photoDataUrl} alt="街头照" className="w-full h-full object-cover" />
+                  <img src={stored.photoDataUrl} alt="穿搭照" className="w-full h-full object-cover" />
                 </div>
               </div>
             )}
-            <DataBox label="街头指数" value="92/100 · 霓虹狂热者" verified accentColor="pink" />
-            <DataBox label="核心风格" value="赛博朋克 · 霓虹灯光 · 机能混搭" accentColor="orange" />
-            <DataBox label="标志元素" value="镭射材质 · LED配饰 · 金属扣具" accentColor="orange" />
-            <DataBox label="穿搭公式" value="黑色基底 + 霓虹点缀 + 机能廓形" accentColor="orange" />
+            {!((stored as any).reportImage) && (
+              <>
+                <DataBox label="穿搭指数" value="92/100 · 时尚达人" verified accentColor="pink" />
+                <DataBox label="推荐风格" value="韩系温柔风 · 清冷高级感" accentColor="orange" />
+                <DataBox label="配色方案" value="米白 + 雾霾蓝 + 焦糖棕" accentColor="orange" />
+                <DataBox label="避雷穿搭" value="全身大logo · 过于宽松 · 荧光色" accentColor="orange" />
+              </>
+            )}
           </div>
         )}
 
-        {/* ── HARDWARE IMPLANT FACTION ── */}
+        {/* ── HARDWARE IMPLANT FACTION (ACCESSORY ANALYSIS) ── */}
         {tool === "hardware-implant-faction" && (
           <div className="space-y-6">
-            {stored.photoDataUrl && (
+            {(stored as any).reportImage && (
+              <div className="border border-white/10 overflow-hidden rounded-xl">
+                <img src={(stored as any).reportImage} alt="配饰分析报告图" className="w-full" />
+              </div>
+            )}
+            {!((stored as any).reportImage) && stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
                 <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
-                  <img src={stored.photoDataUrl} alt="机能照" className="w-full h-full object-cover" />
+                  <img src={stored.photoDataUrl} alt="配饰照" className="w-full h-full object-cover" />
                 </div>
               </div>
             )}
-            <DataBox label="植入指数" value="88/100 · 机能派" verified accentColor="green" />
-            <DataBox label="核心风格" value="重机能 · 军事细节 · 未来主义" accentColor="orange" />
-            <DataBox label="材质推荐" value="碳纤维 · 凯夫拉 · 铝合金" accentColor="orange" />
-            <DataBox label="必杀单品" value="战术背心 · 防弹头盔 · 机械外骨骼" accentColor="orange" />
+            {!((stored as any).reportImage) && (
+              <>
+                <DataBox label="脸型分析" value="鹅蛋脸 · 五官匀称" verified accentColor="green" />
+                <DataBox label="推荐镜框" value="圆框 · 半框 · 金属细框" accentColor="orange" />
+                <DataBox label="避雷镜框" value="超大方框 · 粗黑板材 · 猫眼框" accentColor="orange" />
+                <DataBox label="配色建议" value="金框 + 银框 + 透明框" accentColor="orange" />
+              </>
+            )}
           </div>
         )}
 
@@ -607,6 +667,32 @@ export default function ResultPage() {
                 </span>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* ── HAIR ANALYSIS ── */}
+        {tool === "hair-analysis" && (
+          <div className="space-y-6">
+            {(stored as any).reportImage && (
+              <div className="border border-white/10 overflow-hidden rounded-xl">
+                <img src={(stored as any).reportImage} alt="发型分析报告图" className="w-full" />
+              </div>
+            )}
+            {!((stored as any).reportImage) && stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-40 h-40 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="面部" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            )}
+            {!((stored as any).reportImage) && (
+              <>
+                <DataBox label="推荐发型" value="锁骨发 · 高层次 · 法式刘海" verified accentColor="green" />
+                <DataBox label="推荐卷度" value="微卷 · 自然蓬松感" accentColor="orange" />
+                <DataBox label="推荐发色" value="暖棕 · 焦糖 · 蜂蜜茶色" accentColor="orange" />
+                <DataBox label="避雷发型" value="超短男仔头 · 厚重齐刘海 · 全黑直发" accentColor="orange" />
+              </>
+            )}
           </div>
         )}
         <div className="flex flex-col gap-4 sm:flex-row">

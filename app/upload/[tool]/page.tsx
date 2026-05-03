@@ -22,6 +22,7 @@ const TOOL_META: Record<string, {
     bgImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800",
     accentColor: "#c4a35a",
     steps: ["初始化玄学网络", "提取掌纹特征", "解析命运曲线", "生成占卜报告"],
+    apiEndpoint: "/api/palm-reading",
   },
   "style-analyzer": {
     title: "风格解析",
@@ -30,6 +31,7 @@ const TOOL_META: Record<string, {
     bgImage: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=800",
     accentColor: "#ffabf3",
     steps: ["初始化风格网络", "提取轮廓特征", "匹配风格象限", "生成风格报告"],
+    apiEndpoint: "/api/style-analyzer",
   },
   "lipstick-recommendation": {
     title: "口红推荐",
@@ -38,6 +40,7 @@ const TOOL_META: Record<string, {
     bgImage: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=800",
     accentColor: "#f472b6",
     steps: ["初始化美妆网络", "分析唇色特征", "匹配肤色调", "推荐色号组合"],
+    apiEndpoint: "/api/lipstick-recommendation",
   },
   "image-diagnosis": {
     title: "形象诊断",
@@ -46,6 +49,7 @@ const TOOL_META: Record<string, {
     bgImage: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=800",
     accentColor: "#a78bfa",
     steps: ["初始化诊断网络", "提取面部特征", "分析整体风格", "生成诊断报告"],
+    apiEndpoint: "/api/image-diagnosis",
   },
   "seasonal-outfit": {
     title: "四季穿搭指南",
@@ -66,20 +70,22 @@ const TOOL_META: Record<string, {
     apiEndpoint: "/api/personal-color",
   },
   "neon-street-syndicate": {
-    title: "霓虹街头党",
-    subtitle: "NEON STREET // URBAN MAPPING",
-    placeholder: "上传街头风格照片，获取霓虹穿搭方案",
-    bgImage: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=800",
+    title: "穿搭分析",
+    subtitle: "OUTFIT ANALYSIS // STYLE GUIDE",
+    placeholder: "上传真人正面照片，获取专属穿搭分析",
+    bgImage: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=800",
     accentColor: "#ff2d78",
-    steps: ["初始化霓虹网络", "提取街头特征", "解析赛博元素", "生成穿搭方案"],
+    steps: ["初始化穿搭网络", "分析身形比例", "匹配穿搭风格", "生成配色方案", "打包穿搭报告"],
+    apiEndpoint: "/api/outfit-analysis",
   },
   "hardware-implant-faction": {
-    title: "机能植入派",
-    subtitle: "HARDWARE IMPLANT // CYBERNETIC",
-    placeholder: "上传人物照片，获取机能风穿搭方案",
-    bgImage: "https://images.unsplash.com/photo-1519817914152-22d216bb9170?auto=format&fit=crop&q=80&w=800",
+    title: "配饰分析",
+    subtitle: "ACCESSORY ANALYSIS // GLASSES GUIDE",
+    placeholder: "上传真人正面照片，获取眼镜选配指南",
+    bgImage: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=800",
     accentColor: "#60a5fa",
-    steps: ["初始化机能网络", "提取植入特征", "解析赛博指数", "生成穿搭方案"],
+    steps: ["初始化配饰网络", "分析脸型比例", "匹配镜框方案", "生成试戴对比", "打包选配报告"],
+    apiEndpoint: "/api/accessory-analysis",
   },
   "makeup-analysis": {
     title: "妆容分析",
@@ -89,6 +95,15 @@ const TOOL_META: Record<string, {
     accentColor: "#f472b6",
     steps: ["初始化美妆网络", "分析五官结构", "判断脸型比例", "提取皮肤质感", "生成妆容方案", "打包妆容报告"],
     apiEndpoint: "/api/makeup-analysis",
+  },
+  "hair-analysis": {
+    title: "发型分析",
+    subtitle: "HAIR ANALYSIS // STYLE GUIDE",
+    placeholder: "上传真人正面照片，获取专属发型分析",
+    bgImage: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=800",
+    accentColor: "#a78bfa",
+    steps: ["初始化发型网络", "分析脸型轮廓", "匹配发型方案", "生成发色推荐", "打包发型报告"],
+    apiEndpoint: "/api/hair-analysis",
   },
 };
 

@@ -6,8 +6,8 @@ import { GlassCard } from "@/components/CyberUI/GlassCard";
 import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
 import { PRODUCTS } from "@/lib/products-data";
 import { MARKET_TOOLS, CATEGORIES } from "@/lib/marketplace-data";
-import { getAuth } from "@/lib/auth";
-import { Coins, ShoppingCart, Star, TrendingUp, CheckCircle, ArrowLeft, Zap, Shield } from "lucide-react";
+import { getAuth, updateCoins } from "@/lib/auth";
+import { Coins, ShoppingCart, Star, TrendingUp, CheckCircle, ArrowLeft, Zap, Shield, X, Trash2, Terminal } from "lucide-react";
 import type { Product } from "@/lib/products-data";
 import type { MarketTool } from "@/types/marketplace";
 
@@ -90,26 +90,24 @@ export default function ProductPage() {
   const isNew = !isProduct && tool!.isNew;
 
   const handleAddToCart = () => {
-    setAdded(true);
     try {
-      const orders = JSON.parse(localStorage.getItem("spro_orders") || "[]");
-      const exists = orders.find((o: any) => o.productId === item.id);
+      const cart = JSON.parse(localStorage.getItem('spro_cart') || '[]');
+      const exists = cart.find((c: any) => c.id === item.id);
       if (!exists) {
-        orders.unshift({
-          id: "ORD_" + Math.random().toString(36).slice(2, 8).toUpperCase(),
-          productId: item.id,
-          productName: displayName,
-          productImage: coverImage,
-          author,
+        cart.push({
+          id: item.id,
+          name: displayName,
           price,
-          type: "buy",
-          status: "completed",
-          time: "刚刚",
-          rarity,
+          image: coverImage,
+          author,
+          type: isProduct ? 'product' : 'tool',
         });
-        localStorage.setItem("spro_orders", JSON.stringify(orders));
+        localStorage.setItem('spro_cart', JSON.stringify(cart));
+        window.dispatchEvent(new Event('spro-cart-updated'));
+        setCartCount(cart.length);
       }
     } catch {}
+    setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
 
@@ -242,12 +240,12 @@ export default function ProductPage() {
                 <span className="px-2 py-1 bg-secondary/20 text-secondary font-mono text-xs border border-secondary/30">
                   -{Math.round((1 - price / originalPrice) * 100)}%
                 </span>
-                <span className="ml-auto font-mono text-sm text-on-surface-variant">金币</span>
+                <span className="ml-auto font-mono text-sm text-on-surface-variant">赛博币</span>
               </div>
               {/* Coin balance */}
               <div className="flex items-center gap-2 font-mono text-xs text-on-surface-variant mt-4 pt-4 border-t border-outline-variant/30">
                 <Coins className="w-4 h-4 text-tertiary" />
-                您的余额：{(() => { try { return getAuth()?.coins ?? 520; } catch { return 520; } })()} 金币
+                您的余额：{(() => { try { return getAuth()?.coins ?? 520; } catch { return 520; } })()} 赛博币
                 <button
                   onClick={() => router.push("/pricing")}
                   className="text-secondary hover:underline cursor-pointer ml-2"
@@ -283,7 +281,7 @@ export default function ProductPage() {
                 ) : (
                   <>
                     <ShoppingCart className="w-5 h-5" />
-                    加入购物车 — {price} 金币
+                    加入购物车 — {price} 赛博币
                   </>
                 )}
               </button>
@@ -312,7 +310,7 @@ export default function ProductPage() {
       {/* FAB - Cart Quick Access */}
       {cartCount > 0 && (
         <button
-          onClick={() => router.push('/marketplace')}
+          onClick={() => setShowCart(true)}
           className="fixed bottom-8 right-6 md:right-8 w-14 h-14 rounded-full bg-primary/15 border border-primary/40 backdrop-blur-md flex items-center justify-center text-primary hover:bg-primary/25 hover:shadow-[0_0_24px_rgba(255,171,243,0.3)] transition-all duration-300 z-40"
         >
           <ShoppingCart className="w-5 h-5" />
@@ -320,6 +318,107 @@ export default function ProductPage() {
             {cartCount}
           </span>
         </button>
+      )}
+
+      {/* Cart Drawer */}
+      {showCart && (
+        <>
+          <div className="fixed inset-0 bg-background/70 backdrop-blur-sm z-40" onClick={() => setShowCart(false)} />
+          <div className="fixed top-0 right-0 h-full w-full max-w-md bg-surface-container border-l border-outline-variant/40 z-50 flex flex-col shadow-[-8px_0_40px_rgba(255,171,243,0.1)]">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30">
+              <div className="flex items-center gap-3">
+                <Terminal className="w-4 h-4 text-primary" />
+                <h2 className="font-mono text-sm text-primary tracking-wider">NEURAL_CART</h2>
+              </div>
+              <button onClick={() => setShowCart(false)} className="p-2 text-on-surface-variant hover:text-primary transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Items */}
+            <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+              {(() => {
+                try {
+                  const cart = JSON.parse(localStorage.getItem('spro_cart') || '[]');
+                  if (cart.length === 0) {
+                    return <div className="text-center text-on-surface-variant font-mono text-sm py-12">购物车为空</div>;
+                  }
+                  return cart.map((c: any, idx: number) => (
+                    <div key={c.id || idx} className="flex items-center gap-4 p-3 cyber-glass border border-outline-variant/30">
+                      <div className="w-14 h-14 rounded bg-surface-container-high shrink-0 overflow-hidden">
+                        <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url('${c.image || ''}')` }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm text-on-surface truncate">{c.name}</div>
+                        <div className="font-mono text-xs text-on-surface-variant mt-1">{c.author || ''}</div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <div className="text-primary font-mono text-sm">{c.price} <span className="text-on-surface-variant text-xs">赛博币</span></div>
+                        <button
+                          onClick={() => {
+                            try {
+                              const updated = cart.filter((_: any, i: number) => i !== idx);
+                              localStorage.setItem('spro_cart', JSON.stringify(updated));
+                              window.dispatchEvent(new Event('spro-cart-updated'));
+                              setCartCount(updated.length);
+                              if (updated.length === 0) setShowCart(false);
+                            } catch {}
+                          }}
+                          className="text-on-surface-variant hover:text-error transition-colors mt-1"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  ));
+                } catch {
+                  return <div className="text-center text-on-surface-variant font-mono text-sm py-12">购物车为空</div>;
+                }
+              })()}
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-outline-variant/30 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs text-on-surface-variant">合计</span>
+                <span className="font-display font-bold text-primary text-lg">
+                  {(() => {
+                    try {
+                      const cart = JSON.parse(localStorage.getItem('spro_cart') || '[]');
+                      return cart.reduce((sum: number, c: any) => sum + (c.price || 0), 0);
+                    } catch { return 0; }
+                  })()} 赛博币
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  try {
+                    const cart = JSON.parse(localStorage.getItem('spro_cart') || '[]');
+                    const total = cart.reduce((sum: number, c: any) => sum + (c.price || 0), 0);
+                    const auth = getAuth();
+                    if (!auth) { router.push('/login'); return; }
+                    if (total > (auth.coins ?? 520)) { alert('赛博币不足，请先充值'); return; }
+                    const orders = JSON.parse(localStorage.getItem('spro_orders') || '[]');
+                    cart.forEach((c: any) => {
+                      orders.push({ ...c, purchasedAt: Date.now() });
+                    });
+                    localStorage.setItem('spro_orders', JSON.stringify(orders));
+                    localStorage.removeItem('spro_cart');
+                    window.dispatchEvent(new Event('spro-cart-updated'));
+                    updateCoins((auth.coins ?? 520) - total);
+                    setShowCart(false);
+                    setCartCount(0);
+                    alert('购买成功！');
+                  } catch {}
+                }}
+                className="w-full py-3 bg-primary text-background font-mono font-bold text-sm tracking-wider hover:shadow-[0_0_24px_rgba(255,171,243,0.5)] transition-all duration-300"
+              >
+                结算
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </main>
   );

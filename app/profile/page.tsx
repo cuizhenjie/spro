@@ -14,7 +14,7 @@ const ORDER_HISTORY = [
   { id: "TX-0X9A8D-11", name: "Emergency Credit Cache", type: "topup" as const, value: 500, status: "completed" as const },
   { id: "TX-0X9A8D-07", name: "AI 色彩诊断 Pro", type: "skill" as const, value: -350, status: "completed" as const },
   { id: "TX-0X9A8C-33", name: "赛博币充值 · 月度礼包", type: "topup" as const, value: 2000, status: "completed" as const },
-  { id: "TX-0X9A8C-19", name: "AI 面部美学分析", type: "skill" as const, value: -680, status: "completed" as const },
+  { id: "TX-0X9A8C-19", name: "AI 衣品升级改造", type: "skill" as const, value: -680, status: "completed" as const },
 ];
 
 export default function ProfilePage() {

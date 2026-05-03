@@ -26,15 +26,15 @@ const MOBILE_NAV: { label: string; icon: LucideIcon; href: string; active?: bool
 
 const AI_TOOLS = [
   {
-    title: '面部美学分析',
-    description: '面部特征深度分析，多维度美学综合评分',
+    title: '衣品升级改造',
+    description: 'Before & After 高反差衣品升级，韩系轻潮风格改造报告',
     icon: Eye,
     href: '/upload/image-diagnosis',
     toolId: 'image-diagnosis',
   },
   {
-    title: '赛博穿搭分析',
-    description: '基于身材特征与风格偏好，生成专属赛博穿搭方案',
+    title: '四季穿搭指南',
+    description: '上传照片，AI生成春夏秋冬四套韩系潮牌穿搭方案',
     icon: Shirt,
     href: '/upload/seasonal-outfit',
     toolId: 'seasonal-outfit',
@@ -96,10 +96,10 @@ export default function Home() {
                   <span className="font-mono-data text-mono-data uppercase">系统运行中</span>
                 </div>
                 <h1 className="font-h1 text-h1 mb-2 tracking-widest text-on-surface drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                  AI 面部美学分析
+                  AI 衣品升级改造
                 </h1>
                 <p className="font-body-lg text-body-lg mb-6 max-w-xl text-on-surface-variant">
-                  通过面部特征智能分析，为您匹配最适合的穿搭风格与色彩方案
+                  上传照片，AI生成Before & After高反差衣品升级报告，韩系轻潮风格焕然一新
                 </p>
                 <span className="flex w-max items-center space-x-2 border border-secondary px-8 py-4 font-label-caps text-label-caps text-secondary transition-all hover:bg-secondary/10 hover:shadow-[0_0_15px_rgba(236,255,227,0.5)]">
                   开启扫描 <ArrowRight className="transition-transform group-hover:translate-x-1" />
@@ -112,7 +112,7 @@ export default function Home() {
 
           {/* Right side: two stacked cards */}
           <div className="flex flex-col gap-6 lg:col-span-4">
-            {/* Card: 赛博穿搭分析 */}
+            {/* Card: 四季穿搭指南 */}
             <ClientToolLink href="/upload/seasonal-outfit" toolId="seasonal-outfit" className="flex-1 block">
               <div className="cyber-glass group relative flex min-h-[238px] flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-secondary/50 h-full">
                 <div
@@ -125,10 +125,10 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
                 <div className="relative z-10">
                   <h3 className="font-h2 mb-2 text-2xl text-secondary drop-shadow-[0_0_8px_rgba(236,255,227,0.5)]">
-                    赛博穿搭分析
+                    四季穿搭指南
                   </h3>
                   <p className="font-body-md mb-4 text-sm text-on-surface-variant">
-                    基于身材特征与风格偏好，生成专属赛博穿搭方案
+                    上传照片，AI生成春夏秋冬四套韩系潮牌穿搭方案
                   </p>
                   <span className="flex items-center text-sm font-label-caps text-secondary transition-colors hover:text-on-surface">
                     开启扫描 <ArrowRight className="ml-1 h-4 w-4" />
@@ -250,7 +250,7 @@ export default function Home() {
                       BY {product.authorLabel ?? product.author}
                     </p>
                     <p className="font-mono-data text-sm font-bold text-primary">
-                      {product.price} 金币
+                      {product.price} 赛博币
                     </p>
                   </div>
                 </div>

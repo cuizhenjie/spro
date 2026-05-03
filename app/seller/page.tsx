@@ -38,7 +38,7 @@ const SELLER_ORDERS: SellerOrder[] = [
   { id: "TX-0XA1F-02", productName: "Y2K_STYLE_PACK", type: "product", value: 180, status: "completed", buyer: "GHOST_42", time: "15分钟前" },
   { id: "TX-0XA1E-99", productName: "NEO_TOKYO_TRENCH", type: "product", value: 850, status: "completed", buyer: "SYNTH_09", time: "1小时前" },
   { id: "TX-0XA1E-42", productName: "NEON_RUNNER_V3", type: "product", value: 580, status: "failed", buyer: "BYTE_31", time: "3小时前" },
-  { id: "TX-0XA1D-11", productName: "AI 面部美学分析", type: "skill", value: 680, status: "completed", buyer: "PULSE_88", time: "5小时前" },
+  { id: "TX-0XA1D-11", productName: "AI 衣品升级改造", type: "skill", value: 680, status: "completed", buyer: "PULSE_88", time: "5小时前" },
   { id: "TX-0XA1D-07", productName: "HAPTIC_GAUNTLETS", type: "product", value: 1200, status: "pending", buyer: "NULL_00", time: "6小时前" },
   { id: "TX-0XA1C-33", productName: "风格预测引擎 Pro", type: "skill", value: 150, status: "completed", buyer: "ECHO_55", time: "1天前" },
   { id: "TX-0XA1C-19", productName: "WASTELAND_VISOR", type: "product", value: 420, status: "completed", buyer: "FLUX_23", time: "1天前" },
@@ -140,7 +140,7 @@ export default function SellerDashboardPage() {
           <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-4">总收益</h3>
           <div className="font-h2 text-h2 text-primary flex items-center gap-2">
             <span className="material-symbols-outlined">toll</span>
-            {totalRevenue.toLocaleString()} 金币
+            {totalRevenue.toLocaleString()} 赛博币
           </div>
           <div className="mt-2 font-mono-data text-xs text-secondary flex items-center gap-1">
             <span className="material-symbols-outlined text-sm">arrow_upward</span> +12% 24H
@@ -246,7 +246,7 @@ export default function SellerDashboardPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="font-label-caps text-label-caps text-on-surface-variant mb-2 block">
-                      价格 (金币) *
+                      价格 (赛博币) *
                     </label>
                     <input
                       type="number"
@@ -387,7 +387,7 @@ export default function SellerDashboardPage() {
                     </div>
                     <div className="flex gap-4 mt-2 font-mono-data text-mono-data text-on-surface-variant">
                       <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-base">sell</span> {product.price} 金币
+                        <span className="material-symbols-outlined text-base">sell</span> {product.price} 赛博币
                       </span>
                       <span className="flex items-center gap-1">
                         <span className="material-symbols-outlined text-base">category</span> {(product as any).categoryLabel ?? product.category}
@@ -487,7 +487,7 @@ export default function SellerDashboardPage() {
                     <td className={`p-4 text-right flex items-center justify-end gap-1 ${
                       order.value > 0 ? "text-secondary" : "text-secondary"
                     }`}>
-                      +{order.value} 金币
+                      +{order.value} 赛博币
                     </td>
                     <td className="p-4 text-right text-on-surface-variant">{order.time}</td>
                     <td className="p-4">

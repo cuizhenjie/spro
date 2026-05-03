@@ -9,7 +9,7 @@ import StyleQuiz from '@/components/StyleQuiz';
 import { HUDBrackets } from '@/components/CyberUI/HUDBrackets';
 import { GlassCard } from '@/components/CyberUI/GlassCard';
 import { Sparkles, ShoppingCart, Coins, Check, Star, Palette, Trash2, Minus, Plus, X, Terminal, Search, TrendingUp, Zap, ChevronRight } from 'lucide-react';
-import { getAuth } from '@/lib/auth';
+import { getAuth, updateCoins } from '@/lib/auth';
 
 export default function MarketplacePage() {
   const router = useRouter();
@@ -73,6 +73,7 @@ export default function MarketplacePage() {
         localStorage.setItem('spro_owned_tools', JSON.stringify(owned));
       } catch {}
       setCoins(coins - total);
+      updateCoins(coins - total);
       setOwnedTools([...ownedTools, ...purchasedIds]);
       setCart([]);
       setShowCheckout(false);
@@ -376,7 +377,7 @@ export default function MarketplacePage() {
               </div>
               <div className="flex items-center gap-1.5">
                 <Coins className="w-3.5 h-3.5 text-tertiary" />
-                <span>{coins} 金币</span>
+                <span>{coins} 赛博币</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <TrendingUp className="w-3.5 h-3.5 text-primary" />
@@ -393,7 +394,7 @@ export default function MarketplacePage() {
               </div>
               <div>
                 <div className="text-xs text-on-surface-variant font-mono">账户余额</div>
-                <div className="font-display font-bold text-tertiary text-lg leading-tight">{coins} <span className="text-xs font-mono text-on-surface-variant">金币</span></div>
+                <div className="font-display font-bold text-tertiary text-lg leading-tight">{coins} <span className="text-xs font-mono text-on-surface-variant">赛博币</span></div>
               </div>
             </div>
             <div className="flex-1 hidden md:block">
@@ -488,7 +489,7 @@ export default function MarketplacePage() {
                         <span className="text-xs text-on-surface-variant/60 line-through font-mono mr-0.5">{tool.originalPrice}</span>
                       )}
                       <span className="font-display font-bold text-tertiary text-lg">{tool.price}</span>
-                      <span className="text-xs text-on-surface-variant font-mono">金币</span>
+                      <span className="text-xs text-on-surface-variant font-mono">赛博币</span>
                     </div>
                     {ownedTools.includes(tool.id) ? (
                       <button
@@ -590,7 +591,7 @@ export default function MarketplacePage() {
                           <span className="text-xs text-on-surface-variant/40 line-through font-mono">{asset.originalPrice}</span>
                         )}
                         <span className="font-display font-bold text-primary">{asset.price}</span>
-                        <span className="text-[10px] text-on-surface-variant font-mono">金币</span>
+                        <span className="text-[10px] text-on-surface-variant font-mono">赛博币</span>
                       </div>
                       <button
                         onClick={() => {
@@ -677,7 +678,7 @@ export default function MarketplacePage() {
                       {/* Info */}
                       <div className="flex-1 min-w-0">
                         <h3 className="font-display font-semibold text-on-surface truncate">{(tool as any).nameZh || tool.name}</h3>
-                        <p className="font-mono text-sm text-on-surface-variant mt-1">{tool.price} 金币</p>
+                        <p className="font-mono text-sm text-on-surface-variant mt-1">{tool.price} 赛博币</p>
                       </div>
                       {/* Quantity */}
                       <div className="flex items-center gap-1 bg-surface-container-highest rounded border border-outline-variant p-1">
@@ -708,20 +709,20 @@ export default function MarketplacePage() {
                   <div className="space-y-3 mb-6 font-mono text-sm">
                     <div className="flex justify-between text-on-surface-variant">
                       <span>小计</span>
-                      <span>{cart.reduce((s, t) => s + t.price, 0)} 金币</span>
+                      <span>{cart.reduce((s, t) => s + t.price, 0)} 赛博币</span>
                     </div>
                     <div className="flex justify-between text-secondary drop-shadow-[0_0_6px_rgba(236,255,227,0.4)]">
                       <span>处理费 (黑客促销已应用)</span>
-                      <span>0 金币</span>
+                      <span>0 赛博币</span>
                     </div>
                     <div className="h-px w-full bg-outline-variant my-2" />
                     <div className="flex justify-between items-center text-on-surface">
                       <span className="font-display font-bold text-base">购买后账户余额</span>
                       <div className="text-right">
                         <span className="font-display font-bold text-lg text-tertiary">
-                          {Math.max(0, coins - cart.reduce((s, t) => s + t.price, 0))} 金币
+                          {Math.max(0, coins - cart.reduce((s, t) => s + t.price, 0))} 赛博币
                         </span>
-                        <span className="block text-xs text-on-surface-variant">(剩余自 {coins} 金币)</span>
+                        <span className="block text-xs text-on-surface-variant">(剩余自 {coins} 赛博币)</span>
                       </div>
                     </div>
                   </div>
