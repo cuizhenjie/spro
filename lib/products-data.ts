@@ -110,7 +110,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "prod_personal_color_report",
     name: "PERSONAL COLOR REPORT",
-    nameZh: "个人色彩诊断报告",
+    nameZh: "个人风格定制",
     author: "COLOR_LAB",
     authorLabel: "Color Lab",
     rarity: "EPIC",

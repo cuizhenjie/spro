@@ -166,7 +166,7 @@ export default function UploadPage() {
   const callAnalysisApi = async (photoDataUrl: string, toolId: string) => {
     if (!meta.apiEndpoint) {
       /* No API → use mock result after processing */
-      sessionStorage.setItem(`spro_result_${toolId}`, JSON.stringify({ mock: true, photoDataUrl }));
+      try { sessionStorage.setItem(`spro_result_${toolId}`, JSON.stringify({ mock: true, photoDataUrl })); } catch { /* SSR/hydration guard */ }
       router.push(`/result/${toolId}`);
       return;
     }
@@ -178,10 +178,10 @@ export default function UploadPage() {
         body: JSON.stringify({ photoUrl: photoDataUrl }),
       });
       const data = await res.json();
-      sessionStorage.setItem(`spro_result_${toolId}`, JSON.stringify({ ...data, photoDataUrl, mock: data.mock ?? false }));
+      try { sessionStorage.setItem(`spro_result_${toolId}`, JSON.stringify({ ...data, photoDataUrl, mock: data.mock ?? false })); } catch { /* SSR/hydration guard */ }
     } catch {
       /* API failure → fallback to mock */
-      sessionStorage.setItem(`spro_result_${toolId}`, JSON.stringify({ mock: true, photoDataUrl }));
+      try { sessionStorage.setItem(`spro_result_${toolId}`, JSON.stringify({ mock: true, photoDataUrl })); } catch { /* SSR/hydration guard */ }
     }
     router.push(`/result/${toolId}`);
   };

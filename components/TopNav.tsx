@@ -14,13 +14,17 @@ const NAV_ITEMS = [
 
 export default function TopNav() {
   const pathname = usePathname();
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [coins, setCoins] = useState(0);
 
   useEffect(() => {
-    setUser(getAuth());
+    setCoins(getAuth().coins);
   }, [pathname]);
 
-  const loggedIn = user?.loggedIn ?? false;
+  useEffect(() => {
+    const handler = () => setCoins(getAuth().coins);
+    window.addEventListener('spro-coins-updated', handler);
+    return () => window.removeEventListener('spro-coins-updated', handler);
+  }, []);
 
   return (
     <header className="fixed top-0 z-50 flex w-full items-center justify-between border-b border-primary-container/30 bg-background/80 backdrop-blur-xl">
@@ -52,14 +56,14 @@ export default function TopNav() {
 
       <div className="flex items-center gap-4 px-6 py-4">
         {/* Wallet Balance — visible md+ */}
-        {loggedIn && (
+        {getAuth().loggedIn && (
           <div className="hidden md:flex items-center gap-1.5 text-primary font-mono text-sm px-3 py-1.5 border border-primary/30 cyber-glass">
             <Coins className="w-4 h-4" />
-            <span>{user?.coins ?? 0} 金币</span>
+            <span>{coins} 赛博币</span>
           </div>
         )}
 
-        {loggedIn ? (
+        {getAuth().loggedIn ? (
           <Link
             href="/profile"
             className="block overflow-hidden rounded-full border border-primary-container/50 shadow-cyber-glass transition-colors hover:border-primary hover:shadow-glow"

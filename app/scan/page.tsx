@@ -22,13 +22,9 @@ function ScanContent() {
         const next = prev + 1.5;
         if (next >= 100) {
           clearInterval(timer);
-          // For owned tools, go directly to result. Otherwise to upload page.
+          // All users go to upload page first, then result page after analysis.
           const toolId = sessionStorage.getItem('spro_active_tool');
-          const ownedTools = JSON.parse(localStorage.getItem('spro_owned_tools') || '[]');
-          let dest = toolId ? `/upload/${toolId}` : target;
-          if (toolId && ownedTools.includes(toolId)) {
-            dest = `/result/${toolId}`;
-          }
+          const dest = toolId ? `/upload/${toolId}` : target;
           setTimeout(() => router.push(dest), 400);
           return 100;
         }

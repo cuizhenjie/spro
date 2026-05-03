@@ -67,3 +67,18 @@ export function updateUserLevel(level: string): void {
   localStorage.setItem(AUTH_KEY, JSON.stringify(user));
   setAuthCookie(user);
 }
+
+export function updateCoins(coins: number): void {
+  const user = getAuth();
+  user.coins = coins;
+  localStorage.setItem(AUTH_KEY, JSON.stringify(user));
+  window.dispatchEvent(new Event('spro-coins-updated'));
+}
+
+export function addCoins(amount: number): number {
+  const user = getAuth();
+  user.coins += amount;
+  localStorage.setItem(AUTH_KEY, JSON.stringify(user));
+  window.dispatchEvent(new Event('spro-coins-updated'));
+  return user.coins;
+}

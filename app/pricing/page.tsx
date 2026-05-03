@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Coins, Zap, Check, X, Star, Crown, Shield, Trash2, Bolt, Diamond, LayoutGrid, BarChart3, Store, User, Loader2, ChevronRight, AlertTriangle } from 'lucide-react';
 import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
-import { getAuth, updateUserLevel, DEFAULT_USER, type AuthUser } from '@/lib/auth';
+import { getAuth, updateUserLevel, addCoins, DEFAULT_USER, type AuthUser } from '@/lib/auth';
 
 const TIER_ID_MAP: Record<string, string> = {
   tier_01: 'SCAVENGER',
@@ -37,7 +37,7 @@ const TIERS = [
     name: 'CYBERPUNK',
     subtitle: '赛博朋克',
     price: '19',
-    priceNote: '金币/月',
+    priceNote: '赛博币/月',
     icon: Bolt,
     accent: 'primary',
     featured: true,
@@ -55,7 +55,7 @@ const TIERS = [
     name: 'OVERLORD',
     subtitle: '霸主',
     price: '99',
-    priceNote: '金币/月',
+    priceNote: '赛博币/月',
     icon: Diamond,
     accent: 'tertiary',
     featured: false,
@@ -109,6 +109,19 @@ export default function PricingPage() {
       return;
     }
     if (tier.price === 'FREE') return;
+    const levelName = TIER_ID_MAP[tier.id];
+    if (levelName === userLevel) return;
+    // 降级：当前 tier 序号 > 目标 tier 序号
+    const tierOrder = ['tier_01', 'tier_02', 'tier_03'];
+    const currentTierId = Object.entries(TIER_ID_MAP).find(([, v]) => v === userLevel)?.[0] ?? '';
+    const currentIdx = tierOrder.indexOf(currentTierId);
+    const thisIdx = tierOrder.indexOf(tier.id);
+    if (currentIdx > thisIdx) {
+      setSelectedTier(tier);
+      setCheckoutType('tier');
+      setShowCheckout(true);
+      return;
+    }
     setSelectedTier(tier);
     setCheckoutType('tier');
     setShowCheckout(true);
@@ -128,28 +141,51 @@ export default function PricingPage() {
     setLoading(true);
     setTimeout(() => {
       if (checkoutType === 'tier' && selectedTier) {
+        const tierOrder = ['tier_01', 'tier_02', 'tier_03'];
+        const currentTierId = Object.entries(TIER_ID_MAP).find(([, v]) => v === userLevel)?.[0] ?? '';
+        const currentIdx = tierOrder.indexOf(currentTierId);
+        const targetIdx = tierOrder.indexOf(selectedTier.id);
+        const isDowngrade = currentIdx > targetIdx;
+
         const newLevel = TIER_ID_MAP[selectedTier.id];
         updateUserLevel(newLevel);
         setUserLevel(newLevel);
-        setSuccess(`升级成功！您现在是 ${selectedTier.name}（${selectedTier.subtitle}）`);
+
+        if (isDowngrade) {
+          const refund = selectedTier.price === 'FREE' ? 0 : parseInt(selectedTier.price);
+          setSuccess(`降级成功！${refund > 0 ? `模拟退费 ¥${refund}（7个工作日内到账）` : '方案已降级'}，当前方案：${newLevel}`);
+        } else {
+          setSuccess(`升级成功！您现在是 ${selectedTier.name}（${selectedTier.subtitle}）`);
+        }
       } else if (checkoutType === 'coin' && selectedPack) {
         const totalCoins = selectedPack.coins + selectedPack.bonus;
-        const auth = getAuth();
-        const updated = { ...auth, coins: auth.coins + totalCoins };
-        localStorage.setItem('spro_auth', JSON.stringify(updated));
-        setCoins(updated.coins);
-        setSuccess(`充值成功！+${totalCoins} 金币已到账`);
+        const newCoins = addCoins(totalCoins);
+        setCoins(newCoins);
+        setSuccess(`充值成功！+${totalCoins} 赛博币已到账`);
       }
       setLoading(false);
       setShowCheckout(false);
-      setTimeout(() => setSuccess(''), 4000);
+      setTimeout(() => setSuccess(''), 5000);
     }, 1200);
   };
 
+  const isDowngrade = (() => {
+    if (checkoutType !== 'tier' || !selectedTier) return false;
+    const tierOrder = ['tier_01', 'tier_02', 'tier_03'];
+    const currentTierId = Object.entries(TIER_ID_MAP).find(([, v]) => v === userLevel)?.[0] ?? '';
+    return tierOrder.indexOf(currentTierId) > tierOrder.indexOf(selectedTier.id);
+  })();
+
   const getTierCta = (tier: typeof TIERS[0]) => {
     const levelName = TIER_ID_MAP[tier.id];
-    if (levelName === userLevel) return { label: '当前方案', style: 'border border-white/20 text-on-surface-variant cursor-default' };
     if (tier.price === 'FREE') return { label: '当前方案', style: 'border border-white/20 text-on-surface-variant cursor-default' };
+    if (levelName === userLevel) return { label: '当前方案', style: 'border border-white/20 text-on-surface-variant cursor-default' };
+    // 高等级 → 低等级（降级）
+    const tierOrder = ['tier_01', 'tier_02', 'tier_03'];
+    const currentTierIdForCta = Object.entries(TIER_ID_MAP).find(([, v]) => v === userLevel)?.[0] ?? '';
+    const currentIdx = tierOrder.indexOf(currentTierIdForCta);
+    const thisIdx = tierOrder.indexOf(tier.id);
+    if (currentIdx > thisIdx) return { label: '降级至此', style: 'border border-tertiary/50 text-tertiary hover:bg-tertiary/10 hover:shadow-[0_0_15px_rgba(191,208,67,0.3)]' };
     return { label: '立即升级', style: 'bg-secondary text-background font-bold shadow-[0_0_10px_rgba(236,255,227,0.4)] hover:shadow-[0_0_20px_rgba(236,255,227,0.6)]' };
   };
 
@@ -238,7 +274,7 @@ export default function PricingPage() {
                   </div>
 
                   {/* Current badge */}
-                  {isCurrent && (
+                  {false && (
                     <div className="absolute top-0 left-0 right-0 bg-secondary/20 border-b border-secondary/40 text-center py-1">
                       <span className="font-mono text-[10px] text-secondary uppercase tracking-widest">当前方案</span>
                     </div>
@@ -293,7 +329,7 @@ export default function PricingPage() {
                     onClick={() => handleTierPurchase(tier)}
                     className={`w-full py-3 font-mono text-xs tracking-wider uppercase transition-all duration-300 ${getTierCtaStyle(tier)}`}
                   >
-                    {isCurrent ? '✓ 当前方案' : tier.price === 'FREE' ? '当前方案' : '立即升级'}
+                    {isCurrent ? '✓ 当前方案' : cta.label}
                   </button>
                 </HUDBrackets>
               );
@@ -302,12 +338,12 @@ export default function PricingPage() {
         </section>
 
         {/* Coin Packs */}
-        <section className="flex flex-col gap-4">
+        <section id="coin-packs" className="flex flex-col gap-4">
           <h2 className="text-2xl font-display font-bold text-on-surface flex items-center gap-2">
             <span className="w-2 h-2 bg-tertiary rounded-full shadow-[0_0_8px_rgba(191,208,67,0.8)] animate-pulse" />
-            金币充值
+            赛博币充值
           </h2>
-          <p className="text-on-surface-variant font-mono text-sm">// 充值金币用于高级AI生成分析</p>
+          <p className="text-on-surface-variant font-mono text-sm">// 充值赛博币用于高级AI生成分析</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {COIN_PACKS.map((pack, idx) => (
@@ -336,7 +372,7 @@ export default function PricingPage() {
                   </span>
                 </div>
                 <div className="text-xs text-on-surface-variant font-mono tracking-wider uppercase mb-4">
-                  金币{pack.bonus > 0 ? ` + ${pack.bonus} 赠送` : ''}
+                  赛博币{pack.bonus > 0 ? ` + ${pack.bonus} 赠送` : ''}
                 </div>
                 <div className={`inline-block px-4 py-2 font-mono text-sm transition-all ${
                   pack.popular
@@ -361,7 +397,7 @@ export default function PricingPage() {
           </div>
           <div className="flex items-center gap-2 text-sm text-on-surface-variant font-mono">
             <Star className="w-4 h-4 text-tertiary" />
-            每日签到 → +20 金币
+            每日签到 → +20 赛博币
           </div>
         </section>
       </div>
@@ -379,7 +415,9 @@ export default function PricingPage() {
                   <Coins className="w-5 h-5 text-secondary drop-shadow-[0_0_8px_rgba(236,255,227,0.6)]" />
                 )}
                 <h2 className="font-display font-bold text-lg text-on-surface">
-                  {checkoutType === 'tier' ? '升级 AI 等级' : '金币充值'}
+                  {checkoutType === 'tier'
+                    ? isDowngrade ? '降级方案' : '升级 AI 等级'
+                    : '赛博币充值'}
                 </h2>
               </div>
               <button
@@ -395,7 +433,7 @@ export default function PricingPage() {
               {checkoutType === 'tier' && selectedTier && (
                 <>
                   <div className="p-4 cyber-glass border border-white/10 text-center">
-                    <p className="font-mono text-xs text-on-surface-variant mb-2">即将升级至</p>
+                    <p className="font-mono text-xs text-on-surface-variant mb-2">{isDowngrade ? '即将降级至' : '即将升级至'}</p>
                     <p className="text-2xl font-display font-bold text-primary">{selectedTier.name}</p>
                     <p className="font-mono text-sm text-on-surface-variant">{selectedTier.subtitle}</p>
                     <div className="mt-3 pt-3 border-t border-white/10">
@@ -405,7 +443,9 @@ export default function PricingPage() {
                   </div>
                   <div className="flex items-start gap-2 p-3 bg-tertiary/10 border border-tertiary/30 text-xs font-mono text-on-surface-variant">
                     <AlertTriangle className="w-4 h-4 text-tertiary flex-shrink-0 mt-0.5" />
-                    升级立即生效，自动续费。如需取消，请在到期日前手动关闭续费。
+                    {isDowngrade
+                      ? '降级立即生效，如需恢复高级方案可随时升级。'
+                      : '升级立即生效，自动续费。如需取消，请在到期日前手动关闭续费。'}
                   </div>
                 </>
               )}
@@ -417,14 +457,14 @@ export default function PricingPage() {
                       <Coins className="w-5 h-5 text-secondary" />
                       <span className="text-3xl font-bold text-secondary font-mono">{selectedPack.coins + selectedPack.bonus}</span>
                     </div>
-                    <p className="font-mono text-xs text-on-surface-variant">金币 {selectedPack.bonus > 0 ? `（含赠送 ${selectedPack.bonus}）` : ''}</p>
+                    <p className="font-mono text-xs text-on-surface-variant">赛博币 {selectedPack.bonus > 0 ? `（含赠送 ${selectedPack.bonus}）` : ''}</p>
                     <div className="mt-3 pt-3 border-t border-white/10">
                       <span className="text-3xl font-bold text-secondary">¥{selectedPack.price}</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-2 p-3 bg-tertiary/10 border border-tertiary/30 text-xs font-mono text-on-surface-variant">
                     <AlertTriangle className="w-4 h-4 text-tertiary flex-shrink-0 mt-0.5" />
-                    金币充值不可退款，有效期12个月。
+                    赛博币充值不可退款，有效期12个月。
                   </div>
                 </>
               )}
@@ -444,7 +484,7 @@ export default function PricingPage() {
                   className="flex-1 py-3 bg-secondary text-background font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_15px_rgba(236,255,227,0.4)] hover:shadow-[0_0_25px_rgba(236,255,227,0.6)] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
-                  {loading ? '处理中...' : '确认支付'}
+                  {loading ? '处理中...' : (checkoutType === 'coin' ? '确认支付' : isDowngrade ? '确认降级' : '确认支付')}
                 </button>
               </div>
             </div>

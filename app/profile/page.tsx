@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { logout, getAuth, type AuthUser } from "@/lib/auth";
+import { logout, getAuth, updateCoins, addCoins, type AuthUser } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { CheckCircle, XCircle, ArrowDown, ArrowUp, Wallet, Brain, RefreshCw, Filter, Download } from "lucide-react";
@@ -20,7 +20,7 @@ const ORDER_HISTORY = [
 export default function ProfilePage() {
   const router = useRouter();
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [coins, setCoins] = useState(8950);
+  const [coins, setCoins] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {
@@ -30,15 +30,21 @@ export default function ProfilePage() {
       return;
     }
     setUser(auth);
+    setCoins(auth.coins);
   }, [router]);
+
+  const handleDeposit = () => {
+    router.push('/pricing#coin-packs');
+  };
+  const handleWithdraw = () => {
+    const newCoins = addCoins(-100);
+    setCoins(newCoins);
+  };
 
   const handleLogout = () => {
     logout();
     router.push("/login");
   };
-
-  const handleDeposit = () => setCoins((prev) => prev + 100);
-  const handleWithdraw = () => setCoins((prev) => Math.max(0, prev - 100));
 
   const faqs = [
     {

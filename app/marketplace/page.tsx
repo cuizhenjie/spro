@@ -33,12 +33,16 @@ export default function MarketplacePage() {
 
   const addToCart = (tool: MarketTool) => {
     if (!cart.find(t => t.id === tool.id)) {
-      setCart([...cart, tool]);
+      const next = [...cart, tool];
+      setCart(next);
+      try { localStorage.setItem('spro_cart', JSON.stringify(next)); window.dispatchEvent(new Event('spro-cart-updated')); } catch {}
     }
   };
 
   const removeFromCart = (toolId: string) => {
-    setCart(cart.filter(t => t.id !== toolId));
+    const next = cart.filter(t => t.id !== toolId);
+    setCart(next);
+    try { localStorage.setItem('spro_cart', JSON.stringify(next)); window.dispatchEvent(new Event('spro-cart-updated')); } catch {}
   };
 
   const checkout = () => {
@@ -672,7 +676,7 @@ export default function MarketplacePage() {
                       </div>
                       {/* Info */}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-display font-semibold text-on-surface truncate">{tool.name}</h3>
+                        <h3 className="font-display font-semibold text-on-surface truncate">{(tool as any).nameZh || tool.name}</h3>
                         <p className="font-mono text-sm text-on-surface-variant mt-1">{tool.price} 金币</p>
                       </div>
                       {/* Quantity */}

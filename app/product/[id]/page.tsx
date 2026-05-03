@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { GlassCard } from "@/components/CyberUI/GlassCard";
 import { HUDBrackets } from "@/components/CyberUI/HUDBrackets";
@@ -33,6 +33,20 @@ export default function ProductPage() {
   const router = useRouter();
   const item = findItem(params.id as string);
   const [added, setAdded] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  const [showCart, setShowCart] = useState(false);
+
+  useEffect(() => {
+    const syncCart = () => {
+      try {
+        const cart = JSON.parse(localStorage.getItem('spro_cart') || '[]');
+        setCartCount(cart.length);
+      } catch { setCartCount(0); }
+    };
+    syncCart();
+    window.addEventListener('spro-cart-updated', syncCart);
+    return () => window.removeEventListener('spro-cart-updated', syncCart);
+  }, []);
 
   if (!item) {
     return (
@@ -294,6 +308,19 @@ export default function ProductPage() {
           </div>
         </div>
       </div>
+
+      {/* FAB - Cart Quick Access */}
+      {cartCount > 0 && (
+        <button
+          onClick={() => router.push('/marketplace')}
+          className="fixed bottom-8 right-6 md:right-8 w-14 h-14 rounded-full bg-primary/15 border border-primary/40 backdrop-blur-md flex items-center justify-center text-primary hover:bg-primary/25 hover:shadow-[0_0_24px_rgba(255,171,243,0.3)] transition-all duration-300 z-40"
+        >
+          <ShoppingCart className="w-5 h-5" />
+          <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-background text-[10px] font-bold rounded-full flex items-center justify-center">
+            {cartCount}
+          </span>
+        </button>
+      )}
     </main>
   );
 }
