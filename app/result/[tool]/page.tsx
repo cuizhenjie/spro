@@ -237,7 +237,15 @@ const RESULT_META: Record<string, {
   },
 };
 
-function SeasonalOutfitContent({ meta }: { meta: { accentColor: string } }) {
+function SeasonalOutfitContent({ meta, stored }: { meta: { accentColor: string }; stored: StoredResult }) {
+  /* Use API-generated images if available, otherwise fall back to mock Unsplash URLs */
+  const apiImages: Record<string, string | null> = {
+    spring: (stored.spring as string) || null,
+    summer: (stored.summer as string) || null,
+    autumn: (stored.autumn as string) || null,
+    winter: (stored.winter as string) || null,
+  };
+
   return (
     <>
       {/* Season type bar */}
@@ -251,52 +259,55 @@ function SeasonalOutfitContent({ meta }: { meta: { accentColor: string } }) {
       </div>
       {/* 4 Season Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-        {SEASONAL_OUTFIT_RESULT.seasons.map((season) => (
-          <div key={season.id} className="border border-white/10 overflow-hidden" style={{ borderColor: `${season.accentColor}30` }}>
-            <div className="relative h-56 overflow-hidden">
-              <img src={season.heroImage} alt={season.label} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-              <div className="absolute bottom-3 left-4 flex items-center gap-2">
-                <span className="font-display text-2xl font-bold text-white">{season.label}</span>
-                <span className="font-mono text-xs text-white/60">{season.labelEn}</span>
-              </div>
-              <div className="absolute top-3 right-3 flex gap-1">
-                {season.tags.map((tag) => (
-                  <span key={tag} className="px-2 py-0.5 text-[10px] font-mono text-white/80 border border-white/20 backdrop-blur-sm">{tag}</span>
-                ))}
-              </div>
-            </div>
-            <div className="p-4 space-y-3">
-              <div>
-                <label className="font-mono text-[10px] text-outline uppercase tracking-widest">推荐色盘</label>
-                <div className="flex gap-1.5 mt-1.5">
-                  {season.colorPalette.map((c, i) => (
-                    <div key={i} className="h-7 w-7 rounded-full border border-white/10" style={{ backgroundColor: c }} title={c} />
+        {SEASONAL_OUTFIT_RESULT.seasons.map((season) => {
+          const imageSrc = apiImages[season.id] || season.heroImage;
+          return (
+            <div key={season.id} className="border border-white/10 overflow-hidden" style={{ borderColor: `${season.accentColor}30` }}>
+              <div className="relative h-56 overflow-hidden">
+                <img src={imageSrc} alt={season.label} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                  <span className="font-display text-2xl font-bold text-white">{season.label}</span>
+                  <span className="font-mono text-xs text-white/60">{season.labelEn}</span>
+                </div>
+                <div className="absolute top-3 right-3 flex gap-1">
+                  {season.tags.map((tag) => (
+                    <span key={tag} className="px-2 py-0.5 text-[10px] font-mono text-white/80 border border-white/20 backdrop-blur-sm">{tag}</span>
                   ))}
                 </div>
               </div>
-              <div>
-                <label className="font-mono text-[10px] text-outline uppercase tracking-widest">主推造型</label>
-                <p className="text-sm text-on-surface mt-1">{season.heroOutfit}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-[10px] text-outline uppercase">配色</span>
-                <span className="font-mono text-xs" style={{ color: season.accentColor }}>{season.colorFormula}</span>
-              </div>
-              <div>
-                <label className="font-mono text-[10px] text-primary/70 uppercase tracking-widest">避雷</label>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {season.avoid.map((a) => (
-                    <span key={a} className="text-[10px] font-mono text-primary/60 px-1.5 py-0.5 border border-primary/20">{a}</span>
-                  ))}
+              <div className="p-4 space-y-3">
+                <div>
+                  <label className="font-mono text-[10px] text-outline uppercase tracking-widest">推荐色盘</label>
+                  <div className="flex gap-1.5 mt-1.5">
+                    {season.colorPalette.map((c, i) => (
+                      <div key={i} className="h-7 w-7 rounded-full border border-white/10" style={{ backgroundColor: c }} title={c} />
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="font-mono text-[10px] text-outline uppercase tracking-widest">主推造型</label>
+                  <p className="text-sm text-on-surface mt-1">{season.heroOutfit}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] text-outline uppercase">配色</span>
+                  <span className="font-mono text-xs" style={{ color: season.accentColor }}>{season.colorFormula}</span>
+                </div>
+                <div>
+                  <label className="font-mono text-[10px] text-primary/70 uppercase tracking-widest">避雷</label>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {season.avoid.map((a) => (
+                      <span key={a} className="text-[10px] font-mono text-primary/60 px-1.5 py-0.5 border border-primary/20">{a}</span>
+                    ))}
+                  </div>
+                </div>
+                <div className="border-t border-white/5 pt-3">
+                  <p className="text-xs text-on-surface-variant italic">"{season.summary}"</p>
                 </div>
               </div>
-              <div className="border-t border-white/5 pt-3">
-                <p className="text-xs text-on-surface-variant italic">"{season.summary}"</p>
-              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </>
   );
@@ -489,7 +500,7 @@ export default function ResultPage() {
                 </div>
               </div>
             )}
-            <SeasonalOutfitContent meta={meta} />
+            <SeasonalOutfitContent meta={meta} stored={stored} />
           </>
         )}
 
