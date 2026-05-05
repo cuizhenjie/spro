@@ -511,52 +511,165 @@ export default function ResultPage() {
         )}
 
         {/* ── PERSONAL COLOR ── */}
-        {tool === "personal-color" && (
+        {tool === "personal-color" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          return (
           <div className="space-y-6">
-            {stored.photoDataUrl && (
-              <div className="flex justify-center mb-6">
-                <div className="relative w-40 h-40 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
-                  <img src={stored.photoDataUrl} alt="面部" className="w-full h-full object-cover" />
-                </div>
-              </div>
-            )}
-            {/* Type header */}
-            <div className="mb-8 flex flex-wrap items-center justify-center gap-6">
-              <div className="text-center">
-                <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">肤色底调</div>
-                <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{stored.mock ? "暖皮" : (stored.undertone as string) || "暖皮"}</div>
-              </div>
-              <div className="h-10 w-px bg-white/10" />
-              <div className="text-center">
-                <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">四季类型</div>
-                <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{stored.mock ? "深秋型" : (stored.seasonType as string) || "深秋型"}</div>
-              </div>
-            </div>
-            {/* Best colors */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {(stored.mock ? [
-                { name: "琥珀金", hex: "#D4A373" }, { name: "焦糖棕", hex: "#8B4513" },
-                { name: "暗红", hex: "#8B0000" }, { name: "深牛仔蓝", hex: "#2F4F4F" }
-              ] : (stored.bestColors as Array<{name:string;hex:string}> || [])).slice(0, 4).map((c) => (
-                <div key={c.name} className="flex flex-col items-center gap-1">
-                  <div className="h-12 w-12 rounded-full border border-white/10" style={{ backgroundColor: c.hex }} />
-                  <span className="text-[10px] font-mono text-on-surface-variant">{c.name}</span>
-                </div>
-              ))}
-            </div>
-            {/* API-generated report image */}
+            {/* Report Image */}
             {(stored as any).reportImage && (
               <div className="mt-6 border border-white/10 overflow-hidden rounded-xl">
                 <img src={(stored as any).reportImage} alt="色彩分析报告图" className="w-full max-h-96 object-cover" />
               </div>
             )}
-            {stored.mock && (
-              <div className="p-4 border border-secondary/20 text-center">
-                <p className="text-xs font-mono text-secondary">// PERSONAL_COLOR_RESULT 完整内容（见旧版文件）</p>
+            {/* User Photo */}
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-48 h-32 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="面部" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
+            {ea ? (
+              <>
+                {/* Core Metrics */}
+                <div className="mb-8 flex flex-wrap items-center justify-center gap-6">
+                  <div className="text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">肤色底调</div>
+                    <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{ea.undertone}</div>
+                  </div>
+                  <div className="h-10 w-px bg-white/10" />
+                  <div className="text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">四季类型</div>
+                    <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{ea.seasonType}</div>
+                  </div>
+                  <div className="h-10 w-px bg-white/10" />
+                  <div className="text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">肤色匹配</div>
+                    <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{ea.skinToneMatch}%</div>
+                  </div>
+                </div>
+
+                {/* Best Colors */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ✓ 推荐用色
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {(ea.bestColors as Array<{name:string;hex:string;effect?:string}> || []).slice(0, 4).map((c) => (
+                      <div key={c.name} className="flex flex-col items-center gap-1">
+                        <div className="h-12 w-12 rounded-full border border-white/10" style={{ backgroundColor: c.hex }} />
+                        <span className="text-[10px] font-mono text-on-surface-variant">{c.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Avoid Colors */}
+                {ea.avoidColors && (ea.avoidColors as Array<{name:string;hex?:string;reason?:string}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                      ✗ 避用颜色
+                    </label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      {(ea.avoidColors as Array<{name:string;hex?:string;reason?:string}> || []).map((c) => (
+                        <div key={c.name} className="border border-red-500/30 px-3 py-2 bg-red-500/5 flex items-center gap-2">
+                          {c.hex && <div className="w-5 h-5 rounded-full border border-white/10 flex-shrink-0" style={{ backgroundColor: c.hex }} />}
+                          <span className="text-red-400 text-xs">{c.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Recommended Formulas */}
+                {ea.recommendedFormulas && (ea.recommendedFormulas as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                      ◇ 配色公式
+                    </label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {(ea.recommendedFormulas as string[] || []).map((f) => (
+                        <div key={f} className="border border-white/10 px-3 py-2">
+                          <span className="text-sm text-on-surface">{f}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Expert Tips */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ◆ 专业建议
+                  </label>
+                  <div className="space-y-2">
+                    {(ea.expertTips as string[] || []).map((tip, i) => (
+                      <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                        <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                        <span className="text-sm text-on-surface-variant">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Style Correlation */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ◇ 关联穿搭风格
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {(ea.styleCorrelation as string[] || []).map((style) => (
+                      <span key={style} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>
+                        {style}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Knowledge Source */}
+                <div className="border border-white/5 p-4 bg-white/[0.02]">
+                  <div className="font-mono text-[10px] text-outline uppercase mb-2">知识库来源</div>
+                  <div className="flex flex-wrap gap-2">
+                    {(ea.knowledgeSource as string[] || []).map((src) => (
+                      <span key={src} className="text-[10px] font-mono text-on-surface-variant/60">{src}</span>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="mb-8 flex flex-wrap items-center justify-center gap-6">
+                  <div className="text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">肤色底调</div>
+                    <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{stored.mock ? "暖皮" : (stored.undertone as string) || "暖皮"}</div>
+                  </div>
+                  <div className="h-10 w-px bg-white/10" />
+                  <div className="text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">四季类型</div>
+                    <div className="text-xl font-bold" style={{ color: meta.accentColor }}>{stored.mock ? "深秋型" : (stored.seasonType as string) || "深秋型"}</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { name: "琥珀金", hex: "#D4A373" }, { name: "焦糖棕", hex: "#8B4513" },
+                    { name: "暗红", hex: "#8B0000" }, { name: "深牛仔蓝", hex: "#2F4F4F" }
+                  ].map((c) => (
+                    <div key={c.name} className="flex flex-col items-center gap-1">
+                      <div className="h-12 w-12 rounded-full border border-white/10" style={{ backgroundColor: c.hex }} />
+                      <span className="text-[10px] font-mono text-on-surface-variant">{c.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
-        )}
+          );
+        })()}
 
         {/* ── NEON STREET SYNDICATE (OUTFIT ANALYSIS) ── */}
         {tool === "neon-street-syndicate" && (
@@ -611,94 +724,188 @@ export default function ResultPage() {
         )}
 
         {/* ── MAKEUP ANALYSIS ── */}
-        {tool === "makeup-analysis" && (
-          <div className="space-y-6">
-            {stored.photoDataUrl && (
-              <div className="flex justify-center mb-6">
-                <div className="relative w-40 h-40 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
-                  <img src={stored.photoDataUrl} alt="妆容照" className="w-full h-full object-cover" />
-                </div>
-              </div>
-            )}
-            {(stored as any).reportImage && (
-              <div className="border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="妆容分析报告图" className="w-full max-h-96 object-cover" />
-              </div>
-            )}
-            {/* Style header */}
-            <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
-              <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">整体妆容风格</div>
-              <div className="text-2xl font-bold mb-2" style={{ color: meta.accentColor }}>{MAKEUP_RESULT.overallStyle}</div>
-              <p className="text-sm text-on-surface-variant">{MAKEUP_RESULT.overallDesc}</p>
-            </div>
-
-            {/* Comparison: Best / Good / Avoid */}
-            <div className="mb-8">
-              <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-4 block">妆容对比</label>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[
-                  { key: "best", data: MAKEUP_RESULT.comparison.best, color: "#ecffe3", tagColor: "text-green-400", borderColor: "border-green-400/30" },
-                  { key: "good", data: MAKEUP_RESULT.comparison.good, color: "#fbbf24", tagColor: "text-yellow-400", borderColor: "border-yellow-400/30" },
-                  { key: "avoid", data: MAKEUP_RESULT.comparison.avoid, color: "#f87171", tagColor: "text-red-400", borderColor: "border-red-400/30" },
-                ].map(({ key, data, color, tagColor, borderColor }) => (
-                  <div key={key} className={`border ${borderColor} overflow-hidden`}>
-                    <div className="relative h-40 overflow-hidden">
-                      <img src={data.image} alt={data.label} className="w-full h-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-                      <span className={`absolute top-2 left-2 px-2 py-0.5 text-[10px] font-mono font-bold ${tagColor}`} style={{ backgroundColor: `${color}20` }}>
-                        {data.label}
-                      </span>
-                    </div>
-                    <div className="p-3">
-                      <p className="text-xs text-on-surface-variant">{data.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Detail grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-              {[
-                { label: "底妆", value: MAKEUP_RESULT.foundation.type, sub: MAKEUP_RESULT.foundation.description, avoid: MAKEUP_RESULT.foundation.avoid },
-                { label: "眉形", value: MAKEUP_RESULT.brows.shape, sub: `${MAKEUP_RESULT.brows.color} · ${MAKEUP_RESULT.brows.direction}`, avoid: MAKEUP_RESULT.brows.avoid },
-                { label: "眼妆", value: MAKEUP_RESULT.eye.eyeshadow, sub: `${MAKEUP_RESULT.eye.liner} · ${MAKEUP_RESULT.eye.intensity}`, avoid: MAKEUP_RESULT.eye.avoid },
-                { label: "腮红", value: MAKEUP_RESULT.blush.color, sub: MAKEUP_RESULT.blush.position, avoid: MAKEUP_RESULT.blush.avoid },
-                { label: "修容", value: MAKEUP_RESULT.contour.color, sub: MAKEUP_RESULT.contour.zone, avoid: MAKEUP_RESULT.contour.avoid },
-                { label: "唇妆", value: MAKEUP_RESULT.lip.color, sub: `${MAKEUP_RESULT.lip.texture} · ${MAKEUP_RESULT.lip.shape}`, avoid: MAKEUP_RESULT.lip.avoid },
-              ].map((item) => (
-                <div key={item.label} className="border border-white/10 p-3">
-                  <div className="font-mono text-[10px] text-outline uppercase mb-1">{item.label}</div>
-                  <div className="text-sm font-bold text-on-surface mb-1">{item.value}</div>
-                  <div className="text-[10px] text-on-surface-variant mb-1">{item.sub}</div>
-                  <div className="text-[10px] text-primary/70">{item.avoid}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Style summary tag */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {["清透感", "暖调棕色系", "自然弧形眉", "缎光唇釉", "颧骨内侧腮红"].map((tag) => (
-                <span key={tag} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ── EYEBROW ANALYSIS ── */}
-        {tool === "eyebrow-analysis" && (() => {
+        {tool === "makeup-analysis" && (() => {
           const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
           return (
           <div className="space-y-6">
             {/* Report Image */}
             {(stored as any).reportImage && (
               <div className="border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="眉形美学分析报告图" className="w-full" />
+                <img src={(stored as any).reportImage} alt="妆容分析报告图" className="w-full max-h-96 object-cover" />
               </div>
             )}
+            {/* User Photo */}
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-48 h-32 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="妆容照" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            {ea ? (
+              <>
+                {/* Style header */}
+                <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
+                  <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">整体妆容风格</div>
+                  <div className="text-2xl font-bold mb-2" style={{ color: meta.accentColor }}>{ea.overallStyle}</div>
+                  <div className="font-mono text-[10px] text-outline uppercase mb-1">风格匹配</div>
+                  <div className="text-lg font-bold" style={{ color: meta.accentColor }}>{ea.matchScore}%</div>
+                </div>
 
+                {/* Detail grid */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
+                  {[
+                    { label: "底妆", value: ea.foundation?.type, sub: ea.foundation?.description, avoid: ea.foundation?.avoid },
+                    { label: "眉形", value: ea.brows?.shape, sub: `${ea.brows?.color} · ${ea.brows?.direction}`, avoid: ea.brows?.avoid },
+                    { label: "眼妆", value: ea.eye?.eyeshadow, sub: `${ea.eye?.liner} · ${ea.eye?.intensity}`, avoid: ea.eye?.avoid },
+                    { label: "腮红", value: ea.blush?.color, sub: ea.blush?.position, avoid: ea.blush?.avoid },
+                    { label: "修容", value: ea.contour?.zone, sub: ea.contour?.color, avoid: ea.contour?.avoid },
+                    { label: "唇妆", value: ea.lip?.color, sub: `${ea.lip?.texture} · ${ea.lip?.shape}`, avoid: ea.lip?.avoid },
+                  ].map((item) => (
+                    <div key={item.label} className="border border-white/10 p-3">
+                      <div className="font-mono text-[10px] text-outline uppercase mb-1">{item.label}</div>
+                      <div className="text-sm font-bold text-on-surface mb-1">{item.value || "—"}</div>
+                      <div className="text-[10px] text-on-surface-variant mb-1">{item.sub || ""}</div>
+                      <div className="text-[10px] text-primary/70">{item.avoid || ""}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Best Looks */}
+                {ea.bestLooks && (ea.bestLooks as Array<{label:string;desc:string;image?:string}> || []).length > 0 && (
+                  <div className="mb-8">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-4 block">最佳妆容参考</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {(ea.bestLooks as Array<{label:string;desc:string;image?:string}> || []).map((look) => (
+                        <div key={look.label} className="border border-green-500/30 overflow-hidden">
+                          <div className="relative h-40 overflow-hidden">
+                            {look.image && <img src={look.image} alt={look.label} className="w-full h-full object-cover" />}
+                            <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+                            <span className="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-mono font-bold text-green-400 bg-green-500/20">最适合</span>
+                          </div>
+                          <div className="p-3">
+                            <p className="text-xs text-on-surface-variant">{look.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Avoid Looks */}
+                {ea.avoidLooks && (ea.avoidLooks as Array<{label:string;desc:string}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">✗ 避雷妆容</label>
+                    <div className="space-y-2">
+                      {(ea.avoidLooks as Array<{label:string;desc:string}> || []).map((look, i) => (
+                        <div key={i} className="border border-red-500/30 px-3 py-2 bg-red-500/5">
+                          <span className="text-red-400 text-sm">{look.desc}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Expert Tips */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ◆ 专业建议
+                  </label>
+                  <div className="space-y-2">
+                    {(ea.expertTips as string[] || []).map((tip, i) => (
+                      <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                        <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                        <span className="text-sm text-on-surface-variant">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Style Correlation */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ◇ 关联穿搭风格
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {(ea.styleCorrelation as string[] || []).map((style) => (
+                      <span key={style} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>
+                        {style}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Knowledge Source */}
+                <div className="border border-white/5 p-4 bg-white/[0.02]">
+                  <div className="font-mono text-[10px] text-outline uppercase mb-2">知识库来源</div>
+                  <div className="flex flex-wrap gap-2">
+                    {(ea.knowledgeSource as string[] || []).map((src) => (
+                      <span key={src} className="text-[10px] font-mono text-on-surface-variant/60">{src}</span>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
+                  <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">整体妆容风格</div>
+                  <div className="text-2xl font-bold mb-2" style={{ color: meta.accentColor }}>{MAKEUP_RESULT.overallStyle}</div>
+                  <p className="text-sm text-on-surface-variant">{MAKEUP_RESULT.overallDesc}</p>
+                </div>
+                {/* Comparison */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    { key: "best", data: MAKEUP_RESULT.comparison.best, color: "#ecffe3", tagColor: "text-green-400", borderColor: "border-green-400/30" },
+                    { key: "good", data: MAKEUP_RESULT.comparison.good, color: "#fbbf24", tagColor: "text-yellow-400", borderColor: "border-yellow-400/30" },
+                    { key: "avoid", data: MAKEUP_RESULT.comparison.avoid, color: "#f87171", tagColor: "text-red-400", borderColor: "border-red-400/30" },
+                  ].map(({ key, data, color, tagColor, borderColor }) => (
+                    <div key={key} className={`border ${borderColor} overflow-hidden`}>
+                      <div className="relative h-40 overflow-hidden">
+                        <img src={data.image} alt={data.label} className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+                        <span className={`absolute top-2 left-2 px-2 py-0.5 text-[10px] font-mono font-bold ${tagColor}`} style={{ backgroundColor: `${color}20` }}>
+                          {data.label}
+                        </span>
+                      </div>
+                      <div className="p-3">
+                        <p className="text-xs text-on-surface-variant">{data.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-6">
+                  {[
+                    { label: "底妆", value: MAKEUP_RESULT.foundation.type, sub: MAKEUP_RESULT.foundation.description, avoid: MAKEUP_RESULT.foundation.avoid },
+                    { label: "眉形", value: MAKEUP_RESULT.brows.shape, sub: `${MAKEUP_RESULT.brows.color} · ${MAKEUP_RESULT.brows.direction}`, avoid: MAKEUP_RESULT.brows.avoid },
+                    { label: "眼妆", value: MAKEUP_RESULT.eye.eyeshadow, sub: `${MAKEUP_RESULT.eye.liner} · ${MAKEUP_RESULT.eye.intensity}`, avoid: MAKEUP_RESULT.eye.avoid },
+                    { label: "腮红", value: MAKEUP_RESULT.blush.color, sub: MAKEUP_RESULT.blush.position, avoid: MAKEUP_RESULT.blush.avoid },
+                    { label: "修容", value: MAKEUP_RESULT.contour.color, sub: MAKEUP_RESULT.contour.zone, avoid: MAKEUP_RESULT.contour.avoid },
+                    { label: "唇妆", value: MAKEUP_RESULT.lip.color, sub: `${MAKEUP_RESULT.lip.texture} · ${MAKEUP_RESULT.lip.shape}`, avoid: MAKEUP_RESULT.lip.avoid },
+                  ].map((item) => (
+                    <div key={item.label} className="border border-white/10 p-3">
+                      <div className="font-mono text-[10px] text-outline uppercase mb-1">{item.label}</div>
+                      <div className="text-sm font-bold text-on-surface mb-1">{item.value}</div>
+                      <div className="text-[10px] text-on-surface-variant mb-1">{item.sub}</div>
+                      <div className="text-[10px] text-primary/70">{item.avoid}</div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+          );
+        })()}
+
+        {/* ── EYEBROW ANALYSIS ── */}
+        {tool === "eyebrow-analysis" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          return (
+          <div className="space-y-6">
             {/* User Photo */}
             {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
@@ -712,8 +919,6 @@ export default function ResultPage() {
                 </div>
               </div>
             )}
-
-            {/* ── ENHANCED ANALYSIS DASHBOARD ── */}
             {ea ? (
               <>
                 {/* Face Shape + Match Score */}
@@ -837,21 +1042,154 @@ export default function ResultPage() {
         })()}
 
         {/* ── HAIR ANALYSIS ── */}
-        {tool === "hair-analysis" && (
+        {tool === "hair-analysis" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          return (
           <div className="space-y-6">
+            {/* Report Image */}
             {(stored as any).reportImage && (
               <div className="border border-white/10 overflow-hidden rounded-xl">
                 <img src={(stored as any).reportImage} alt="发型分析报告图" className="w-full" />
               </div>
             )}
-            {!((stored as any).reportImage) && stored.photoDataUrl && (
+            {/* User Photo */}
+            {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
-                <div className="relative w-40 h-40 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                <div className="relative w-48 h-32 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="面部" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-            {!((stored as any).reportImage) && (
+            {ea ? (
+              <>
+                {/* Core Metrics 4-grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                  <div className="border border-white/10 p-4 text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">脸型</div>
+                    <div className="text-lg font-bold" style={{ color: meta.accentColor }}>{ea.faceShape}</div>
+                  </div>
+                  <div className="border border-white/10 p-4 text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">脸型匹配</div>
+                    <div className="text-lg font-bold" style={{ color: meta.accentColor }}>{ea.faceShapeMatch}%</div>
+                  </div>
+                  <div className="border border-white/10 p-4 text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">打理难度</div>
+                    <div className="text-lg font-bold" style={{ color: meta.accentColor }}>{ea.stylingDifficulty}</div>
+                  </div>
+                  <div className="border border-white/10 p-4 text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">维护周期</div>
+                    <div className="text-lg font-bold" style={{ color: meta.accentColor }}>{ea.maintenanceCycle}</div>
+                  </div>
+                </div>
+
+                {/* Recommended Hairstyles */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ✓ 推荐发型
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    {(ea.recommendedHairstyles as string[] || []).map((shape) => (
+                      <div key={shape} className="border border-green-500/30 px-3 py-2 bg-green-500/5">
+                        <span className="text-green-400 text-sm font-bold">{shape}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Avoid Hairstyles */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ✗ 避雷发型
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {(ea.avoidHairstyles as string[] || []).map((shape) => (
+                      <div key={shape} className="border border-red-500/30 px-3 py-2 bg-red-500/5">
+                        <span className="text-red-400 text-sm">{shape}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Key Features Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+                  {[
+                    { label: "推荐发长", value: ea.recommendedHairLengths?.slice(0,2).join(" · "), icon: "↕" },
+                    { label: "推荐发色", value: ea.hairColors?.slice(0,2).join(" · "), icon: "◐" },
+                    { label: "发质要求", value: ea.hairTextures?.slice(0,2).join(" · "), icon: "~" },
+                    { label: "关联风格", value: ea.styleCorrelation?.slice(0,2).join(" · "), icon: "◆" },
+                  ].map((item) => (
+                    <div key={item.label} className="border border-white/10 p-3 flex items-start gap-2">
+                      <span className="text-primary mt-0.5" style={{ color: meta.accentColor }}>{item.icon}</span>
+                      <div>
+                        <div className="font-mono text-[10px] text-outline uppercase">{item.label}</div>
+                        <div className="text-sm font-bold text-on-surface mt-0.5">{item.value}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Expert Tips */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ◆ 专业建议
+                  </label>
+                  <div className="space-y-2">
+                    {(ea.expertTips as string[] || []).map((tip, i) => (
+                      <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                        <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                        <span className="text-sm text-on-surface-variant">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Style Correlation */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ◇ 关联穿搭风格
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {(ea.styleCorrelation as string[] || []).map((style) => (
+                      <span key={style} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>
+                        {style}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Hair Products */}
+                {(ea.hairProducts as Array<{name:string;priceRange:string}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                      ◇ 造型好物
+                    </label>
+                    <div className="flex flex-wrap gap-3">
+                      {(ea.hairProducts as Array<{name:string;priceRange:string}> || []).map((p) => (
+                        <div key={p.name} className="border border-white/10 px-3 py-2">
+                          <span className="text-sm text-on-surface font-bold">{p.name}</span>
+                          <span className="text-xs text-outline ml-2">{p.priceRange}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Knowledge Source */}
+                <div className="border border-white/5 p-4 bg-white/[0.02]">
+                  <div className="font-mono text-[10px] text-outline uppercase mb-2">知识库来源</div>
+                  <div className="flex flex-wrap gap-2">
+                    {(ea.knowledgeSource as string[] || []).map((src) => (
+                      <span key={src} className="text-[10px] font-mono text-on-surface-variant/60">{src}</span>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
               <>
                 <DataBox label="推荐发型" value="锁骨发 · 高层次 · 法式刘海" verified accentColor="green" />
                 <DataBox label="推荐卷度" value="微卷 · 自然蓬松感" accentColor="orange" />
@@ -860,7 +1198,8 @@ export default function ResultPage() {
               </>
             )}
           </div>
-        )}
+          );
+        })()}
         <div className="flex flex-col gap-4 sm:flex-row">
           <button
             onClick={copyResult}
