@@ -176,7 +176,7 @@ const RESULT_META: Record<string, {
   matchScore?: number;
 }> = {
   "palm-reading": {
-    title: "掌心占卜报告",
+    title: "手面相占卜报告",
     subtitle: "PALM READING COMPLETE",
     accentColor: "#c4a35a",
     matchScore: 88,
@@ -394,7 +394,7 @@ export default function ResultPage() {
             {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
                 <div className="relative w-40 h-40 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
-                  <img src={stored.photoDataUrl} alt="掌纹" className="w-full h-full object-cover" />
+                  <img src={stored.photoDataUrl} alt="手脸照片" className="w-full h-full object-cover" />
                   {stored.mock && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/60">
                       <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
@@ -509,7 +509,7 @@ export default function ResultPage() {
 
                 {/* Disclaimer */}
                 <div className="p-4 border border-white/10">
-                  <p className="text-sm text-on-surface-variant">掌心占卜仅供娱乐参考。真正的命运掌握在自己手中，AI 分析可帮助你更好地了解自我特质。</p>
+                  <p className="text-sm text-on-surface-variant">手面相占卜仅供娱乐参考。真正的命运掌握在自己手中，AI 分析可帮助你更好地了解自我特质。</p>
                 </div>
               </>
             ) : (
