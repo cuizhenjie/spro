@@ -171,6 +171,28 @@ export const MARKET_TOOLS: MarketTool[] = [
     color: '#a78bfa',
     coverImage: '/assets/tool-hair-analysis.png',
   },
+  {
+    id: 'eyebrow-analysis',
+    name: '眉形美学分析',
+    nameEn: 'Eyebrow Shape Analysis',
+    description: '上传真人正面照片，AI生成高完成度眉形美学升级报告。Before & After主视觉对比，推荐最适合眉形方案，避雷不适合眉形，附眉形执行指南。保留本人真实五官辨识度。',
+    icon: 'auto_awesome',
+    price: 39,
+    originalPrice: 129,
+    category: 'makeup',
+    features: [
+      'Before & After眉形高反差对比（保留本人辨识度）',
+      '6大关键点专业标注：眉头/眉峰/眉尾/粗细/眉眼距/眉色',
+      '4个最佳眉形方案推荐（自然/韩系/轻挑/羽毛感）',
+      '3个避雷眉形趣味提示',
+      '眉形执行指南：修眉方式/画眉技巧/推荐眉色/维护周期',
+      '专业眉形顾问提案板风格，高级杂志视觉感',
+    ],
+    isHot: true,
+    isNew: true,
+    color: '#fb923c',
+    coverImage: '/assets/tool-eyebrow-analysis.png',
+  },
 ];
 
 export const CATEGORIES = [

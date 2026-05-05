@@ -235,6 +235,12 @@ const RESULT_META: Record<string, {
     accentColor: "#a78bfa",
     matchScore: 90,
   },
+  "eyebrow-analysis": {
+    title: "眉形美学分析",
+    subtitle: "EYEBROW SHAPE ANALYSIS",
+    accentColor: "#fb923c",
+    matchScore: 89,
+  },
 };
 
 function SeasonalOutfitContent({ meta, stored }: { meta: { accentColor: string }; stored: StoredResult }) {
@@ -680,6 +686,155 @@ export default function ResultPage() {
             </div>
           </div>
         )}
+
+        {/* ── EYEBROW ANALYSIS ── */}
+        {tool === "eyebrow-analysis" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          return (
+          <div className="space-y-6">
+            {/* Report Image */}
+            {(stored as any).reportImage && (
+              <div className="border border-white/10 overflow-hidden rounded-xl">
+                <img src={(stored as any).reportImage} alt="眉形美学分析报告图" className="w-full" />
+              </div>
+            )}
+
+            {/* User Photo */}
+            {stored.photoDataUrl && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-48 h-32 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                  <img src={stored.photoDataUrl} alt="面部" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* ── ENHANCED ANALYSIS DASHBOARD ── */}
+            {ea ? (
+              <>
+                {/* Face Shape + Match Score */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                  <div className="border border-white/10 p-4 text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">脸型判断</div>
+                    <div className="text-lg font-bold" style={{ color: meta.accentColor }}>{ea.faceShape}</div>
+                  </div>
+                  <div className="border border-white/10 p-4 text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">适配指数</div>
+                    <div className="text-lg font-bold" style={{ color: meta.accentColor }}>{ea.faceShapeMatch}%</div>
+                  </div>
+                  <div className="border border-white/10 p-4 text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">修眉难度</div>
+                    <div className="text-lg font-bold" style={{ color: meta.accentColor }}>{ea.stylingDifficulty}</div>
+                  </div>
+                  <div className="border border-white/10 p-4 text-center">
+                    <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-1">维护周期</div>
+                    <div className="text-lg font-bold" style={{ color: meta.accentColor }}>{ea.maintenanceCycle}</div>
+                  </div>
+                </div>
+
+                {/* Key Features Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+                  {[
+                    { label: "眉毛浓密度", value: ea.browDensity, icon: "◉" },
+                    { label: "毛流方向", value: ea.browDirection, icon: "↗" },
+                    { label: "左右对称度", value: ea.browSymmetry, icon: "◎" },
+                    { label: "眉眼间距", value: ea.browEyeDistance, icon: "⇕" },
+                    { label: "推荐眉色", value: ea.browColors?.slice(0,2).join(" · "), icon: "◐" },
+                    { label: "关联风格", value: ea.styleCorrelation?.slice(0,2).join(" · "), icon: "◆" },
+                  ].map((item) => (
+                    <div key={item.label} className="border border-white/10 p-3 flex items-start gap-2">
+                      <span className="text-primary mt-0.5" style={{ color: meta.accentColor }}>{item.icon}</span>
+                      <div>
+                        <div className="font-mono text-[10px] text-outline uppercase">{item.label}</div>
+                        <div className="text-sm font-bold text-on-surface mt-0.5">{item.value}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Recommended Brow Shapes */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ✓ 推荐眉形
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    {(ea.recommendedBrowShapes as string[] || []).map((shape) => (
+                      <div key={shape} className="border border-green-500/30 px-3 py-2 bg-green-500/5">
+                        <span className="text-green-400 text-sm font-bold">{shape}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Avoid Brow Shapes */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ✗ 避雷眉形
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {(ea.avoidBrowShapes as string[] || []).map((shape) => (
+                      <div key={shape} className="border border-red-500/30 px-3 py-2 bg-red-500/5">
+                        <span className="text-red-400 text-sm">{shape}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Expert Tips */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ◆ 专业建议
+                  </label>
+                  <div className="space-y-2">
+                    {(ea.expertTips as string[] || []).map((tip, i) => (
+                      <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                        <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                        <span className="text-sm text-on-surface-variant">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Style Correlation */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">
+                    ◇ 关联穿搭风格
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {(ea.styleCorrelation as string[] || []).map((style) => (
+                      <span key={style} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>
+                        {style}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Knowledge Source */}
+                <div className="border border-white/5 p-4 bg-white/[0.02]">
+                  <div className="font-mono text-[10px] text-outline uppercase mb-2">知识库来源</div>
+                  <div className="flex flex-wrap gap-2">
+                    {(ea.knowledgeSource as string[] || []).map((src) => (
+                      <span key={src} className="text-[10px] font-mono text-on-surface-variant/60">{src}</span>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              /* Fallback when no enhancedAnalysis */
+              <>
+                <DataBox label="眉形建议" value="自然弧形眉 · 眉头虚实过渡" verified accentColor="green" />
+                <DataBox label="眉峰高度" value="微挑 · 自然转折 · 不夸张" accentColor="orange" />
+                <DataBox label="眉尾长度" value="自然延伸 · 不过短" accentColor="orange" />
+                <DataBox label="推荐眉色" value="自然黑 · 深棕 · 柔和棕" accentColor="orange" />
+              </>
+            )}
+          </div>
+          );
+        })()}
 
         {/* ── HAIR ANALYSIS ── */}
         {tool === "hair-analysis" && (

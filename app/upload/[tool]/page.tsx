@@ -105,6 +105,15 @@ const TOOL_META: Record<string, {
     steps: ["初始化发型网络", "分析脸型轮廓", "匹配发型方案", "生成发色推荐", "打包发型报告"],
     apiEndpoint: "/api/hair-analysis",
   },
+  "eyebrow-analysis": {
+    title: "眉形分析",
+    subtitle: "EYEBROW SHAPE // BEAUTY ANALYSIS",
+    placeholder: "上传真人正面照片，获取专属眉形分析",
+    bgImage: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=800",
+    accentColor: "#fb923c",
+    steps: ["初始化眉形网络", "分析眉形基础", "匹配眉形方案", "生成升级报告", "打包眉形美学报告"],
+    apiEndpoint: "/api/eyebrow-analysis",
+  },
 };
 
 /* ─── Default for unknown tools ─── */
