@@ -790,11 +790,32 @@ export default function ResultPage() {
         })()}
 
         {/* ── SEASONAL OUTFIT ── */}
-        {tool === "seasonal-outfit" && (
-          <>
+        {tool === "seasonal-outfit" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          const apiImages = {
+            spring: (stored as any).spring as string | undefined,
+            summer: (stored as any).summer as string | undefined,
+            autumn: (stored as any).autumn as string | undefined,
+            winter: (stored as any).winter as string | undefined,
+          };
+          const SEASONS = [
+            { id: "spring", label: "春季", labelEn: "SPRING", accentColor: "#a8e6cf", look: ea?.springLook },
+            { id: "summer", label: "夏季", labelEn: "SUMMER", accentColor: "#90caf9", look: ea?.summerLook },
+            { id: "autumn", label: "秋季", labelEn: "AUTUMN", accentColor: "#ff9f43", look: ea?.autumnLook },
+            { id: "winter", label: "冬季", labelEn: "WINTER", accentColor: "#60a5fa", look: ea?.winterLook },
+          ];
+          const MOCK_IMAGES: Record<string,string> = {
+            spring: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=600",
+            summer: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&q=80&w=600",
+            autumn: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=600",
+            winter: "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&q=80&w=600",
+          };
+          return (
+          <div className="space-y-6">
+            {/* User Photo */}
             {stored.photoDataUrl && (
-              <div className="flex justify-center mb-8">
-                <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+              <div className="flex justify-center mb-6">
+                <div className="relative w-48 h-32 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="上传照片" className="w-full h-full object-cover" />
                   {stored.mock && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/60">
@@ -804,9 +825,116 @@ export default function ResultPage() {
                 </div>
               </div>
             )}
-            <SeasonalOutfitContent meta={meta} stored={stored} />
-          </>
-        )}
+            {ea ? (
+              <>
+                {/* Season bar */}
+                <div className="mb-8 flex flex-wrap items-center justify-center gap-4">
+                  {SEASONS.map((s) => (
+                    <div key={s.id} className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded-full" style={{ backgroundColor: s.accentColor, boxShadow: `0 0 6px ${s.accentColor}` }} />
+                      <span className="font-mono text-xs" style={{ color: s.accentColor }}>{s.labelEn}</span>
+                    </div>
+                  ))}
+                </div>
+                {/* 4 Season Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                  {SEASONS.map((season) => {
+                    const img = apiImages[season.id as keyof typeof apiImages] || (stored.mock ? MOCK_IMAGES[season.id as keyof typeof MOCK_IMAGES] : null);
+                    const look = season.look as Record<string,any> | undefined;
+                    return (
+                      <div key={season.id} className="border overflow-hidden" style={{ borderColor: `${season.accentColor}30` }}>
+                        <div className="relative h-56 overflow-hidden">
+                          {img ? (
+                            <img src={img} alt={season.label} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                              <span className="font-mono text-xs text-outline">生成中...</span>
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                          <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                            <span className="font-display text-2xl font-bold text-white">{season.label}</span>
+                            <span className="font-mono text-xs text-white/60">{season.labelEn}</span>
+                          </div>
+                          {look && (
+                            <div className="absolute top-3 right-3 flex gap-1">
+                              {look.style?.split("、").slice(0,2).map((tag: string) => (
+                                <span key={tag} className="px-2 py-0.5 text-[10px] font-mono text-white/80 border border-white/20 backdrop-blur-sm">{tag}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-4 space-y-3">
+                          {look ? (
+                            <>
+                              <div>
+                                <label className="font-mono text-[10px] text-outline uppercase tracking-widest">主题</label>
+                                <p className="text-sm font-bold mt-1" style={{ color: season.accentColor }}>{look.theme}</p>
+                              </div>
+                              <div>
+                                <label className="font-mono text-[10px] text-outline uppercase tracking-widest">推荐色盘</label>
+                                <div className="flex gap-1.5 mt-1.5">
+                                  {(look.colors as string[] || []).slice(0,6).map((c, i) => (
+                                    <div key={i} className="h-7 w-7 rounded-full border border-white/10" style={{ backgroundColor: c }} title={c} />
+                                  ))}
+                                </div>
+                              </div>
+                              <div>
+                                <label className="font-mono text-[10px] text-outline uppercase tracking-widest">核心单品</label>
+                                <div className="flex flex-wrap gap-1 mt-1">
+                                  {(look.keyItems as string[] || []).map((item) => (
+                                    <span key={item} className="text-[10px] font-mono px-2 py-0.5 border border-white/10 bg-white/[0.03]">{item}</span>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="border-t border-white/5 pt-3">
+                                <p className="text-xs text-on-surface-variant italic">"{look.style}"</p>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="space-y-2">
+                              {[1,2,3].map(i => (
+                                <div key={i} className="h-4 rounded bg-white/5 animate-pulse" />
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* Style Correlation */}
+                {(ea.styleCorrelation as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◇ 关联风格</label>
+                    <div className="flex flex-wrap gap-2">
+                      {(ea.styleCorrelation as string[] || []).map((s) => (
+                        <span key={s} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>{s}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Expert Tips */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 专业建议</label>
+                  <div className="space-y-2">
+                    {(ea.expertTips as string[] || []).slice(0,5).map((tip, i) => (
+                      <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                        <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                        <span className="text-sm text-on-surface-variant">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-12 text-outline">
+                <span className="font-mono text-sm">正在生成四季穿搭...</span>
+              </div>
+            )}
+          </div>
+          );
+        })()}
 
         {/* ── PERSONAL COLOR ── */}
         {tool === "personal-color" && (() => {
