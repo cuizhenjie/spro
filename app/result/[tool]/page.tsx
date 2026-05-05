@@ -414,47 +414,237 @@ export default function ResultPage() {
         )}
 
         {/* ── STYLE ANALYZER ── */}
-        {tool === "style-analyzer" && (
+        {tool === "style-analyzer" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          return (
           <div className="space-y-6">
-            {(stored as any).reportImage && (
-              <div className="border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="风格解析报告图" className="w-full" />
-              </div>
-            )}
-            {!((stored as any).reportImage) && stored.photoDataUrl && (
+            {/* User Photo */}
+            {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
-                <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                <div className="relative w-48 h-32 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="全身照" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-            {!((stored as any).reportImage) && (
+            {ea ? (
               <>
-                <DataBox label="风格定位" value={stored.mock ? "赛博机能风" : (stored.style as string) || "赛博机能风"} verified accentColor="green" />
+                {/* Header */}
+                <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
+                  <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">风格方向</div>
+                  <div className="text-2xl font-bold mb-2" style={{ color: meta.accentColor }}>{ea.styleDirection}</div>
+                  <div className="grid grid-cols-3 gap-4 mt-4">
+                    <div><div className="font-mono text-[10px] text-outline uppercase">体型</div><div className="text-sm font-bold">{ea.bodyType}</div></div>
+                    <div><div className="font-mono text-[10px] text-outline uppercase">肤色</div><div className="text-sm font-bold">{ea.skinTone}</div></div>
+                    <div><div className="font-mono text-[10px] text-outline uppercase">季节型</div><div className="text-sm font-bold">{ea.seasonType}</div></div>
+                  </div>
+                </div>
+                {/* Best Colors */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 最佳用色</label>
+                  <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+                    {(ea.bestColors as Array<{name:string;hex?:string;effect?:string}> || []).map((c) => (
+                      <div key={c.name} className="border border-white/10 p-2 text-center">
+                        <div className="w-8 h-8 rounded-full mx-auto mb-1 border border-white/20" style={{ backgroundColor: c.hex || "#888" }} />
+                        <div className="text-xs font-bold">{c.name}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* Avoid Colors */}
+                {(ea.avoidColors as Array<{name:string;reason?:string}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">✗ 避用颜色</label>
+                    <div className="flex flex-wrap gap-2">
+                      {(ea.avoidColors as Array<{name:string;reason?:string}> || []).map((c) => (
+                        <span key={c.name} className="px-3 py-1 border border-red-500/30 text-xs text-red-400 bg-red-500/5">{c.name}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Recommendations */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="border border-white/10 p-4">
+                    <label className="font-mono text-[10px] text-outline uppercase mb-2 block">上衣推荐</label>
+                    <div className="space-y-1">
+                      {(ea.recommendedTops as string[] || []).slice(0,4).map((t) => (
+                        <div key={t} className="text-xs text-on-surface-variant flex items-center gap-1"><span className="text-green-400">✓</span>{t}</div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="border border-white/10 p-4">
+                    <label className="font-mono text-[10px] text-outline uppercase mb-2 block">下装推荐</label>
+                    <div className="space-y-1">
+                      {(ea.recommendedBottoms as string[] || []).slice(0,4).map((t) => (
+                        <div key={t} className="text-xs text-on-surface-variant flex items-center gap-1"><span className="text-green-400">✓</span>{t}</div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                {/* Outfit Ideas */}
+                {(ea.outfitIdeas as Array<{scene:string;look:string;items?:string[]}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 穿搭方案</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {(ea.outfitIdeas as Array<{scene:string;look:string;items?:string[]}> || []).map((o) => (
+                        <div key={o.scene} className="border border-white/10 p-3">
+                          <div className="text-sm font-bold mb-1" style={{ color: meta.accentColor }}>{o.scene}</div>
+                          <div className="text-xs text-on-surface-variant mb-2">{o.look}</div>
+                          <div className="flex flex-wrap gap-1">
+                            {(o.items || []).map((item) => (
+                              <span key={item} className="text-[10px] px-2 py-0.5 border border-white/10 bg-white/[0.03]">{item}</span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Style Correlation */}
+                {(ea.styleCorrelation as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◇ 关联风格</label>
+                    <div className="flex flex-wrap gap-2">
+                      {(ea.styleCorrelation as string[] || []).map((s) => (
+                        <span key={s} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>{s}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Expert Tips */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 专业建议</label>
+                  <div className="space-y-2">
+                    {(ea.expertTips as string[] || []).slice(0,5).map((tip, i) => (
+                      <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                        <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                        <span className="text-sm text-on-surface-variant">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <DataBox label="风格定位" value="赛博机能风" verified accentColor="green" />
                 <DataBox label="轮廓类型" value="直线型 · 宽肩窄腰" accentColor="orange" />
                 <DataBox label="色彩倾向" value="深空黑 + 霓虹粉 + 翡翠绿" accentColor="orange" />
                 <DataBox label="核心特质" value="未来感 · 锐利 · 极简主义" accentColor="orange" />
               </>
             )}
           </div>
-        )}
+          );
+        })()}
 
         {/* ── LIPSTICK RECOMMENDATION ── */}
-        {tool === "lipstick-recommendation" && (
+        {tool === "lipstick-recommendation" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          return (
           <div className="space-y-6">
-            {(stored as any).reportImage && (
-              <div className="border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="口红推荐报告图" className="w-full" />
-              </div>
-            )}
-            {!((stored as any).reportImage) && stored.photoDataUrl && (
+            {/* User Photo */}
+            {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
                 <div className="relative w-32 h-32 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="唇部" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-            {!((stored as any).reportImage) && (
+            {ea ? (
+              <>
+                {/* Header */}
+                <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
+                  <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">肤色判断</div>
+                  <div className="text-2xl font-bold mb-2" style={{ color: meta.accentColor }}>{ea.skinTone}</div>
+                  <div className="grid grid-cols-3 gap-4 mt-4">
+                    <div><div className="font-mono text-[10px] text-outline uppercase">肤色基调</div><div className="text-sm font-bold">{ea.undertone}</div></div>
+                    <div><div className="font-mono text-[10px] text-outline uppercase">唇部状态</div><div className="text-sm font-bold">{ea.lipCondition}</div></div>
+                    <div><div className="font-mono text-[10px] text-outline uppercase">匹配度</div><div className="text-sm font-bold">{ea.matchScore}%</div></div>
+                  </div>
+                </div>
+                {/* Recommended Shades */}
+                {(ea.recommendedShades as Array<{name:string;color:string;hex?:string;finish?:string;scene?:string;avoid?:string}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 推荐色号</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {(ea.recommendedShades as Array<{name:string;color:string;hex?:string;finish?:string;scene?:string;avoid?:string}> || []).map((s) => (
+                        <div key={s.name} className="border border-white/10 p-3 flex gap-3">
+                          <div className="w-12 h-12 rounded-full flex-shrink-0 border border-white/20" style={{ backgroundColor: s.hex || "#888" }} />
+                          <div>
+                            <div className="text-sm font-bold mb-1">{s.name}</div>
+                            <div className="text-xs text-on-surface-variant mb-1">{s.color} · {s.finish}</div>
+                            <div className="text-xs text-primary/70">场景：{s.scene}</div>
+                            {s.avoid && <div className="text-[10px] text-red-400/70">避：{s.avoid}</div>}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Avoid Shades */}
+                {(ea.avoidShades as Array<{name:string;color:string;hex?:string;reason?:string}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">✗ 避用色号</label>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                      {(ea.avoidShades as Array<{name:string;color:string;hex?:string;reason?:string}> || []).map((s) => (
+                        <div key={s.name} className="border border-red-500/30 p-2 bg-red-500/5">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-6 h-6 rounded-full border border-white/20" style={{ backgroundColor: s.hex || "#888" }} />
+                            <span className="text-xs font-bold text-red-400">{s.name}</span>
+                          </div>
+                          <div className="text-[10px] text-red-400/70">{s.reason}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Lip Care */}
+                {(ea.lipCare as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 唇部护理</label>
+                    <div className="space-y-2">
+                      {(ea.lipCare as string[] || []).map((tip, i) => (
+                        <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                          <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                          <span className="text-sm text-on-surface-variant">{tip}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Style Correlation */}
+                {(ea.styleCorrelation as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◇ 关联风格</label>
+                    <div className="flex flex-wrap gap-2">
+                      {(ea.styleCorrelation as string[] || []).map((s) => (
+                        <span key={s} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>{s}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Expert Tips */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 专业建议</label>
+                  <div className="space-y-2">
+                    {(ea.expertTips as string[] || []).slice(0,5).map((tip, i) => (
+                      <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                        <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                        <span className="text-sm text-on-surface-variant">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
               <>
                 <DataBox label="推荐色系" value="暖调玫瑰 / 肉桂棕 / 焦糖橘" verified accentColor="pink" />
                 <DataBox label="最适合场合" value="日常通勤 · 约会 · 派对" accentColor="orange" />
@@ -463,24 +653,131 @@ export default function ResultPage() {
               </>
             )}
           </div>
-        )}
+          );
+        })()}
 
         {/* ── IMAGE DIAGNOSIS ── */}
-        {tool === "image-diagnosis" && (
+        {tool === "image-diagnosis" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          return (
           <div className="space-y-6">
-            {(stored as any).reportImage && (
-              <div className="border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="形象诊断报告图" className="w-full" />
-              </div>
-            )}
-            {!((stored as any).reportImage) && stored.photoDataUrl && (
+            {/* User Photo */}
+            {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
-                <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                <div className="relative w-48 h-32 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="形象照" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-            {!((stored as any).reportImage) && (
+            {ea ? (
+              <>
+                {/* Header */}
+                <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
+                  <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">升级方向</div>
+                  <div className="text-2xl font-bold mb-2" style={{ color: meta.accentColor }}>{ea.styleDirection}</div>
+                  <div className="font-mono text-[10px] text-outline uppercase mb-1">匹配指数</div>
+                  <div className="text-lg font-bold">{ea.matchScore}%</div>
+                </div>
+                {/* Key Upgrades */}
+                {(ea.keyUpgrades as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 核心变化点</label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      {(ea.keyUpgrades as string[] || []).map((u, i) => (
+                        <div key={i} className="border border-white/10 p-3 text-center">
+                          <div className="text-xs font-mono text-outline mb-1">{String(i+1).padStart(2,'0')}</div>
+                          <div className="text-sm font-bold">{u}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Color Palette */}
+                {ea.colorPalette && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 配色方案</label>
+                    <div className="grid grid-cols-3 gap-3">
+                      {["dominant","accent","avoid"].map((role) => {
+                        const colors = (ea.colorPalette as Record<string,string[]>)[role] || [];
+                        const label = role === "dominant" ? "主色" : role === "accent" ? "辅助色" : "避用色";
+                        const cls = role === "avoid" ? "border-red-500/30 bg-red-500/5" : "border-white/10";
+                        return (
+                          <div key={role} className={`border p-3 ${cls}`}>
+                            <div className="font-mono text-[10px] text-outline uppercase mb-2">{label}</div>
+                            <div className="flex flex-wrap gap-1">
+                              {colors.map((c) => (
+                                <span key={c} className="text-[10px] px-2 py-0.5 border border-white/10">{c}</span>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+                {/* Silhouette Strategies */}
+                {(ea.silhouetteStrategies as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 廓形策略</label>
+                    <div className="space-y-2">
+                      {(ea.silhouetteStrategies as string[] || []).map((s, i) => (
+                        <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                          <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                          <span className="text-sm text-on-surface-variant">{s}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Outfit Ideas */}
+                {(ea.outfitIdeas as Array<{scene:string;desc:string;items?:string[]}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 推荐穿搭</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {(ea.outfitIdeas as Array<{scene:string;desc:string;items?:string[]}> || []).map((o) => (
+                        <div key={o.scene} className="border border-white/10 p-3">
+                          <div className="text-sm font-bold mb-1" style={{ color: meta.accentColor }}>{o.scene}</div>
+                          <div className="text-xs text-on-surface-variant mb-2">{o.desc}</div>
+                          <div className="flex flex-wrap gap-1">
+                            {(o.items || []).map((item) => (
+                              <span key={item} className="text-[10px] px-2 py-0.5 border border-white/10 bg-white/[0.03]">{item}</span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Avoid Styles */}
+                {(ea.avoidStyles as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">✗ 避坑穿搭</label>
+                    <div className="flex flex-wrap gap-2">
+                      {(ea.avoidStyles as string[] || []).map((s) => (
+                        <span key={s} className="px-3 py-1 border border-red-500/30 text-xs text-red-400 bg-red-500/5">{s}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Expert Tips */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 专业建议</label>
+                  <div className="space-y-2">
+                    {(ea.expertTips as string[] || []).slice(0,5).map((tip, i) => (
+                      <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                        <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                        <span className="text-sm text-on-surface-variant">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
               <>
                 <DataBox label="整体评分" value="89/100 · 优秀" verified accentColor="green" />
                 <DataBox label="风格属性" value="都市机能 · 赛博朋克" accentColor="orange" />
@@ -489,7 +786,8 @@ export default function ResultPage() {
               </>
             )}
           </div>
-        )}
+          );
+        })()}
 
         {/* ── SEASONAL OUTFIT ── */}
         {tool === "seasonal-outfit" && (
@@ -515,12 +813,6 @@ export default function ResultPage() {
           const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
           return (
           <div className="space-y-6">
-            {/* Report Image */}
-            {(stored as any).reportImage && (
-              <div className="mt-6 border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="色彩分析报告图" className="w-full max-h-96 object-cover" />
-              </div>
-            )}
             {/* User Photo */}
             {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
@@ -672,21 +964,108 @@ export default function ResultPage() {
         })()}
 
         {/* ── NEON STREET SYNDICATE (OUTFIT ANALYSIS) ── */}
-        {tool === "neon-street-syndicate" && (
+        {tool === "neon-street-syndicate" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          return (
           <div className="space-y-6">
-            {(stored as any).reportImage && (
-              <div className="border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="穿搭分析报告图" className="w-full" />
-              </div>
-            )}
-            {!((stored as any).reportImage) && stored.photoDataUrl && (
+            {/* User Photo */}
+            {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
-                <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                <div className="relative w-48 h-32 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="穿搭照" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-            {!((stored as any).reportImage) && (
+            {ea ? (
+              <>
+                {/* Header */}
+                <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
+                  <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">穿搭方向</div>
+                  <div className="text-2xl font-bold mb-2" style={{ color: meta.accentColor }}>{ea.styleDirection}</div>
+                  <div className="grid grid-cols-3 gap-4 mt-4">
+                    <div><div className="font-mono text-[10px] text-outline uppercase">穿搭评分</div><div className="text-sm font-bold">{ea.outfitScore}%</div></div>
+                    <div><div className="font-mono text-[10px] text-outline uppercase">体型</div><div className="text-sm font-bold">{ea.bodyType}</div></div>
+                    <div><div className="font-mono text-[10px] text-outline uppercase">推荐风格</div><div className="text-sm font-bold">{ea.recommendedStyle}</div></div>
+                  </div>
+                </div>
+                {/* Color Palette */}
+                {ea.colorPalette && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 专属配色</label>
+                    <div className="grid grid-cols-3 gap-3">
+                      {Object.entries(ea.colorPalette as Record<string,string[]>).map(([role, colors]) => (
+                        <div key={role} className={`border p-3 ${role === "avoid" ? "border-red-500/30 bg-red-500/5" : "border-white/10"}`}>
+                          <div className="font-mono text-[10px] text-outline uppercase mb-2">{role === "dominant" ? "主色" : role === "accent" ? "辅助色" : "避用"}</div>
+                          <div className="flex flex-wrap gap-1">
+                            {(colors as string[]).map((c) => (
+                              <span key={c} className="text-[10px] px-2 py-0.5 border border-white/10">{c}</span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Outfit Ideas */}
+                {(ea.outfitIdeas as Array<{scene:string;look:string;items?:string[]}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 穿搭方案</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {(ea.outfitIdeas as Array<{scene:string;look:string;items?:string[]}> || []).map((o) => (
+                        <div key={o.scene} className="border border-white/10 p-3">
+                          <div className="text-sm font-bold mb-1" style={{ color: meta.accentColor }}>{o.scene}</div>
+                          <div className="text-xs text-on-surface-variant mb-2">{o.look}</div>
+                          <div className="flex flex-wrap gap-1">
+                            {(o.items || []).map((item) => (
+                              <span key={item} className="text-[10px] px-2 py-0.5 border border-white/10 bg-white/[0.03]">{item}</span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Avoid Styles */}
+                {(ea.avoidStyles as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">✗ 避坑穿搭</label>
+                    <div className="flex flex-wrap gap-2">
+                      {(ea.avoidStyles as string[] || []).map((s) => (
+                        <span key={s} className="px-3 py-1 border border-red-500/30 text-xs text-red-400 bg-red-500/5">{s}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Style Correlation */}
+                {(ea.styleCorrelation as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◇ 关联风格</label>
+                    <div className="flex flex-wrap gap-2">
+                      {(ea.styleCorrelation as string[] || []).map((s) => (
+                        <span key={s} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>{s}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Expert Tips */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 专业建议</label>
+                  <div className="space-y-2">
+                    {(ea.expertTips as string[] || []).slice(0,5).map((tip, i) => (
+                      <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                        <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                        <span className="text-sm text-on-surface-variant">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
               <>
                 <DataBox label="穿搭指数" value="92/100 · 时尚达人" verified accentColor="pink" />
                 <DataBox label="推荐风格" value="韩系温柔风 · 清冷高级感" accentColor="orange" />
@@ -695,24 +1074,106 @@ export default function ResultPage() {
               </>
             )}
           </div>
-        )}
+          );
+        })()}
 
         {/* ── HARDWARE IMPLANT FACTION (ACCESSORY ANALYSIS) ── */}
-        {tool === "hardware-implant-faction" && (
+        {tool === "hardware-implant-faction" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          return (
           <div className="space-y-6">
-            {(stored as any).reportImage && (
-              <div className="border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="配饰分析报告图" className="w-full" />
-              </div>
-            )}
-            {!((stored as any).reportImage) && stored.photoDataUrl && (
+            {/* User Photo */}
+            {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
-                <div className="relative w-48 h-64 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
+                <div className="relative w-48 h-32 rounded-xl overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="配饰照" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-            {!((stored as any).reportImage) && (
+            {ea ? (
+              <>
+                {/* Header */}
+                <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
+                  <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">脸型分析</div>
+                  <div className="text-2xl font-bold mb-2" style={{ color: meta.accentColor }}>{ea.faceShape}</div>
+                  <div className="font-mono text-[10px] text-outline uppercase mb-1">适配指数</div>
+                  <div className="text-lg font-bold">{ea.faceShapeMatch}%</div>
+                </div>
+                {/* Recommended Frames */}
+                {(ea.recommendedFrames as Array<{type:string;material:string;color:string;reason:string}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 推荐镜框</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {(ea.recommendedFrames as Array<{type:string;material:string;color:string;reason:string}> || []).map((f) => (
+                        <div key={f.type} className="border border-white/10 p-3">
+                          <div className="text-sm font-bold mb-1" style={{ color: meta.accentColor }}>{f.type}</div>
+                          <div className="text-xs text-on-surface-variant mb-1">材质：{f.material} · 颜色：{f.color}</div>
+                          <div className="text-xs text-on-surface-variant/70">{f.reason}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Avoid Frames */}
+                {(ea.avoidFrames as Array<{type:string;reason:string}> || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">✗ 避用镜框</label>
+                    <div className="flex flex-wrap gap-2">
+                      {(ea.avoidFrames as Array<{type:string;reason:string}> || []).map((f) => (
+                        <span key={f.type} className="px-3 py-1 border border-red-500/30 text-xs text-red-400 bg-red-500/5">{f.type}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Color & Size Suggestions */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="border border-white/10 p-4">
+                    <label className="font-mono text-[10px] text-outline uppercase mb-2 block">配色建议</label>
+                    <div className="space-y-1">
+                      {(ea.colorSuggestions as string[] || []).map((c) => (
+                        <div key={c} className="text-xs text-on-surface-variant flex items-center gap-1"><span className="text-primary" style={{ color: meta.accentColor }}>◆</span>{c}</div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="border border-white/10 p-4">
+                    <label className="font-mono text-[10px] text-outline uppercase mb-2 block">尺寸建议</label>
+                    <div className="space-y-1">
+                      {(ea.sizeSuggestions as string[] || []).map((s) => (
+                        <div key={s} className="text-xs text-on-surface-variant flex items-center gap-1"><span className="text-primary" style={{ color: meta.accentColor }}>◆</span>{s}</div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                {/* Matching Styles */}
+                {(ea.matchingStyles as string[] || []).length > 0 && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◇ 适合风格</label>
+                    <div className="flex flex-wrap gap-2">
+                      {(ea.matchingStyles as string[] || []).map((s) => (
+                        <span key={s} className="px-3 py-1 border text-xs font-mono" style={{ borderColor: `${meta.accentColor}40`, color: meta.accentColor }}>{s}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Expert Tips */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 专业建议</label>
+                  <div className="space-y-2">
+                    {(ea.expertTips as string[] || []).slice(0,5).map((tip, i) => (
+                      <div key={i} className="flex items-start gap-2 border border-white/5 p-3">
+                        <span className="text-primary font-mono text-xs mt-0.5" style={{ color: meta.accentColor }}>→</span>
+                        <span className="text-sm text-on-surface-variant">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
               <>
                 <DataBox label="脸型分析" value="鹅蛋脸 · 五官匀称" verified accentColor="green" />
                 <DataBox label="推荐镜框" value="圆框 · 半框 · 金属细框" accentColor="orange" />
@@ -721,19 +1182,14 @@ export default function ResultPage() {
               </>
             )}
           </div>
-        )}
+          );
+        })()}
 
         {/* ── MAKEUP ANALYSIS ── */}
         {tool === "makeup-analysis" && (() => {
           const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
           return (
           <div className="space-y-6">
-            {/* Report Image */}
-            {(stored as any).reportImage && (
-              <div className="border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="妆容分析报告图" className="w-full max-h-96 object-cover" />
-              </div>
-            )}
             {/* User Photo */}
             {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
@@ -1046,12 +1502,6 @@ export default function ResultPage() {
           const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
           return (
           <div className="space-y-6">
-            {/* Report Image */}
-            {(stored as any).reportImage && (
-              <div className="border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="发型分析报告图" className="w-full" />
-              </div>
-            )}
             {/* User Photo */}
             {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
