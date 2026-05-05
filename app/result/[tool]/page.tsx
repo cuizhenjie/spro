@@ -386,32 +386,147 @@ export default function ResultPage() {
         </div>
 
         {/* ── PALM READING ── */}
-        {tool === "palm-reading" && (
+        {tool === "palm-reading" && (() => {
+          const ea = (stored as any).enhancedAnalysis as Record<string, any> | undefined;
+          return (
           <div className="space-y-6">
-            {(stored as any).reportImage && (
-              <div className="border border-white/10 overflow-hidden rounded-xl">
-                <img src={(stored as any).reportImage} alt="掌相玄学分析报告图" className="w-full" />
-              </div>
-            )}
-            {!((stored as any).reportImage) && stored.photoDataUrl && (
+            {/* User Photo - kept, cover image (reportImage) removed */}
+            {stored.photoDataUrl && (
               <div className="flex justify-center mb-6">
                 <div className="relative w-40 h-40 rounded-full overflow-hidden border-2" style={{ borderColor: `${meta.accentColor}50` }}>
                   <img src={stored.photoDataUrl} alt="掌纹" className="w-full h-full object-cover" />
+                  {stored.mock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <span className="text-xs font-mono text-secondary">[ MOCK MODE ]</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-            {!((stored as any).reportImage) && (
+            {ea ? (
               <>
-                <DataBox label="掌心纹路" value="生命线深刻，情感线柔和，智慧线发达" verified accentColor="green" />
-                <DataBox label="命运曲线" value="中期上升，短期调整，长期平稳" accentColor="orange" />
-                <DataBox label="性格解码" value="独立思考型，创造力强，适应力极佳" accentColor="orange" />
+                {/* Header - Five Elements + Reading Type + Score */}
+                <div className="mb-8 p-6 border text-center" style={{ borderColor: `${meta.accentColor}30` }}>
+                  <div className="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">五行分析</div>
+                  <div className="text-3xl font-bold mb-1" style={{ color: meta.accentColor }}>
+                    {ea.fiveElements?.element || "?"}形人
+                  </div>
+                  <div className="text-sm text-on-surface-variant mb-3">{ea.readingType} · 匹配度 {ea.matchScore}%</div>
+                  <div className="grid grid-cols-3 gap-4 mt-4">
+                    <div><div className="font-mono text-[10px] text-outline uppercase">幸运色</div><div className="text-sm font-bold">{ea.luckyElements?.color?.split("、")[0]}</div></div>
+                    <div><div className="font-mono text-[10px] text-outline uppercase">幸运数</div><div className="text-sm font-bold">{ea.luckyElements?.number}</div></div>
+                    <div><div className="font-mono text-[10px] text-outline uppercase">吉方</div><div className="text-sm font-bold">{ea.luckyElements?.direction}</div></div>
+                  </div>
+                </div>
+
+                {/* Personality Traits - 4 grid */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 性格特质</label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {(ea.personalityTraits as string[] || []).map((trait) => (
+                      <div key={trait} className="border border-white/10 p-3 text-center">
+                        <div className="text-sm font-bold">{trait}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Career + Relationship + Health - 3 column */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div className="border border-white/10 p-4">
+                    <div className="font-mono text-[11px] text-outline uppercase mb-2">◆ 事业方向</div>
+                    {(ea.careerDirection as string[] || []).map((c) => (
+                      <div key={c} className="text-xs text-on-surface-variant mb-1">· {c}</div>
+                    ))}
+                  </div>
+                  <div className="border border-white/10 p-4">
+                    <div className="font-mono text-[11px] text-outline uppercase mb-2">◆ 感情特点</div>
+                    {(ea.relationshipInsights as string[] || []).map((r) => (
+                      <div key={r} className="text-xs text-on-surface-variant mb-1">· {r}</div>
+                    ))}
+                  </div>
+                  <div className="border border-white/10 p-4">
+                    <div className="font-mono text-[11px] text-outline uppercase mb-2">◆ 健康提示</div>
+                    {(ea.healthNotes as string[] || []).map((h) => (
+                      <div key={h} className="text-xs text-on-surface-variant mb-1">· {h}</div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Five Elements Balance */}
+                {ea.fiveElements?.balance && (
+                  <div className="mb-6 p-4 border border-white/10">
+                    <div className="font-mono text-[11px] text-outline uppercase mb-2">◆ 五行平衡</div>
+                    <div className="text-sm text-on-surface-variant mb-2">{ea.fiveElements.balance}</div>
+                    <div className="text-sm text-on-surface-variant">{ea.fiveElements.advice}</div>
+                  </div>
+                )}
+
+                {/* Recent Tips - 5 items */}
+                <div className="mb-6">
+                  <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 近期提示</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {(ea.recentTips as string[] || []).map((tip, i) => (
+                      <div key={i} className="border border-white/10 p-3">
+                        <div className="flex items-start gap-2">
+                          <span className="font-mono text-[10px] text-outline shrink-0 mt-0.5">{String(i+1).padStart(2,"0")}</span>
+                          <span className="text-xs text-on-surface-variant">{tip}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Long-term Guidance */}
+                {ea.longTermGuidance && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 长期指引</label>
+                    <div className="space-y-2">
+                      {(ea.longTermGuidance as string[] || []).map((g, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <span className="font-mono text-[10px] text-outline shrink-0 mt-0.5">{String(i+1).padStart(2,"0")}</span>
+                          <span className="text-sm text-on-surface-variant">{g}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Expert Tips */}
+                {ea.expertTips && (
+                  <div className="mb-6">
+                    <label className="font-mono text-[11px] text-outline uppercase tracking-widest mb-3 block">◆ 命理建议</label>
+                    <div className="space-y-2">
+                      {(ea.expertTips as string[] || []).map((tip, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <span className="text-outline shrink-0 mt-0.5">·</span>
+                          <span className="text-sm text-on-surface-variant">{tip}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Disclaimer */}
+                <div className="p-4 border border-white/10">
+                  <p className="text-sm text-on-surface-variant">掌心占卜仅供娱乐参考。真正的命运掌握在自己手中，AI 分析可帮助你更好地了解自我特质。</p>
+                </div>
               </>
+            ) : (
+              /* No enhancedAnalysis - skeleton */
+              <div className="space-y-4">
+                <div className="h-4 w-32 bg-white/5 rounded animate-pulse" />
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[1,2,3,4].map(i => <div key={i} className="h-16 bg-white/5 rounded animate-pulse" />)}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[1,2,3].map(i => <div key={i} className="h-24 bg-white/5 rounded animate-pulse" />)}
+                </div>
+              </div>
             )}
-            <div className="p-4 border border-white/10">
-              <p className="text-sm text-on-surface-variant">掌心占卜仅供娱乐参考。真正的命运掌握在自己手中，AI 分析可帮助你更好地了解自我特质。</p>
-            </div>
           </div>
-        )}
+          );
+        })()}
 
         {/* ── STYLE ANALYZER ── */}
         {tool === "style-analyzer" && (() => {
