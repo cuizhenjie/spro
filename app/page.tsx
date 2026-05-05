@@ -29,8 +29,8 @@ const AI_TOOLS = [
     title: '衣品升级改造',
     description: '上传照片，AI生成Before & After高反差衣品升级报告',
     icon: Eye,
-    href: '/upload/seasonal-outfit',
-    toolId: 'seasonal-outfit',
+    href: '/upload/neon-street-syndicate',
+    toolId: 'neon-street-syndicate',
   },
   {
     title: '四季穿搭指南',
