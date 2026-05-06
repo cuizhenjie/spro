@@ -18,6 +18,7 @@ build/
 
 # Editor & IDE
 .claude/
+.deepseek/
 .codebuddy/
 .continue/
 .kiro/
