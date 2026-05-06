@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import type { LucideIcon } from 'lucide-react';
+import { isLoggedIn } from '@/lib/auth';
 
 interface ClientToolLinkProps {
   href: string;
@@ -15,10 +14,13 @@ export default function ClientToolLink({ href, toolId, children, className }: Cl
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
-    // Set active tool before navigating
+    e.preventDefault();
+    if (!isLoggedIn()) {
+      router.push(`/login?redirect=${encodeURIComponent(href)}`);
+      return;
+    }
     sessionStorage.setItem('spro_active_tool', toolId);
     router.push(href);
-    e.preventDefault();
   };
 
   return (

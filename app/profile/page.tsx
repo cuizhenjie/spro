@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { logout, getAuth, updateCoins, addCoins, type AuthUser } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { CheckCircle, XCircle, ArrowDown, ArrowUp, Wallet, Brain, RefreshCw, Filter, Download } from "lucide-react";
+import { CheckCircle, XCircle, ArrowDown, ArrowUp, Wallet, Brain, RefreshCw, Filter, Download, LogOut } from "lucide-react";
 
 const ORDER_HISTORY = [
   { id: "TX-0X9A8F-01", name: "Neural Pathway Refinement v2.0", type: "skill" as const, value: -500, status: "completed" as const },
@@ -75,7 +75,7 @@ export default function ProfilePage() {
     <main className="flex-1 pt-24 pb-24 px-6 md:px-12 max-w-[container-max] mx-auto w-full relative z-10 min-h-screen">
       {/* Profile Header Section */}
       <section className="mb-8 md:mb-12 flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-8 relative z-10">
-        <div className="w-24 h-24 sm:w-32 md:w-40 sm:h-32 md:h-40 rounded-full border-4 border-secondary overflow-hidden shadow-[0_0_15px_rgba(236,255,227,0.3)] shrink-0 relative group cursor-pointer">
+        <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full border-4 border-secondary overflow-hidden shadow-[0_0_15px_rgba(236,255,227,0.3)] shrink-0 relative group cursor-pointer">
           <div className="absolute inset-0 bg-secondary/10 group-hover:bg-secondary/30 transition-colors duration-300 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100">
             <span className="material-symbols-outlined text-secondary text-3xl">
               add_a_photo
@@ -90,19 +90,26 @@ export default function ProfilePage() {
           />
         </div>
 
-        <div className="flex-1 w-full">
-          <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-3 mb-4 xs:mb-6">
-            <h2 className="font-h1 text-h1 md:text-h1 text-on-background leading-tight">{user.name}</h2>
-            <span className="self-start xs:self-center px-2 py-1 bg-primary/20 text-primary font-mono-data text-xs border border-primary/50 rounded-none shadow-[0_0_8px_rgba(255,171,243,0.3)] uppercase">
+        <div className="flex-1 w-full text-center sm:text-left">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mb-4 sm:mb-6">
+            <h2 className="font-h1 text-h1 text-on-background leading-tight">{user.name}</h2>
+            <span className="px-2 py-1 bg-primary/20 text-primary font-mono-data text-xs border border-primary/50 rounded-none shadow-[0_0_8px_rgba(255,171,243,0.3)] uppercase">
               {user.level}
             </span>
+            <button
+              onClick={handleLogout}
+              className="ml-auto border border-error/50 text-error hover:bg-error/10 hover:border-error hover:shadow-[0_0_15px_rgba(255,68,68,0.5)] transition-all flex items-center gap-1.5 px-3 py-1.5 font-label-caps text-[10px] uppercase tracking-widest bg-transparent"
+              title="断开连接"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">断开连接</span>
+            </button>
           </div>
 
-          <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-3">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
             <div className="flex items-center gap-2 px-2 py-1.5 cyber-glass shrink-0">
               <span className="material-symbols-outlined text-secondary text-xs sm:text-sm">wifi_tethering</span>
-              <span className="font-mono-data text-[10px] sm:text-xs text-secondary hidden xs:inline">神经连接：稳定</span>
-              <span className="font-mono-data text-[10px] sm:text-xs text-secondary xs:hidden">连接稳定</span>
+              <span className="font-mono-data text-[10px] sm:text-xs text-secondary">连接稳定</span>
             </div>
             <div className="flex items-center gap-2 px-2 py-1.5 cyber-glass shrink-0">
               <span className="material-symbols-outlined text-primary text-xs sm:text-sm">location_on</span>
@@ -130,7 +137,7 @@ export default function ProfilePage() {
       </section>
 
       {/* Stats Grid (Bento style) */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
         {/* Scans Card */}
         <div className="cyber-glass p-6 relative group overflow-hidden hover:border-secondary/50 transition-colors duration-300">
           <div className="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full blur-xl group-hover:bg-secondary/20 transition-all"></div>
@@ -236,7 +243,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Stats Overview Bento */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
           <div className="cyber-glass p-6 relative group overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-4 flex items-center gap-2">
@@ -274,8 +281,37 @@ export default function ProfilePage() {
           <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-secondary/50 -translate-x-px translate-y-px" />
           <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-secondary/50 translate-x-px translate-y-px" />
 
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-3 p-4">
+            {ORDER_HISTORY.map((order) => (
+              <div key={order.id} className="border border-outline-variant/30 p-3 space-y-2 hover:bg-white/[0.02] transition-colors">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono-data text-[10px] text-on-surface/80">{order.id}</span>
+                  <div className={`flex items-center gap-1 ${order.status === "completed" ? "text-secondary" : "text-error"}`}>
+                    {order.status === "completed" ? <CheckCircle className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
+                    <span className="text-[10px] tracking-wider">{order.status === "completed" ? "已完成" : "失败"}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`px-1.5 py-0.5 text-[10px] border ${
+                    order.type === "skill"
+                      ? "bg-primary/10 text-primary border-primary/30"
+                      : "bg-tertiary/10 text-tertiary border-tertiary/30"
+                  }`}>
+                    {order.type === "skill" ? "SKILL" : "TOP-UP"}
+                  </span>
+                  <span className="font-mono-data text-xs text-on-surface truncate">{order.name}</span>
+                </div>
+                <div className={`flex items-center gap-1 font-mono-data text-xs ${order.value < 0 ? "text-secondary" : "text-tertiary"}`}>
+                  {order.value < 0 ? <ArrowDown className="w-3 h-3" /> : <ArrowUp className="w-3 h-3" />}
+                  {order.value > 0 ? "+" : ""}{order.value} C
+                </div>
+              </div>
+            ))}
+          </div>
+
           {/* Desktop Table */}
-          <table className="w-full text-left border-collapse min-w-[700px]">
+          <table className="hidden md:table w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-outline-variant/50 bg-surface-container/50">
                 <th className="p-4 font-label-caps text-label-caps text-on-surface-variant w-44">交易 ID</th>
@@ -334,16 +370,7 @@ export default function ProfilePage() {
         </div>
       </section>
 
-      {/* Logout Section */}
-      <section className="flex justify-center mt-8">
-        <button
-          onClick={handleLogout}
-          className="border border-error text-error hover:bg-error/10 hover:shadow-[0_0_15px_rgba(255,68,68,0.5)] transition-all font-label-caps text-label-caps py-3 px-12 uppercase tracking-widest flex items-center justify-center gap-2 bg-transparent"
-        >
-          <span className="material-symbols-outlined text-sm">logout</span>
-          断开连接
-        </button>
-      </section>
+      {/* Logout Section - moved to header */}
 
       {/* FAQ Section */}
       <section className="mt-12">

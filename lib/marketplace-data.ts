@@ -18,7 +18,7 @@ export const MARKET_TOOLS: MarketTool[] = [
   },
   {
     id: 'style-analyzer',
-    name: '个人风格诊断',
+    name: '个人形象诊断',
     nameEn: 'Style Diagnosis',
     description: '上传人像照片，AI专业形象顾问为您生成完整的个人形象诊断报告。包含色彩诊断（季节型+推荐/避雷色系）、风格定位（气质+五官+身材比例分析）、身材分析（扬长避短策略），以及Top3穿搭方案、场合建议、妆容配饰发型延伸推荐。',
     icon: 'checkroom',

@@ -111,8 +111,8 @@ export default function Home() {
 
           {/* Right side: two stacked cards */}
           <div className="flex flex-col gap-6 lg:col-span-4">
-            {/* Card: 四季穿搭指南 */}
-            <ClientToolLink href="/upload/seasonal-outfit" toolId="seasonal-outfit" className="flex-1 block">
+            {/* Card: 个人风格诊断 */}
+            <ClientToolLink href="/upload/style-analyzer" toolId="style-analyzer" className="flex-1 block">
               <div className="cyber-glass group relative flex min-h-[238px] flex-col justify-end overflow-hidden rounded-xl border border-outline-variant p-6 transition-colors hover:border-secondary/50 h-full">
                 <div
                   className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity transition-transform duration-700 group-hover:scale-105"
@@ -124,10 +124,10 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
                 <div className="relative z-10">
                   <h3 className="font-h2 mb-2 text-2xl text-secondary drop-shadow-[0_0_8px_rgba(236,255,227,0.5)]">
-                    四季穿搭指南
+                    个人形象诊断
                   </h3>
                   <p className="font-body-md mb-4 text-sm text-on-surface-variant">
-                    上传照片，AI生成春夏秋冬四套韩系潮牌穿搭方案
+                    上传人像照片，AI专业形象顾问为您生成完整的个人形象诊断报告
                   </p>
                   <span className="flex items-center text-sm font-label-caps text-secondary transition-colors hover:text-on-surface">
                     开启扫描 <ArrowRight className="ml-1 h-4 w-4" />
